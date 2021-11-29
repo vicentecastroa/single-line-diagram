@@ -1,5 +1,5 @@
+import { NETWORK, NETWORK_OBJECTS } from "./Network";
 import dataObjects from "./ObjectFactory/dataObjects";
-import { NETWORK_OBJECTS } from "./Network";
 
 function drawGraph(event) {
   console.log(event);
