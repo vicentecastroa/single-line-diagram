@@ -1,6 +1,6 @@
 import SharedFunctionality from "../Views/baseView";
+import * as d3 from "d3";
 import * as cola from "webcola";
-import d3 from "d3";
 
 //METHOD TO DRAW THE DISCONNECTED GRAPH
 export default function DisconnectedGraph() {
@@ -13,6 +13,8 @@ function drawDisconnectedGraph() {
   let height = 1500;
   width = window.innerWidth * 0.98 - SharedFunctionality.R * 2;
   height = window.innerHeight * 0.7 + SharedFunctionality.R * 1;
+  
+  window.d3 = require('d3');
 
   console.log("width", width);
   console.log("height", height);
