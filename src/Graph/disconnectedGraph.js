@@ -1,6 +1,6 @@
 import SharedFunctionality from "../Views/baseView";
 import * as cola from "webcola";
-import * as d3 from "d3";
+import d3 from "d3";
 
 //METHOD TO DRAW THE DISCONNECTED GRAPH
 export default function DisconnectedGraph() {
@@ -16,7 +16,7 @@ function drawDisconnectedGraph() {
 
   console.log("width", width);
   console.log("height", height);
-  console.log('cola', cola)
+  console.log("cola", cola);
 
   const myCola = cola
     .d3adaptor()
@@ -24,12 +24,13 @@ function drawDisconnectedGraph() {
     .avoidOverlaps(true)
     .size([width, height]);
 
+  console.log("myCola", myCola);
+  console.log("d3", d3);
   const svg = d3
     .select("body")
     .append("svg")
     .attr({ id: "parentSvgNode", "pointer-events": "all" })
     .on("dblclick.zoom", null);
 
-  console.log("myCola", myCola);
   console.log("svg", svg);
 }
