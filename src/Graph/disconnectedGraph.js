@@ -1,5 +1,5 @@
 import SharedFunctionality from "../Views/baseView";
-import cola from "webcola";
+import * as cola from "webcola";
 import * as d3 from "d3";
 
 //METHOD TO DRAW THE DISCONNECTED GRAPH
@@ -16,6 +16,7 @@ function drawDisconnectedGraph() {
 
   console.log("width", width);
   console.log("height", height);
+  console.log('cola', cola)
 
   const myCola = cola
     .d3adaptor()
