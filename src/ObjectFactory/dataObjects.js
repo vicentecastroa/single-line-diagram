@@ -1,7 +1,5 @@
-import { NETWORK } from "../Network";
 //No separate namespace has been  created for the Object Factory class as the NETWORK OBJECT should itself have an Object Factory that generates and/or updates the DataObjects.
-export default (function () {
-  console.log("NETWORK", NETWORK);
+/* export default (function () {
   NETWORK.ObjectFactory = function () {
     var dataObjects = ["data Objects"];
     this.getNetworkDataObjects = function () {
@@ -9,3 +7,13 @@ export default (function () {
     };
   };
 })(NETWORK || (NETWORK = {}));
+ */
+export default class ObjectFactory {
+  constructor() {
+    this.dataObjects = {'aa': 'aaaa'};
+  }
+
+  getNetworkDataObjects() {
+    return this.dataObjects;
+  }
+}
