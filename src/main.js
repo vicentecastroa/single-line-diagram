@@ -1,4 +1,5 @@
 import ObjectFactoryClass from "./ObjectFactory/dataObjects";
+import DisconnectedGraph from './Graph/disconnectedGraph'
 
 function drawGraph(event) {
   console.log(event);
@@ -9,6 +10,8 @@ function drawGraph(event) {
   NETWORK_OBJECTS = ObjectFactory.getNetworkDataObjects();
   /*Logging NETWORK_OBJECTS for reference purpose.*/
   console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
+
+  DisconnectedGraph()
 }
 
 export default drawGraph;
