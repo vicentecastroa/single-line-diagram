@@ -23,10 +23,12 @@ function drawDisconnectedGraph() {
     .avoidOverlaps(true)
     .size([width, height]);
 
+  console.log(d3.select("#diagram-div"));
   const svg = d3
     .select("#diagram-div")
     .append("svg")
-    .attr({ id: "parentSvgNode", "pointer-events": "all" })
+    .attr('id', 'parentSvgNode')
+    .attr('pointer-events', 'all')
     .on("dblclick.zoom", null);
 
   console.log("myCola", myCola);
