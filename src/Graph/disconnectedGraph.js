@@ -13,12 +13,9 @@ function drawDisconnectedGraph() {
   let height = 1500;
   width = window.innerWidth * 0.98 - SharedFunctionality.R * 2;
   height = window.innerHeight * 0.7 + SharedFunctionality.R * 1;
-  
-  window.d3 = require('d3');
 
-  console.log("width", width);
-  console.log("height", height);
-  console.log("cola", cola);
+  // Hack from https://github.com/tgdwyer/WebCola/issues/145
+  window.d3 = require("d3");
 
   const myCola = cola
     .d3adaptor()
@@ -26,13 +23,12 @@ function drawDisconnectedGraph() {
     .avoidOverlaps(true)
     .size([width, height]);
 
-  console.log("myCola", myCola);
-  console.log("d3", d3);
   const svg = d3
-    .select("body")
+    .select("#diagram-div")
     .append("svg")
     .attr({ id: "parentSvgNode", "pointer-events": "all" })
     .on("dblclick.zoom", null);
 
+  console.log("myCola", myCola);
   console.log("svg", svg);
 }
