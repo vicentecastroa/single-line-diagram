@@ -2,7 +2,6 @@ import * as d3 from "d3";
 
 class Nodes {
   constructor(data, svg, cola) {
-    console.log("cola in", cola);
     this.data = data;
     this.svg = svg;
     this.nodesGroupTag = this.svg

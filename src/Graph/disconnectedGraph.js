@@ -18,6 +18,7 @@ function drawDisconnectedGraph() {
   height = window.innerHeight * 0.7 + SharedFunctionality.R * 1;
 
   // Hack from https://github.com/tgdwyer/WebCola/issues/145
+  // TODO: remove?
   window.d3 = require("d3");
 
   function redrawWithDrag(transition) {
@@ -29,7 +30,7 @@ function drawDisconnectedGraph() {
   }
 
   const myCola = cola
-    .d3adaptor()
+    .d3adaptor(d3)
     .linkDistance(SharedFunctionality.R * 6)
     .avoidOverlaps(true)
     .size([width, height]);
@@ -62,7 +63,6 @@ function drawDisconnectedGraph() {
 
   const nodesData = NETWORK_OBJECTS.busDataObj.dataObjList;
 
-  console.log('mycola', myCola)
   const nodes = new Nodes(nodesData, vis, myCola);
   console.log('nodes', nodes)
 }
