@@ -4,8 +4,6 @@ import SharedFunctionality from "../Views/baseView";
 
 import { NETWORK_OBJECTS } from "../main";
 
-const zoom = d3.behavior.zoom();
-
 //METHOD TO DRAW THE DISCONNECTED GRAPH
 export default function DisconnectedGraph() {
   //Calling the graph object.
@@ -49,7 +47,7 @@ function drawDisconnectedGraph() {
     .attr("height", "100%")
     .style("stroke-width", 4)
     .style("stroke", "grey")
-    .call(zoom.on("zoom", redrawWithDrag));
+    .call(d3.zoom().on("zoom", redrawWithDrag))
 
   const vis = svg.append("g").attr("id", "svgGraph");
 
