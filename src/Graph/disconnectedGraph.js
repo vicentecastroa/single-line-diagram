@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import * as cola from "webcola";
 import SharedFunctionality from "../Views/baseView";
+import Nodes from './Nodes/NodeBase'
 
 import { NETWORK_OBJECTS } from "../main";
 
@@ -47,7 +48,7 @@ function drawDisconnectedGraph() {
     .attr("height", "100%")
     .style("stroke-width", 4)
     .style("stroke", "grey")
-    .call(d3.zoom().on("zoom", redrawWithDrag))
+    .call(d3.zoom().on("zoom", redrawWithDrag));
 
   const vis = svg.append("g").attr("id", "svgGraph");
 
@@ -60,5 +61,7 @@ function drawDisconnectedGraph() {
   svg.on("MozMousePixelScroll.zoom", null);
 
   const nodesData = NETWORK_OBJECTS.busDataObj.dataObjList;
-  console.log(nodesData)
+
+  const nodes = new Nodes(nodesData, vis, myCola);
+  console.log('nodes', nodes)
 }
