@@ -4,6 +4,8 @@ import SharedFunctionality from "../Views/baseView";
 
 import { NETWORK_OBJECTS } from "../main";
 
+const zoom = d3.behavior.zoom();
+
 //METHOD TO DRAW THE DISCONNECTED GRAPH
 export default function DisconnectedGraph() {
   //Calling the graph object.
