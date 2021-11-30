@@ -19,7 +19,7 @@ function drawDisconnectedGraph() {
 
   const myCola = cola
     .d3adaptor()
-    .linkDistance(VIEWS.SharedFunctionality.R * 6)
+    .linkDistance(SharedFunctionality.R * 6)
     .avoidOverlaps(true)
     .size([width, height]);
 
