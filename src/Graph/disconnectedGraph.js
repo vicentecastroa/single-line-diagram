@@ -62,6 +62,7 @@ function drawDisconnectedGraph() {
 
   const nodesData = NETWORK_OBJECTS.busDataObj.dataObjList;
 
+  console.log('mycola', myCola)
   const nodes = new Nodes(nodesData, vis, myCola);
   console.log('nodes', nodes)
 }
