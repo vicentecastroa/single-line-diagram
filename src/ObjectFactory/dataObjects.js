@@ -9,11 +9,29 @@
 })(NETWORK || (NETWORK = {}));
  */
 export default class ObjectFactory {
-  constructor() {
-    this.dataObjects = {'aa': 'aaaa'};
+  constructor(inputJSON) {
+    this.dataObjects = dataObjects(inputJSON);
   }
 
   getNetworkDataObjects() {
     return this.dataObjects;
   }
+}
+
+function dataObjects(JSON) {
+  const networkConfig = [];
+
+  Object.entries(JSON).forEach(([key, value]) => {
+    switch (key) {
+      case "bus":
+        var busDataObj = { dataObjList: value };
+        networkConfig["busDataObj"] = busDataObj;
+        break;
+
+      default:
+        break;
+    }
+  });
+
+  return networkConfig;
 }
