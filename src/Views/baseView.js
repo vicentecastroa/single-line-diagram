@@ -2,6 +2,7 @@ import $ from "jquery";
 import * as d3 from "d3";
 
 var zoom = d3.zoom();
+var zoomTransform = d3.zoomTransform()
 
 const graphBounds = (withCola, myCola) => {
   var x = Number.POSITIVE_INFINITY,
@@ -51,10 +52,12 @@ const SharedFunctionality = {
     var ty = -b.y * s + ((ch / s - h) * s) / 2;
     var selZoom;
     if ($("#parentSvgNode").is(":visible")) {
-      selZoom = zoom;
+      selZoom = zoomTransform;
     } else {
       selZoom = zoomHelp;
     }
+    console.log('selZoom', selZoom)
+    console.log('tx ty', tx, ty)
     selZoom.translate([tx, ty]).scale(s);
     redraw(true);
   },
