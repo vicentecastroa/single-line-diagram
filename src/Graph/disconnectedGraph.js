@@ -27,7 +27,9 @@ function drawDisconnectedGraph(myCola) {
   function redrawWithDrag(transition) {
     if (SharedFunctionality.nodeMouseDown) return;
     console.log(zoom);
-    console.log(zoom.transform());
+    console.log(d3.event.transform)
+    console.log(transition);
+    console.log(zoom.transform(transition));
     (transition ? vis.transition() : vis).attr(
       "transform",
       "translate(" + zoom.translate() + ") scale(" + zoom.scale() + ")"
