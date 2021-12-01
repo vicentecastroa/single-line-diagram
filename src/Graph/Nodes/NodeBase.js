@@ -14,16 +14,30 @@ function Nodes(data, svg, cola) {
 
   this.labels = this.getNodeLabels(cola);
   this.centerUI = this.getNodeCenterUI(this.nodesGroupTag);
+
+  // Decorators or bus resources
+  this.topDecorators = new Nodes.TopDecorators(this.nodesGroupTag);
+  this.topDecorators.decorate();
 }
 
 Nodes.prototype.getNodeLabels = function (cola) {
   return null;
 };
 
+Nodes.prototype.getNodeCenterUI = function (nodesGroupTag) {
+  nodesGroupTag
+    .append("circle")
+    .attr("class", "node busIcon")
+    .attr("id", function (d) {
+      d["DOMID"] = "bus" + d.id;
+      return d.DOMID;
+    })
+    .attr("r", SharedFunctionality.R * 0.5);
+};
+
 Nodes.prototype.tick = function () {
-  console.log("tick", this);
   this.nodesGroupTag.selectAll(".node").each((d) => {
-    d3.select(this)
+    d3.select(`#${d.DOMID}`)
       .attr("cx", d.x)
       .attr("cy", d.y)
       .attr("zoomPointX", d.x)
@@ -39,20 +53,8 @@ Nodes.prototype.tick = function () {
       return d.y + h / 4 + 1;
     }); */
 
-  /* this.topDecorators.tick();
-  this.bottomDecorators.tick(); */
-};
-
-Nodes.prototype.getNodeCenterUI = function (nodesGroupTag) {
-  nodesGroupTag
-    .append("circle")
-    .attr("class", "node busIcon")
-    .attr("id", function (d) {
-      console.log(d);
-      d["DOMID"] = "bus" + d.bus_i;
-      return d.DOMID;
-    })
-    .attr("r", SharedFunctionality.R * 0.5)
+  /*  this.bottomDecorators.tick(); */
+  this.topDecorators.tick();
 };
 
 export default Nodes;
