@@ -11,7 +11,7 @@ function Nodes(data, svg, cola) {
     .attr("fill", "white")
     .call(cola.drag);
 
-  this.getNodeLabels.bind(this);
+  this.getNodeLabels = this.getNodeLabels.bind(this);
   this.labels = this.getNodeLabels(cola);
 }
 /* class Nodes {
@@ -31,14 +31,14 @@ function Nodes(data, svg, cola) {
   }
 } */
 
-Nodes.prototype.getNodeLabels = (cola) => {
+Nodes.prototype.getNodeLabels = function (cola) {
   console.log(cola);
-  console.log(this);
+  console.log("nodelabel", this);
   return null;
 };
 
-Nodes.prototype.tick = () => {
-  console.log(this);
+Nodes.prototype.tick = function () {
+  console.log("tick", this);
   this.nodesGroupTag.selectAll(".node").each((d) => {
     d3.select(this)
       .attr("cx", d.x)

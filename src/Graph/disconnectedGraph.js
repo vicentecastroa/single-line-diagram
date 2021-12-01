@@ -65,6 +65,7 @@ function drawDisconnectedGraph(myCola) {
   const edgesData = NETWORK_OBJECTS.branchDataObj.dataObjList;
 
   const nodes = new Nodes(nodesData, vis, myCola);
+  console.log(nodes)
 
   //This variable has been added to check if the graph file being loaded has fixed locations or not.
   //If the graph being loaded has fixed locations then the zoomToFit is called again.
