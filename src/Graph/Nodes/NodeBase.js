@@ -12,6 +12,7 @@ class Nodes {
       .attr("fill", "white")
       .call(cola.drag);
 
+    this.getNodeLabels = this.getNodeLabels.bind(this);
     this.labels = this.getNodeLabels(cola);
   }
 }
