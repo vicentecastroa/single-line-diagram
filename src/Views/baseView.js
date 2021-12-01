@@ -1,4 +1,7 @@
 import $ from "jquery";
+import * as d3 from "d3";
+
+var zoom = d3.zoom();
 
 const graphBounds = (withCola, myCola) => {
   var x = Number.POSITIVE_INFINITY,
@@ -7,10 +10,7 @@ const graphBounds = (withCola, myCola) => {
     Y = Number.NEGATIVE_INFINITY;
   //Check the visibility of the graph and then Select the graph for which the layout is to be exported.
   var selCola;
-  console.log($("#parentSvgNode"))
-  console.log($("#parentSvgNode").is(":visible"))
   if ($("#parentSvgNode").is(":visible")) {
-    console.log("asdfasdfasdfasdf");
     selCola = myCola;
   } else {
     selCola = myColaHelp;
