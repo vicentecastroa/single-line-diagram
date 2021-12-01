@@ -5,8 +5,11 @@ import Nodes from "./Nodes/NodeBase";
 
 import { NETWORK_OBJECTS, myCola } from "../main";
 
+const zoom = d3.zoom();
+
 //METHOD TO DRAW THE DISCONNECTED GRAPH
 export default function DisconnectedGraph() {
+  SharedFunctionality.nodeMouseDown = false;
   //Calling the graph object.
   drawDisconnectedGraph(myCola);
 }
@@ -19,14 +22,19 @@ function drawDisconnectedGraph(myCola) {
 
   // Hack from https://github.com/tgdwyer/WebCola/issues/145
   // TODO: remove?
-  window.d3 = require("d3");
+  // window.d3 = require("d3");
 
   function redrawWithDrag(transition) {
     if (SharedFunctionality.nodeMouseDown) return;
+    console.log(zoom);
+    console.log(zoom.transform());
     (transition ? vis.transition() : vis).attr(
       "transform",
       "translate(" + zoom.translate() + ") scale(" + zoom.scale() + ")"
     );
+  }
+  function zoomed() {
+    g.attr("transform", d3.event.transform); //The zoom and panning is affecting my G element which is a child of SVG
   }
 
   myCola = cola
@@ -65,7 +73,7 @@ function drawDisconnectedGraph(myCola) {
   const edgesData = NETWORK_OBJECTS.branchDataObj.dataObjList;
 
   const nodes = new Nodes(nodesData, vis, myCola);
-  console.log(nodes)
+  console.log(nodes);
 
   //This variable has been added to check if the graph file being loaded has fixed locations or not.
   //If the graph being loaded has fixed locations then the zoomToFit is called again.

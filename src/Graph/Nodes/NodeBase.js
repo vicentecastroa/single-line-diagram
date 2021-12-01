@@ -11,25 +11,8 @@ function Nodes(data, svg, cola) {
     .attr("fill", "white")
     .call(cola.drag);
 
-  this.getNodeLabels = this.getNodeLabels.bind(this);
   this.labels = this.getNodeLabels(cola);
 }
-/* class Nodes {
-  constructor(data, svg, cola) {
-    this.data = data;
-    this.svg = svg;
-    this.nodesGroupTag = this.svg
-      .selectAll(".busGroupIcon")
-      .data(data)
-      .enter()
-      .append("g")
-      .attr("fill", "white")
-      .call(cola.drag);
-
-    this.getNodeLabels.bind(this);
-    this.labels = this.getNodeLabels(cola);
-  }
-} */
 
 Nodes.prototype.getNodeLabels = function (cola) {
   console.log(cola);
