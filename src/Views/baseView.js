@@ -1,3 +1,33 @@
+const graphBounds = (withCola) => {
+  var x = Number.POSITIVE_INFINITY,
+    X = Number.NEGATIVE_INFINITY,
+    y = Number.POSITIVE_INFINITY,
+    Y = Number.NEGATIVE_INFINITY;
+  //Check the visibility of the graph and then Select the graph for which the layout is to be exported.
+  var selCola;
+  if ($("#parentSvgNode").is(":visible")) {
+    selCola = myCola;
+  } else {
+    selCola = myColaHelp;
+  }
+  if (withCola) {
+    selCola.nodes().forEach(function (v) {
+      x = Math.min(x, v.x - SharedFunctionality.R * 2);
+      X = Math.max(X, v.x);
+      y = Math.min(y, v.y - SharedFunctionality.R * 4);
+      Y = Math.max(Y, v.y + SharedFunctionality.R * 5);
+    });
+  } else {
+    d3.selectAll(".node").each(function (v) {
+      x = Math.min(x, v.x - SharedFunctionality.R * 2);
+      X = Math.max(X, v.x);
+      y = Math.min(y, v.y - SharedFunctionality.R * 4);
+      Y = Math.max(Y, v.y + SharedFunctionality.R * 5);
+    });
+  }
+  return { x: x, X: X, y: y, Y: Y };
+};
+
 const SharedFunctionality = {
   R: 15,
   autoLayout: true,
