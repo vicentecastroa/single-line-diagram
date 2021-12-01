@@ -5,6 +5,7 @@ let NETWORK_OBJECTS = null;
 let myCola = null;
 
 function drawGraph(event) {
+  myCola = null;
   console.log(event);
 
   const ObjectFactory = new ObjectFactoryClass(event);
