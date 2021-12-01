@@ -12,14 +12,14 @@ class Nodes {
       .attr("fill", "white")
       .call(cola.drag);
 
-    this.getNodeLabels = this.getNodeLabels.bind(this);
+    this.getNodeLabels.bind(this);
     this.labels = this.getNodeLabels(cola);
   }
 }
 
 Nodes.prototype.getNodeLabels = (cola) => {
   console.log(cola);
-  console.log(this.svg);
+  console.log(this);
   return null;
 };
 
