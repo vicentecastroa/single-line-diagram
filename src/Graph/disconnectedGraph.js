@@ -89,7 +89,7 @@ function drawDisconnectedGraph(myCola) {
 
   // Called the Start for the COLA to allow the updates to be done after changing the orientation of the graph.
   myCola.nodes(nodesData).links(edgesData).start();
-  SharedFunctionality.zoomToFit(true);
+  SharedFunctionality.zoomToFit(true, myCola);
 
   myCola.on("tick", () => {
     if (
@@ -146,7 +146,7 @@ function drawDisconnectedGraph(myCola) {
               }
             }
           });
-          SharedFunctionality.zoomToFit(true);
+          SharedFunctionality.zoomToFit(true, myCola);
           //Setting the variable as false the the zoomToFit is to be called only once.
           fixedLocationGraphLoad = false;
         }

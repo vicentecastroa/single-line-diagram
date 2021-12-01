@@ -1,7 +1,6 @@
 import $ from "jquery";
-import { myCola } from "../main";
 
-const graphBounds = (withCola) => {
+const graphBounds = (withCola, myCola) => {
   var x = Number.POSITIVE_INFINITY,
     X = Number.NEGATIVE_INFINITY,
     y = Number.POSITIVE_INFINITY,
@@ -41,10 +40,10 @@ const SharedFunctionality = {
   hasNodeLocationData: false,
   goToInitialStateTriggered: false,
 
-  zoomToFit: (withCola) => {
+  zoomToFit: (withCola, myCola) => {
     var cw = window.innerWidth * 0.98 - 160 - SharedFunctionality.R * 2;
     var ch = window.innerHeight * 0.85 + SharedFunctionality.R * 1;
-    var b = graphBounds(withCola);
+    var b = graphBounds(withCola, myCola);
     var w = b.X - b.x,
       h = b.Y - b.y;
     var s = Math.min(cw / w, ch / h);
