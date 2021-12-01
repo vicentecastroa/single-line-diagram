@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 const graphBounds = (withCola) => {
   var x = Number.POSITIVE_INFINITY,
     X = Number.NEGATIVE_INFINITY,
