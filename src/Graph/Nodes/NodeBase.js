@@ -16,14 +16,14 @@ class Nodes {
   }
 }
 
-Nodes.prototype.getNodeLabels = function (cola) {
+Nodes.prototype.getNodeLabels = (cola) => {
   console.log(cola);
   console.log(this.svg);
   return null;
 };
 
-Nodes.prototype.tick = function () {
-  this.nodesGroupTag.selectAll(".node").each(function (d) {
+Nodes.prototype.tick = () => {
+  this.nodesGroupTag.selectAll(".node").each((d) => {
     d3.select(this)
       .attr("cx", d.x)
       .attr("cy", d.y)

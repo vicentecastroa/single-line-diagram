@@ -28,6 +28,16 @@ function dataObjects(JSON) {
         networkConfig["busDataObj"] = busDataObj;
         break;
 
+      case "branch":
+        var branchDataObj = { dataObjList: [] };
+        networkConfig["branchDataObj"] = branchDataObj;
+        break;
+
+      case "busLocation":
+        var busLocationDataObj = { dataObjList: [] };
+        networkConfig["busLocation"] = busLocationDataObj;
+        break;
+
       default:
         break;
     }
