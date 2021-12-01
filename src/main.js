@@ -2,6 +2,7 @@ import ObjectFactoryClass from "./ObjectFactory/dataObjects";
 import DisconnectedGraph from "./Graph/disconnectedGraph";
 
 let NETWORK_OBJECTS = null;
+let myCola = null;
 
 function drawGraph(event) {
   console.log(event);
@@ -16,4 +17,4 @@ function drawGraph(event) {
 }
 
 export default drawGraph;
-export { NETWORK_OBJECTS };
+export { NETWORK_OBJECTS, myCola };

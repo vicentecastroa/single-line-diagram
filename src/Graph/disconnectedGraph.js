@@ -3,7 +3,7 @@ import * as cola from "webcola";
 import SharedFunctionality from "../Views/baseView";
 import Nodes from "./Nodes/NodeBase";
 
-import { NETWORK_OBJECTS } from "../main";
+import { NETWORK_OBJECTS, myCola } from "../main";
 
 //METHOD TO DRAW THE DISCONNECTED GRAPH
 export default function DisconnectedGraph() {
@@ -29,7 +29,7 @@ function drawDisconnectedGraph() {
     );
   }
 
-  const myCola = cola
+  myCola = cola
     .d3adaptor(d3)
     .linkDistance(SharedFunctionality.R * 6)
     .avoidOverlaps(true)
