@@ -2,7 +2,7 @@ import $ from "jquery";
 import * as d3 from "d3";
 
 var zoom = d3.zoom();
-var zoomTransform = d3.zoomTransform()
+var zoomTransform = d3.zoomTransform();
 
 const graphBounds = (withCola, myCola) => {
   var x = Number.POSITIVE_INFINITY,
@@ -34,6 +34,24 @@ const graphBounds = (withCola, myCola) => {
   return { x: x, X: X, y: y, Y: Y };
 };
 
+const redraw = (transition) => {
+  if (SharedFunctionality.nodeMouseDown) return;
+  let vis, zoomer;
+  //Selecting the g node for autofit based on the visibility of the graph.
+  if ($("#parentSvgNode").is(":visible")) {
+    vis = d3.select("#parentSvgNode").select("g");
+    zoomer = zoom;
+  } else {
+    vis = d3.select("#helpSvgNode").select("g");
+    zoomer = zoomHelp;
+  }
+
+  (transition ? vis.transition() : vis).attr(
+    "transform",
+    "translate(" + zoomer.translate() + ") scale(" + zoomer.scale() + ")"
+  );
+};
+
 const SharedFunctionality = {
   R: 15,
   autoLayout: true,
@@ -52,13 +70,14 @@ const SharedFunctionality = {
     var ty = -b.y * s + ((ch / s - h) * s) / 2;
     var selZoom;
     if ($("#parentSvgNode").is(":visible")) {
-      selZoom = zoomTransform;
+      selZoom = zoom;
     } else {
       selZoom = zoomHelp;
     }
-    console.log('selZoom', selZoom)
-    console.log('tx ty', tx, ty)
-    selZoom.translate([tx, ty]).scale(s);
+    console.log("selZoom", selZoom);
+    console.log("tx ty", tx, ty);
+    console.log(selZoom.translateBy());
+    // selZoom.translateBy([tx, ty]).scale(s);
     redraw(true);
   },
 };
