@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 import SharedFunctionality from "../../../Views/baseView";
 
 function TopDecorators(nodesGroupTag) {
@@ -6,17 +7,16 @@ function TopDecorators(nodesGroupTag) {
 
 TopDecorators.prototype.decorate = function () {
   this.nodesGroupTag.each((d) => {
+    console.log(d);
+
     const topDecoCount = d.topDecorators.length;
     const R = SharedFunctionality.R;
     const LL = R / 2;
 
     console.log(d);
     if (topDecoCount !== 0) {
-      console.log("this", this);
-      console.log("d.id", `#${d.DOMID}`);
-      console.log(d3.select(`#${d.DOMID}`));
       const topDecoratorGroup = d3
-        .select(this)
+        .select(`#${d.DOMID}`)
         .append("g")
         .attr("class", "topDecoratorGroup")
         .attr("id", (d) => d.topDecorators.DOMID);
@@ -24,11 +24,11 @@ TopDecorators.prototype.decorate = function () {
       for (let index = 0; index < topDecoCount; index++) {
         const decorator = d.topDecorators[index];
         console.log(decorator);
-        if (decorator.type === "storage") {
+        if (decorator.resourceType === "storage") {
           topDecoratorGroup
             .append("circle")
             .attr("fill", "red")
-            .attr("index", index)
+            .attr("id", (d) => `bus${d.busId}topDeco${index}`)
             .attr("r", R / 2)
             .attr("cy", -(3 * R + 2 * LL))
             .attr("cx", () => {

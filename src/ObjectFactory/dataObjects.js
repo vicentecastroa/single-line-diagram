@@ -1,24 +1,11 @@
-//No separate namespace has been  created for the Object Factory class as the NETWORK OBJECT should itself have an Object Factory that generates and/or updates the DataObjects.
-/* export default (function () {
-  NETWORK.ObjectFactory = function () {
-    var dataObjects = ["data Objects"];
-    this.getNetworkDataObjects = function () {
-      return dataObjects;
-    };
-  };
-})(NETWORK || (NETWORK = {}));
- */
-export default class ObjectFactory {
-  constructor(inputJSON) {
-    this.dataObjects = dataObjects(inputJSON);
-  }
+function ObjectFactory(inputJSON) {
+  const dataObjects = this.dataObjects(inputJSON);
+  this.addTopDecoratorDataToBus(dataObjects);
 
-  getNetworkDataObjects() {
-    return this.dataObjects;
-  }
+  this.getNetworkDataObjects = () => dataObjects;
 }
 
-function dataObjects(JSON) {
+ObjectFactory.prototype.dataObjects = (JSON) => {
   const networkConfig = [];
   networkConfig["busDataObj"] = { dataObjList: [] };
   networkConfig["branchDataObj"] = { dataObjList: [] };
@@ -53,7 +40,7 @@ function dataObjects(JSON) {
   });
 
   return networkConfig;
-}
+};
 
 // This function looks for every resource in network that is assigned to each bus
 ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
@@ -87,6 +74,8 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
     });
     // Set top decorators in Bus Object
     busObj["topDecorators"] = topDecorators;
-    busObj["IdList"] = topDecoratorsID.slice(0, -1);
+    busObj["IdList"] = topDecoratorsId.slice(0, -1);
   }
 };
+
+export default ObjectFactory;

@@ -64,7 +64,6 @@ const SharedFunctionality = {
     const cw = window.innerWidth * 0.98 - 160 - SharedFunctionality.R * 2;
     const ch = window.innerHeight * 0.85 + SharedFunctionality.R * 1;
     const b = graphBounds(withCola, myCola);
-    console.log("graphBounds", b);
     const w = b.X - b.x,
       h = b.Y - b.y;
     const s = Math.min(cw / w, ch / h);
