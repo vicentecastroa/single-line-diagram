@@ -6,29 +6,28 @@ function TopDecorators(nodesGroupTag) {
 }
 
 TopDecorators.prototype.decorate = function () {
-  this.nodesGroupTag.each((d) => {
-    console.log(d);
-
-    const topDecoCount = d.topDecorators.length;
+  this.nodesGroupTag._groups.forEach((d) => {
+    const nodeGroup = d[0].__data__;
+    const topDecorators = nodeGroup.topDecorators;
+    const topDecoCount = topDecorators.length;
     const R = SharedFunctionality.R;
     const LL = R / 2;
 
-    console.log(d);
     if (topDecoCount !== 0) {
       const topDecoratorGroup = d3
-        .select(`#${d.DOMID}`)
+        .select(d[0])
         .append("g")
         .attr("class", "topDecoratorGroup")
-        .attr("id", (d) => d.topDecorators.DOMID);
+        .attr("id", () => topDecorators.DOMID);
 
       for (let index = 0; index < topDecoCount; index++) {
-        const decorator = d.topDecorators[index];
+        const decorator = topDecorators[index];
         console.log(decorator);
         if (decorator.resourceType === "storage") {
           topDecoratorGroup
             .append("circle")
             .attr("fill", "red")
-            .attr("id", (d) => `bus${d.busId}topDeco${index}`)
+            .attr("id", () => `bus${nodeGroup.id}topDeco${index}`)
             .attr("r", R / 2)
             .attr("cy", -(3 * R + 2 * LL))
             .attr("cx", () => {
@@ -47,15 +46,9 @@ TopDecorators.prototype.decorate = function () {
 
 TopDecorators.prototype.tick = function () {
   d3.selectAll(".topDecoratorGroup")
-    .attr("transform", function (d) {
-      return "translate(" + d.x + "," + d.y + ")";
-    })
-    .attr("zoomPointX", function (d) {
-      return d.x;
-    })
-    .attr("zoomPointY", function (d) {
-      return d.y;
-    });
+    .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
+    .attr("zoomPointX", (d) => d.x)
+    .attr("zoomPointY", (d) => d.y);
 };
 
 export default TopDecorators;
