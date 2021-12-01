@@ -1,8 +1,8 @@
 import $ from "jquery";
 import * as d3 from "d3";
 
-// const zoom = d3.zoom();
-// const zoomTransform = d3.zoomTransform();
+const zoom = d3.zoom();
+const zoomIdentity = d3.zoomIdentity
 
 const graphBounds = (withCola, myCola) => {
   let x = Number.POSITIVE_INFINITY;
@@ -49,7 +49,7 @@ const redraw = (transition) => {
 
   (transition ? vis.transition() : vis).attr(
     "transform",
-    `translate(${transition.transform.x}, ${transition.transform.x}) scale(${transition.transform.k})`
+    `translate(${zoomIdentity.x}, ${zoomIdentity.y}) scale(${zoomIdentity.k})`
   );
 };
 
@@ -72,14 +72,12 @@ const SharedFunctionality = {
     const ty = -b.y * s + ((ch / s - h) * s) / 2;
     let selZoom;
     if ($("#parentSvgNode").is(":visible")) {
-      selZoom = zoom;
+      selZoom = d3.zoom();
     } else {
       selZoom = zoomHelp;
     }
-    console.log("selZoom", selZoom);
-    console.log("tx ty", tx, ty);
-    // selZoom.translateBy([tx, ty]).scale(s);
-    // redraw(true);
+    zoomIdentity.translate(tx, ty).scale(s)
+    redraw(true);
   },
 };
 

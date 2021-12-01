@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import SharedFunctionality from "../../Views/baseView";
 
 function Nodes(data, svg, cola) {
   this.data = data;
@@ -12,6 +13,7 @@ function Nodes(data, svg, cola) {
     .call(cola.drag);
 
   this.labels = this.getNodeLabels(cola);
+  this.centerUI = this.getNodeCenterUI(this.nodesGroupTag);
 }
 
 Nodes.prototype.getNodeLabels = function (cola) {
@@ -39,6 +41,18 @@ Nodes.prototype.tick = function () {
 
   /* this.topDecorators.tick();
   this.bottomDecorators.tick(); */
+};
+
+Nodes.prototype.getNodeCenterUI = function (nodesGroupTag) {
+  nodesGroupTag
+    .append("circle")
+    .attr("class", "node busIcon")
+    .attr("id", function (d) {
+      console.log(d);
+      d["DOMID"] = "bus" + d.bus_i;
+      return d.DOMID;
+    })
+    .attr("r", SharedFunctionality.R * 0.5)
 };
 
 export default Nodes;

@@ -24,7 +24,7 @@ function drawDisconnectedGraph(myCola) {
     if (SharedFunctionality.nodeMouseDown) return;
     (transition ? vis.transition() : vis).attr(
       "transform",
-      `translate(${transition.transform.x}, ${transition.transform.x}) scale(${transition.transform.k})`
+      `translate(${transition.transform.x}, ${transition.transform.y}) scale(${transition.transform.k})`
     );
   }
 
