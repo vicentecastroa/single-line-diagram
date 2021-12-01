@@ -8,7 +8,10 @@ const graphBounds = (withCola) => {
     Y = Number.NEGATIVE_INFINITY;
   //Check the visibility of the graph and then Select the graph for which the layout is to be exported.
   var selCola;
+  console.log($("#parentSvgNode"))
+  console.log($("#parentSvgNode").is(":visible"))
   if ($("#parentSvgNode").is(":visible")) {
+    console.log("asdfasdfasdfasdf");
     selCola = myCola;
   } else {
     selCola = myColaHelp;
