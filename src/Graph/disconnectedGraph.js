@@ -5,12 +5,6 @@ import Nodes from "./Nodes/NodeBase";
 
 import { NETWORK_OBJECTS, myCola } from "../main";
 
-//METHOD TO DRAW THE DISCONNECTED GRAPH
-export default function DisconnectedGraph() {
-  //Calling the graph object.
-  drawDisconnectedGraph();
-}
-
 function drawDisconnectedGraph() {
   let width = 1400;
   let height = 1500;
@@ -155,3 +149,10 @@ function drawDisconnectedGraph() {
     nodes.tick();
   });
 }
+//METHOD TO DRAW THE DISCONNECTED GRAPH
+export default function DisconnectedGraph() {
+  console.log('2',myCola);
+  //Calling the graph object.
+  drawDisconnectedGraph();
+}
+
