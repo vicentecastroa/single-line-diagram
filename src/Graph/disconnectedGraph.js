@@ -20,23 +20,12 @@ function drawDisconnectedGraph(myCola) {
   width = window.innerWidth * 0.98 - SharedFunctionality.R * 2;
   height = window.innerHeight * 0.7 + SharedFunctionality.R * 1;
 
-  // Hack from https://github.com/tgdwyer/WebCola/issues/145
-  // TODO: remove?
-  // window.d3 = require("d3");
-
   function redrawWithDrag(transition) {
     if (SharedFunctionality.nodeMouseDown) return;
-    console.log(zoom);
-    console.log(d3.event.transform)
-    console.log(transition);
-    console.log(zoom.transform(transition));
     (transition ? vis.transition() : vis).attr(
       "transform",
-      "translate(" + zoom.translate() + ") scale(" + zoom.scale() + ")"
+      `translate(${transition.transform.x}, ${transition.transform.x}) scale(${transition.transform.k})`
     );
-  }
-  function zoomed() {
-    g.attr("transform", d3.event.transform); //The zoom and panning is affecting my G element which is a child of SVG
   }
 
   myCola = cola
@@ -75,7 +64,7 @@ function drawDisconnectedGraph(myCola) {
   const edgesData = NETWORK_OBJECTS.branchDataObj.dataObjList;
 
   const nodes = new Nodes(nodesData, vis, myCola);
-  console.log(nodes);
+  // console.log(nodes);
 
   //This variable has been added to check if the graph file being loaded has fixed locations or not.
   //If the graph being loaded has fixed locations then the zoomToFit is called again.
@@ -100,7 +89,7 @@ function drawDisconnectedGraph(myCola) {
 
   // Called the Start for the COLA to allow the updates to be done after changing the orientation of the graph.
   myCola.nodes(nodesData).links(edgesData).start();
-  // SharedFunctionality.zoomToFit(true, myCola);
+  SharedFunctionality.zoomToFit(true, myCola);
 
   myCola.on("tick", () => {
     if (

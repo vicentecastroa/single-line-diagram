@@ -36,7 +36,8 @@ const graphBounds = (withCola, myCola) => {
 
 const redraw = (transition) => {
   if (SharedFunctionality.nodeMouseDown) return;
-  let vis, zoomer;
+  let vis;
+  let zoomer;
   //Selecting the g node for autofit based on the visibility of the graph.
   if ($("#parentSvgNode").is(":visible")) {
     vis = d3.select("#parentSvgNode").select("g");
@@ -48,7 +49,7 @@ const redraw = (transition) => {
 
   (transition ? vis.transition() : vis).attr(
     "transform",
-    "translate(" + zoomer.translate() + ") scale(" + zoomer.scale() + ")"
+    `translate(${transition.transform.x}, ${transition.transform.x}) scale(${transition.transform.k})`
   );
 };
 
@@ -63,7 +64,7 @@ const SharedFunctionality = {
     const cw = window.innerWidth * 0.98 - 160 - SharedFunctionality.R * 2;
     const ch = window.innerHeight * 0.85 + SharedFunctionality.R * 1;
     const b = graphBounds(withCola, myCola);
-    console.log('graphBounds', b)
+    console.log("graphBounds", b);
     const w = b.X - b.x,
       h = b.Y - b.y;
     const s = Math.min(cw / w, ch / h);
@@ -78,7 +79,7 @@ const SharedFunctionality = {
     console.log("selZoom", selZoom);
     console.log("tx ty", tx, ty);
     // selZoom.translateBy([tx, ty]).scale(s);
-    redraw(true);
+    // redraw(true);
   },
 };
 

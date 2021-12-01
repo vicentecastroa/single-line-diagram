@@ -15,8 +15,6 @@ function Nodes(data, svg, cola) {
 }
 
 Nodes.prototype.getNodeLabels = function (cola) {
-  console.log(cola);
-  console.log("nodelabel", this);
   return null;
 };
 

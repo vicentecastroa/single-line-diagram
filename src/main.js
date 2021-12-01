@@ -13,7 +13,6 @@ function drawGraph(event) {
   NETWORK_OBJECTS = ObjectFactory.getNetworkDataObjects();
   /*Logging NETWORK_OBJECTS for reference purpose.*/
   console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
-  console.log("myCola", myCola);
 
   DisconnectedGraph();
 }
