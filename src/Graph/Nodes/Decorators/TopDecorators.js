@@ -24,7 +24,7 @@ TopDecorators.prototype.decorate = function () {
         const decorator = topDecorators[index];
         if (decorator.resourceType === "storage") {
           const storageIcon = await d3.xml(
-            "http://files.zevross.org.s3-website-us-east-1.amazonaws.com/blog/d3_external_svgs/load_svg/leaves/maple_illustration.svg"
+            "./storage.svg"
           );
           console.log("storageIcon", storageIcon.documentElement);
           topDecoratorGroup.append(storageIcon.documentElement);
