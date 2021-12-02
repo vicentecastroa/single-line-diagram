@@ -5,6 +5,7 @@ import SharedFunctionality from "../../../Views/baseView";
 // Icons
 import storageIcon from "../../../Icons/storageIcon";
 import generatorSolarIcon from "../../../Icons/generatorSolar";
+import generatorThermalIcon from "../../../Icons/generatorThermal";
 
 const parser = new DOMParser();
 
@@ -15,6 +16,7 @@ function TopDecorators(nodesGroupTag) {
   this.icons = {
     storage: storageIcon,
     generatorSolar: generatorSolarIcon,
+    generatorThermal: generatorThermalIcon,
   };
 }
 
