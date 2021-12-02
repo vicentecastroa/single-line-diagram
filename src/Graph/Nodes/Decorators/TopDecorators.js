@@ -1,8 +1,20 @@
+import { readFile } from "fs";
+import { promisify } from "util";
 import * as d3 from "d3";
 import SharedFunctionality from "../../../Views/baseView";
 
-function TopDecorators(nodesGroupTag) {
+const asyncReadFile = promisify(readFile);
+const returnSvg = async (path) => {
+  const data = await asyncReadFile(path);
+  console.log(data)
+  // since fs.readFile returns a buffer, we should probably convert it to a string.
+  return data.toString();
+};
+
+async function TopDecorators(nodesGroupTag) {
   this.nodesGroupTag = nodesGroupTag;
+
+  this.storageIcon = await returnSvg("./storage.svg");
 }
 
 TopDecorators.prototype.decorate = function () {
@@ -23,12 +35,8 @@ TopDecorators.prototype.decorate = function () {
       for (let index = 0; index < topDecoCount; index++) {
         const decorator = topDecorators[index];
         if (decorator.resourceType === "storage") {
-          const storageIcon = await d3.xml(
-            "./storage.svg"
-          );
-          console.log("storageIcon", storageIcon.documentElement);
-          topDecoratorGroup.append(storageIcon.documentElement);
-          /* topDecoratorGroup
+          console.log("storageIcon", this.storageIcon);
+          topDecoratorGroup
             .append("circle")
             .attr("fill", "red")
             .attr("id", () => `bus${nodeGroup.id}topDeco${index}`)
@@ -41,7 +49,7 @@ TopDecorators.prototype.decorate = function () {
                 return (-(topDecoCount + x) + 3 * index) * (R / 2);
               } else
                 return (-(3 * (topDecoCount - 1)) / 2 + 3 * index) * (R / 2);
-            }); */
+            });
         }
       }
     }
