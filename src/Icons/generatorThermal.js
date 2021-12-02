@@ -1,5 +1,5 @@
 const iconText = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 199.67 199.67">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 199 199">
     <defs>
       <style>
         .cls-1-thermal {
