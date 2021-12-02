@@ -89,6 +89,9 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
                 case "HYDRO":
                   dataObjResourceType = "generatorHydro";
                   break;
+                case "WIND":
+                  dataObjResourceType = "generatorWind";
+                  break;
                 default:
                   dataObjResourceType = "generatorSolar";
                   break;

@@ -7,6 +7,7 @@ import storageIcon from "../../../Icons/storageIcon";
 import generatorSolarIcon from "../../../Icons/generatorSolar";
 import generatorThermalIcon from "../../../Icons/generatorThermal";
 import generatorHydroIcon from "../../../Icons/generatorHydro";
+import generatorWindIcon from "../../../Icons/generatorWind";
 
 const parser = new DOMParser();
 
@@ -19,6 +20,7 @@ function TopDecorators(nodesGroupTag) {
     generatorSolar: generatorSolarIcon,
     generatorThermal: generatorThermalIcon,
     generatorHydro: generatorHydroIcon,
+    generatorWind: generatorWindIcon,
   };
 }
 
@@ -81,7 +83,7 @@ TopDecorators.prototype.decorate = function () {
                 decoratorWidth / 2
             )
             .attr("y1", y1)
-            .attr("y2", y2)
+            .attr("y2", y2 + 0.5)
             .attr(
               "dx",
               () => $(`#bus${nodeGroup.id}topDeco${index}`).attr("x") - 4
