@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import SharedFunctionality from "../../Views/baseView";
 import TopDecorators from "./Decorators/TopDecorators";
+import BottomDecorators from "./Decorators/BottomDecorators";
 
 function Nodes(data, svg, cola) {
   this.data = data;
@@ -19,6 +20,9 @@ function Nodes(data, svg, cola) {
   // Decorators or bus resources
   this.topDecorators = new TopDecorators(this.nodesGroupTag);
   this.topDecorators.decorate();
+
+  this.bottomDecorators = new BottomDecorators(this.nodesGroupTag);
+  this.bottomDecorators.decorate();
 }
 
 Nodes.prototype.getNodeLabels = function (cola) {

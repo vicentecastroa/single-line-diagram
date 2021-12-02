@@ -47,10 +47,10 @@ TopDecorators.prototype.decorate = function () {
           this.icons[decorator.resourceType],
           "image/svg+xml"
         );
-        const storageHTML = topDecoratorGroup
+        const decoratorHTML = topDecoratorGroup
           .node()
           .appendChild(icon.documentElement);
-        d3.select(storageHTML)
+        d3.select(decoratorHTML)
           .attr("width", decoratorWidth)
           .attr("height", decoratorWidth)
           .attr("id", () => `bus${nodeGroup.id}topDeco${index}`)
@@ -137,7 +137,7 @@ TopDecorators.prototype.decorate = function () {
         .attr("y2", -(R + LL));
     }
 
-    // Adding vertical central connector and its OffStatus.
+    // Adding vertical central connector.
     topDecoratorGroup
       .append("line")
       .attr("class", "connectors")

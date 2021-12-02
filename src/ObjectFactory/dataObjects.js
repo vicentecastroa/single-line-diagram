@@ -11,6 +11,7 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
   networkConfig["branchDataObj"] = { dataObjList: [] };
   networkConfig["storagesDataObj"] = { dataObjList: [] };
   networkConfig["generatorsDataObj"] = { dataObjList: [] };
+  networkConfig["gridsDataObj"] = { dataObjList: [] };
   networkConfig["busLocation"] = { dataObjList: [] };
 
   Object.entries(JSON).forEach(([key, value]) => {
@@ -33,6 +34,11 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
       case "generators":
         const generatorsDataObj = { dataObjList: value };
         networkConfig["generatorsDataObj"] = generatorsDataObj;
+        break;
+
+      case "grids":
+        const gridsDataObj = { dataObjList: value };
+        networkConfig["gridsDataObj"] = gridsDataObj;
         break;
 
       case "busLocation":
@@ -116,6 +122,40 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
     // Set top decorators in Bus Object
     busObj["topDecorators"] = topDecorators;
     busObj["IdList"] = topDecoratorsId.slice(0, -1);
+  }
+};
+
+// This function looks for every resource in network that is assigned to each bus
+ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
+  for (let i = 0; i < networkObjects.busDataObj.dataObjList.length; i++) {
+    const busObj = networkObjects.busDataObj.dataObjList[i];
+    const bottomDecorators = [];
+    let bottomDecoratorsId = "";
+    let generalId = 0; // Might be unnecesary
+
+    [
+      { type: "grid", objList: networkObjects.gridsDataObj.dataObjList },
+    ].forEach(({ type, objList }) => {
+      for (let j = 0; j < objList.length; j++) {
+        const obj = objList[j];
+        const id = j + 1;
+        actualDataObj["id"] = id + generalId;
+        obj["id"] = id;
+        bottomDecoratorsId = `${bottomDecoratorsId}${id},`; // Might be unused
+        actualDataObj["resourceType"] = type
+        // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
+        obj["DOMID"] = `bus${busObj.id}bottomDecorator`;
+        // Also the same DOMID is added to the decorator group element so as to avoid any error.
+        bottomDecorators["DOMID"] = `bus${busObj.id}bottomDecorator`;
+        actualDataObj["bottomDecoData"] = obj;
+        bottomDecorators.push(actualDataObj);
+      }
+      generalId += 1;
+    });
+
+    // Set bottom decorators in Bus Object
+    busObj["bottomDecorators"] = bottomDecorators;
+    busObj["IdList"] = bottomDecoratorsId.slice(0, -1);
   }
 };
 
