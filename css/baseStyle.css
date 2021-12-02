@@ -21,3 +21,8 @@
 #diagram-div {
   height: 100%;
 }
+
+.connectors {
+  stroke: black;
+  stroke-width: 1.5px;
+}
