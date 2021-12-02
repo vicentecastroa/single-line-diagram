@@ -3,12 +3,19 @@ import $ from "jquery";
 import SharedFunctionality from "../../../Views/baseView";
 
 // Icons
-import storageIconText from "../../../Icons/storageIcon";
+import storageIcon from "../../../Icons/storageIcon";
+import generatorSolarIcon from "../../../Icons/generatorSolar";
 
 const parser = new DOMParser();
 
 function TopDecorators(nodesGroupTag) {
   this.nodesGroupTag = nodesGroupTag;
+
+  // Icons
+  this.icons = {
+    storage: storageIcon,
+    generatorSolar: generatorSolarIcon,
+  };
 }
 
 TopDecorators.prototype.decorate = function () {
@@ -30,24 +37,25 @@ TopDecorators.prototype.decorate = function () {
     if (topDecoCount !== 0) {
       for (let index = 0; index < topDecoCount; index++) {
         const decorator = topDecorators[index];
-        if (decorator.resourceType === "storage") {
-          const icon = parser.parseFromString(storageIconText, "image/svg+xml");
-          const storageHTML = topDecoratorGroup
-            .node()
-            .appendChild(icon.documentElement);
-          d3.select(storageHTML)
-            .attr("width", decoratorWidth)
-            .attr("height", decoratorWidth)
-            .attr("id", () => `bus${nodeGroup.id}topDeco${index}`)
-            .attr("y", decoratorY)
-            .attr("x", () => {
-              if (topDecoCount % 2 === 0) {
-                //Factor to be added to the topDecoCount to adjust the position of the top decorators.
-                const x = (topDecoCount - 4) / 2 + 0.5;
-                return (-(topDecoCount + x) + 3 * index) * R - R;
-              } else return (-(3 * (topDecoCount - 1)) / 2 + 3 * index) * R - R;
-            });
-        }
+        const icon = parser.parseFromString(
+          this.icons[decorator.resourceType],
+          "image/svg+xml"
+        );
+        const storageHTML = topDecoratorGroup
+          .node()
+          .appendChild(icon.documentElement);
+        d3.select(storageHTML)
+          .attr("width", decoratorWidth)
+          .attr("height", decoratorWidth)
+          .attr("id", () => `bus${nodeGroup.id}topDeco${index}`)
+          .attr("y", decoratorY)
+          .attr("x", () => {
+            if (topDecoCount % 2 === 0) {
+              //Factor to be added to the topDecoCount to adjust the position of the top decorators.
+              const x = (topDecoCount - 4) / 2 + 0.5;
+              return (-(topDecoCount + x) + 3 * index) * R - R;
+            } else return (-(3 * (topDecoCount - 1)) / 2 + 3 * index) * R - R;
+          });
 
         // Adding connecting lines (vertical lines) for multiple top decorators.
         var y1 = decoratorY + R + LL * 1.4; // 1.4 is factor for margin

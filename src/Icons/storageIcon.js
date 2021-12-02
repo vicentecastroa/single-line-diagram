@@ -2,8 +2,7 @@ const iconText = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 199 199">
 <defs>
     <style>.cls-1{fill:#fff;}.cls-1,.cls-2,.cls-3{stroke:#000;stroke-linejoin:round;stroke-width:7px;}.cls-3{fill:none;stroke-linecap:round;}</style>
 </defs>
-<title>scada</title>
-<g id="Battery">
+<g>
 <rect class="cls-1" x="23.23" y="57.5" width="155.04" height="92"/>
 <rect class="cls-2" x="42.5" y="43.5" width="31" height="14"/>
 <rect class="cls-2" x="127.5" y="43.5" width="31" height="14"/>

@@ -10,6 +10,7 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
   networkConfig["busDataObj"] = { dataObjList: [] };
   networkConfig["branchDataObj"] = { dataObjList: [] };
   networkConfig["storagesDataObj"] = { dataObjList: [] };
+  networkConfig["generatorsDataObj"] = { dataObjList: [] };
   networkConfig["busLocation"] = { dataObjList: [] };
 
   Object.entries(JSON).forEach(([key, value]) => {
@@ -27,6 +28,11 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
       case "storages":
         const storagesDataObj = { dataObjList: value };
         networkConfig["storagesDataObj"] = storagesDataObj;
+        break;
+
+      case "generators":
+        const generatorsDataObj = { dataObjList: value };
+        networkConfig["generatorsDataObj"] = generatorsDataObj;
         break;
 
       case "busLocation":
@@ -52,6 +58,10 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
 
     [
       { type: "storage", objList: networkObjects.storagesDataObj.dataObjList },
+      {
+        type: "generator",
+        objList: networkObjects.generatorsDataObj.dataObjList,
+      },
     ].forEach(({ type, objList }) => {
       for (let j = 0; j < objList.length; j++) {
         const obj = objList[j];
@@ -61,7 +71,30 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
           actualDataObj["id"] = id + generalId;
           obj["id"] = id;
           topDecoratorsId = `${topDecoratorsId}${id},`; // Might be unused
-          actualDataObj["resourceType"] = type;
+
+          // Set resource type
+          let dataObjResourceType = "storage";
+          switch (type) {
+            case "storage":
+              dataObjResourceType = "storage";
+              break;
+            case "generator":
+              switch (obj.type) {
+                case "SOLAR":
+                  dataObjResourceType = "generatorSolar";
+                  break;
+
+                default:
+                  dataObjResourceType = "generatorSolar";
+                  break;
+              }
+              break;
+
+            default:
+              break;
+          }
+
+          actualDataObj["resourceType"] = dataObjResourceType;
           // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
           obj["DOMID"] = `bus${busObj.id}topDecorator`;
           // Also the same DOMID is added to the decorator group element so as to avoid any error.
