@@ -60,6 +60,7 @@ Nodes.prototype.tick = function () {
 
   /*  this.bottomDecorators.tick(); */
   this.topDecorators.tick();
+  this.bottomDecorators.tick();
 };
 
 export default Nodes;

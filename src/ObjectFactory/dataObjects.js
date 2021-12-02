@@ -1,6 +1,7 @@
 function ObjectFactory(inputJSON) {
   const dataObjects = this.dataObjects(inputJSON);
   this.addTopDecoratorDataToBus(dataObjects);
+  this.addBottomDecoratorDataToBus(dataObjects);
 
   this.getNetworkDataObjects = () => dataObjects;
 }
@@ -137,12 +138,13 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
       { type: "grid", objList: networkObjects.gridsDataObj.dataObjList },
     ].forEach(({ type, objList }) => {
       for (let j = 0; j < objList.length; j++) {
+        const actualDataObj = {};
         const obj = objList[j];
         const id = j + 1;
         actualDataObj["id"] = id + generalId;
         obj["id"] = id;
         bottomDecoratorsId = `${bottomDecoratorsId}${id},`; // Might be unused
-        actualDataObj["resourceType"] = type
+        actualDataObj["resourceType"] = type;
         // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
         obj["DOMID"] = `bus${busObj.id}bottomDecorator`;
         // Also the same DOMID is added to the decorator group element so as to avoid any error.
