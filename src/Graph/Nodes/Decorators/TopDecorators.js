@@ -5,7 +5,7 @@ function TopDecorators(nodesGroupTag) {
   this.nodesGroupTag = nodesGroupTag;
 }
 
-TopDecorators.prototype.decorate = function () {
+TopDecorators.prototype.decorate = async function () {
   this.nodesGroupTag._groups.forEach((d) => {
     const nodeGroup = d[0].__data__;
     const topDecorators = nodeGroup.topDecorators;
@@ -22,8 +22,9 @@ TopDecorators.prototype.decorate = function () {
 
       for (let index = 0; index < topDecoCount; index++) {
         const decorator = topDecorators[index];
-        console.log(decorator);
         if (decorator.resourceType === "storage") {
+          const storageIcon = await d3.xml("./Icons/storage.svg");
+          console.log('storageIcon', storageIcon)
           topDecoratorGroup
             .append("circle")
             .attr("fill", "red")
