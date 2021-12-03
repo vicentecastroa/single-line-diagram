@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import $ from "jquery";
 import SharedFunctionality from "../../../Views/baseView";
+import { showTooltip, hideTooltip } from "../../../utils/Tooltip";
 
 // Icons
 import storageIcon from "../../../Icons/storageIcon";
@@ -61,7 +62,15 @@ TopDecorators.prototype.decorate = function () {
               const x = (topDecoCount - 4) / 2 + 0.5;
               return (-(topDecoCount + x) + 3 * index) * R - R;
             } else return (-(3 * (topDecoCount - 1)) / 2 + 3 * index) * R - R;
-          });
+          })
+          .on("mouseover", () => {
+            showTooltip(
+              d.topDecorators[index].topDecoData,
+              d3.event,
+              topDecoTooltip
+            );
+          })
+          .on("mouseout", (d) => hideTooltip(d));
 
         // Adding connecting lines (vertical lines) for multiple top decorators.
         var y1 = decoratorY + R + LL * 1.4; // 1.4 is factor for margin
