@@ -1,8 +1,12 @@
 import $ from "jquery";
 import * as d3 from "d3";
 
-const zoom = d3.zoom();
-const zoomIdentity = d3.zoomIdentity
+function handleZoom(e) {
+  d3.select("#parentSvgNode").select("g").attr("transform", e.transform);
+}
+
+const zoom = d3.zoom().on("zoom", handleZoom);
+const zoomIdentity = d3.zoomIdentity;
 
 const graphBounds = (withCola, myCola) => {
   let x = Number.POSITIVE_INFINITY;
@@ -13,18 +17,16 @@ const graphBounds = (withCola, myCola) => {
   let selCola;
   if ($("#parentSvgNode").is(":visible")) {
     selCola = myCola;
-  } else {
-    selCola = myColaHelp;
   }
   if (withCola) {
-    selCola.nodes().forEach(function (v) {
+    selCola.nodes().forEach((v) => {
       x = Math.min(x, v.x - SharedFunctionality.R * 2);
       X = Math.max(X, v.x);
       y = Math.min(y, v.y - SharedFunctionality.R * 4);
       Y = Math.max(Y, v.y + SharedFunctionality.R * 5);
     });
   } else {
-    d3.selectAll(".node").each(function (v) {
+    d3.selectAll(".node").each((v) => {
       x = Math.min(x, v.x - SharedFunctionality.R * 2);
       X = Math.max(X, v.x);
       y = Math.min(y, v.y - SharedFunctionality.R * 4);
@@ -36,16 +38,9 @@ const graphBounds = (withCola, myCola) => {
 
 const redraw = (transition) => {
   if (SharedFunctionality.nodeMouseDown) return;
-  let vis;
-  let zoomer;
+  const vis = d3.select("#parentSvgNode").select("g");
+  const zoomer = zoom;
   //Selecting the g node for autofit based on the visibility of the graph.
-  if ($("#parentSvgNode").is(":visible")) {
-    vis = d3.select("#parentSvgNode").select("g");
-    zoomer = zoom;
-  } else {
-    vis = d3.select("#helpSvgNode").select("g");
-    zoomer = zoomHelp;
-  }
 
   (transition ? vis.transition() : vis).attr(
     "transform",
@@ -61,22 +56,21 @@ const SharedFunctionality = {
   goToInitialStateTriggered: false,
 
   zoomToFit: (withCola, myCola) => {
-    const cw = window.innerWidth * 0.98 - 160 - SharedFunctionality.R * 2;
-    const ch = window.innerHeight * 0.85 + SharedFunctionality.R * 1;
+    const cw =
+      $("#parentSvgNode").innerWidth() * 0.98 - SharedFunctionality.R * 2;
+    const ch =
+      $("#parentSvgNode").innerHeight() * 0.85 + SharedFunctionality.R * 1;
     const b = graphBounds(withCola, myCola);
-    const w = b.X - b.x,
-      h = b.Y - b.y;
+    const w = b.X - b.x;
+    const h = b.Y - b.y;
     const s = Math.min(cw / w, ch / h);
-    const tx = -b.x * s + ((cw / s - w) * s) / 2;
-    const ty = -b.y * s + ((ch / s - h) * s) / 2;
-    let selZoom;
-    if ($("#parentSvgNode").is(":visible")) {
-      selZoom = d3.zoom();
-    } else {
-      selZoom = zoomHelp;
-    }
-    zoomIdentity.translate(tx, ty).scale(s)
-    redraw(true);
+    const tx = -b.x + ((cw / s - w) * s) / 2; /* + ((cw / s - w) * s) / 2 */
+    const ty = -b.y + ((ch - h) * s) / 2;
+    const selZoom = d3.select("#parentSvgNode");
+
+    selZoom.transition().call(zoom.scaleBy, s);
+    selZoom.transition().call(zoom.translateBy, tx, ty);
+    // redraw(true);
   },
 };
 
