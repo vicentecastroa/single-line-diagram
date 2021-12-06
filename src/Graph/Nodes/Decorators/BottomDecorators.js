@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import $ from "jquery";
 import SharedFunctionality from "../../../Views/baseView";
+import { showTooltip, hideTooltip } from "../../../utils/Tooltip";
 
 // Icons
 import gridIcon from "../../../Icons/grid";
@@ -55,7 +56,11 @@ BottomDecorators.prototype.decorate = function () {
               return (-(bottomDecoCount + x) + 3 * index) * R - R;
             } else
               return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
-          });
+          })
+          .on("mouseover", ($event) => {
+            showTooltip(decorator, $event, "");
+          })
+          .on("mouseout", () => hideTooltip());
 
         // Adding connecting lines (vertical lines) for multiple top decorators.
         const y1 = decoratorY; // 1.4 is factor for margin

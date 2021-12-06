@@ -34,6 +34,9 @@ function drawDisconnectedGraph(myCola) {
     .avoidOverlaps(true)
     .size([width, height]);
 
+  // Create div for tooltip
+  d3.select("body").append("div").attr("id", "tooltip").attr("class", "hidden");
+
   const svg = d3
     .select("#diagram-div")
     .append("svg")

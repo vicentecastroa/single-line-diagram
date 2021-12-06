@@ -63,14 +63,10 @@ TopDecorators.prototype.decorate = function () {
               return (-(topDecoCount + x) + 3 * index) * R - R;
             } else return (-(3 * (topDecoCount - 1)) / 2 + 3 * index) * R - R;
           })
-          .on("mouseover", () => {
-            showTooltip(
-              d.topDecorators[index].topDecoData,
-              d3.event,
-              topDecoTooltip
-            );
+          .on("mouseover", ($event) => {
+            showTooltip(decorator, $event, "");
           })
-          .on("mouseout", (d) => hideTooltip(d));
+          .on("mouseout", () => hideTooltip());
 
         // Adding connecting lines (vertical lines) for multiple top decorators.
         var y1 = decoratorY + R + LL * 1.4; // 1.4 is factor for margin
