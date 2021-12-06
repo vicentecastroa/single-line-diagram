@@ -64,11 +64,7 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
     let generalId = 0; // Might be unnecesary
 
     [
-      { type: "storage", objList: networkObjects.storagesDataObj.dataObjList },
-      {
-        type: "generator",
-        objList: networkObjects.generatorsDataObj.dataObjList,
-      },
+      { type: "grid", objList: networkObjects.gridsDataObj.dataObjList },
     ].forEach(({ type, objList }) => {
       for (let j = 0; j < objList.length; j++) {
         const obj = objList[j];
@@ -78,38 +74,9 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
           actualDataObj["id"] = id + generalId;
           obj["id"] = id;
           topDecoratorsId = `${topDecoratorsId}${id},`; // Might be unused
+          actualDataObj["resourceType"] = type;
 
-          // Set resource type
-          let dataObjResourceType = "storage";
-          switch (type) {
-            case "storage":
-              dataObjResourceType = "storage";
-              break;
-            case "generator":
-              switch (obj.type) {
-                case "SOLAR":
-                  dataObjResourceType = "generatorSolar";
-                  break;
-                case "THERMAL":
-                  dataObjResourceType = "generatorThermal";
-                  break;
-                case "HYDRO":
-                  dataObjResourceType = "generatorHydro";
-                  break;
-                case "WIND":
-                  dataObjResourceType = "generatorWind";
-                  break;
-                default:
-                  dataObjResourceType = "generatorSolar";
-                  break;
-              }
-              break;
-
-            default:
-              break;
-          }
-
-          actualDataObj["resourceType"] = dataObjResourceType;
+          
           // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
           obj["DOMID"] = `bus${busObj.id}topDecorator`;
           // Also the same DOMID is added to the decorator group element so as to avoid any error.
@@ -135,7 +102,11 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
     let generalId = 0; // Might be unnecesary
 
     [
-      { type: "grid", objList: networkObjects.gridsDataObj.dataObjList },
+      { type: "storage", objList: networkObjects.storagesDataObj.dataObjList },
+      {
+        type: "generator",
+        objList: networkObjects.generatorsDataObj.dataObjList,
+      },
     ].forEach(({ type, objList }) => {
       for (let j = 0; j < objList.length; j++) {
         const actualDataObj = {};
@@ -144,7 +115,38 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         actualDataObj["id"] = id + generalId;
         obj["id"] = id;
         bottomDecoratorsId = `${bottomDecoratorsId}${id},`; // Might be unused
-        actualDataObj["resourceType"] = type;
+        
+        // Set resource type
+        let dataObjResourceType = "storage";
+        switch (type) {
+          case "storage":
+            dataObjResourceType = "storage";
+            break;
+          case "generator":
+            switch (obj.type) {
+              case "SOLAR":
+                dataObjResourceType = "generatorSolar";
+                break;
+              case "THERMAL":
+                dataObjResourceType = "generatorThermal";
+                break;
+              case "HYDRO":
+                dataObjResourceType = "generatorHydro";
+                break;
+              case "WIND":
+                dataObjResourceType = "generatorWind";
+                break;
+              default:
+                dataObjResourceType = "generatorSolar";
+                break;
+            }
+            break;
+
+          default:
+            break;
+        }
+
+        actualDataObj["resourceType"] = dataObjResourceType;
         // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
         obj["DOMID"] = `bus${busObj.id}bottomDecorator`;
         // Also the same DOMID is added to the decorator group element so as to avoid any error.

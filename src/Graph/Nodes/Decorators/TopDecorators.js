@@ -4,11 +4,7 @@ import SharedFunctionality from "../../../Views/baseView";
 import { showTooltip, hideTooltip } from "../../../utils/Tooltip";
 
 // Icons
-import storageIcon from "../../../Icons/storageIcon";
-import generatorSolarIcon from "../../../Icons/generatorSolar";
-import generatorThermalIcon from "../../../Icons/generatorThermal";
-import generatorHydroIcon from "../../../Icons/generatorHydro";
-import generatorWindIcon from "../../../Icons/generatorWind";
+import gridIcon from "../../../Icons/grid";
 
 const parser = new DOMParser();
 
@@ -17,11 +13,7 @@ function TopDecorators(nodesGroupTag) {
 
   // Icons
   this.icons = {
-    storage: storageIcon,
-    generatorSolar: generatorSolarIcon,
-    generatorThermal: generatorThermalIcon,
-    generatorHydro: generatorHydroIcon,
-    generatorWind: generatorWindIcon,
+    grid: gridIcon,
   };
 }
 

@@ -3,8 +3,13 @@ import $ from "jquery";
 import SharedFunctionality from "../../../Views/baseView";
 import { showTooltip, hideTooltip } from "../../../utils/Tooltip";
 
+
 // Icons
-import gridIcon from "../../../Icons/grid";
+import storageIcon from "../../../Icons/storageIcon";
+import generatorSolarIcon from "../../../Icons/generatorSolar";
+import generatorThermalIcon from "../../../Icons/generatorThermal";
+import generatorHydroIcon from "../../../Icons/generatorHydro";
+import generatorWindIcon from "../../../Icons/generatorWind";
 
 const parser = new DOMParser();
 
@@ -13,7 +18,11 @@ function BottomDecorators(nodesGroupTag) {
 
   // Icons
   this.icons = {
-    grid: gridIcon,
+    storage: storageIcon,
+    generatorSolar: generatorSolarIcon,
+    generatorThermal: generatorThermalIcon,
+    generatorHydro: generatorHydroIcon,
+    generatorWind: generatorWindIcon,
   };
 }
 
