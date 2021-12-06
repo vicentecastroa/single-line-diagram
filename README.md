@@ -1,3 +1,4 @@
+
 # Acelerex Single Line Diagram (beta)
 
 A powerful library to generate interactive electrical single line diagrams and network diagrams.
@@ -60,9 +61,11 @@ export default {
   },
 };
 ```
+Finally, take [src/css/baseStyle.css](https://github.com/vicentecastroa/single-line-diagram/blob/master/src/css/baseStyle.css) and paste it in your styles folder.
 
 This example will generate the following diagram:
-![image](https://user-images.githubusercontent.com/13738469/144922314-69123ea5-d38a-4640-8bf8-ed8491c112f1.png)
+![image](https://user-images.githubusercontent.com/13738469/144922477-782fb2c4-9594-4838-bd8a-d5affdb6e034.png)
+
 
 
 ## Change Log
