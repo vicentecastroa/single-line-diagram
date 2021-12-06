@@ -8,7 +8,7 @@ Visit [www.acelerex.com](www.acelerex.com)
 
 ## Resources
 
-- [Wiki](https://www.notion.so/acelerex/Acelerex-Single-Line-Diagram-Wiki-ebcbd82f4ade4d72b99db21902372da0)
+- [Wiki](https://www.notion.so/acelerex/Acelerex-Single-Line-Diagram-Wiki-2a8d2940f5fb4bdca356fbb7747eb09d)
 
 ## Installation
 
@@ -62,7 +62,8 @@ export default {
 ```
 
 This example will generate the following diagram:
-![image](https://user-images.githubusercontent.com/13738469/144496683-2490a679-4a79-422f-993c-bf01ebe33186.png)
+![image](https://user-images.githubusercontent.com/13738469/144922314-69123ea5-d38a-4640-8bf8-ed8491c112f1.png)
+
 
 ## Change Log
 
