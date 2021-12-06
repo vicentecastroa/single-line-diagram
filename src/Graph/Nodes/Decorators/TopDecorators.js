@@ -4,7 +4,7 @@ import SharedFunctionality from "../../../Views/baseView";
 import { showTooltip, hideTooltip } from "../../../utils/Tooltip";
 
 // Icons
-import gridIcon from "../../../Icons/grid";
+import marketIcon from "../../../Icons/market";
 
 const parser = new DOMParser();
 
@@ -13,7 +13,7 @@ function TopDecorators(nodesGroupTag) {
 
   // Icons
   this.icons = {
-    grid: gridIcon,
+    market: marketIcon,
   };
 }
 

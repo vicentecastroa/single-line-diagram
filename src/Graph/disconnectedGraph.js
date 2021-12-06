@@ -100,7 +100,6 @@ function drawDisconnectedGraph(myCola) {
       $("#parentSvgNode").is(":visible")
     ) {
       if (SharedFunctionality.autoLayout) {
-        console.log("if autolayouuuut");
         d3.selectAll(".node").each((d) => {
           const nodePositions = NETWORK_OBJECTS.busLocation.dataObjList;
           for (let index = 0; index < nodePositions.length; index++) {
@@ -114,7 +113,6 @@ function drawDisconnectedGraph(myCola) {
           }
         });
       } else {
-        console.log("not autolayouuuut");
         d3.selectAll(".node").each((d) => {
           const nodePositions = NETWORK_OBJECTS.busLocation.dataObjList;
           for (let index = 0; index < nodePositions.length; index++) {

@@ -12,7 +12,8 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
   networkConfig["branchDataObj"] = { dataObjList: [] };
   networkConfig["storagesDataObj"] = { dataObjList: [] };
   networkConfig["generatorsDataObj"] = { dataObjList: [] };
-  networkConfig["gridsDataObj"] = { dataObjList: [] };
+  networkConfig["loadsDataObj"] = { dataObjList: [] };
+  networkConfig["marketsDataObj"] = { dataObjList: [] };
   networkConfig["busLocation"] = { dataObjList: [] };
 
   Object.entries(JSON).forEach(([key, value]) => {
@@ -37,9 +38,14 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
         networkConfig["generatorsDataObj"] = generatorsDataObj;
         break;
 
-      case "grids":
-        const gridsDataObj = { dataObjList: value };
-        networkConfig["gridsDataObj"] = gridsDataObj;
+      case "loads":
+        const loadsDataObj = { dataObjList: value };
+        networkConfig["loadsDataObj"] = loadsDataObj;
+        break;
+
+      case "markets":
+        const marketsDataObj = { dataObjList: value };
+        networkConfig["marketsDataObj"] = marketsDataObj;
         break;
 
       case "busLocation":
@@ -64,7 +70,7 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
     let generalId = 0; // Might be unnecesary
 
     [
-      { type: "grid", objList: networkObjects.gridsDataObj.dataObjList },
+      { type: "market", objList: networkObjects.marketsDataObj.dataObjList },
     ].forEach(({ type, objList }) => {
       for (let j = 0; j < objList.length; j++) {
         const obj = objList[j];
@@ -76,7 +82,6 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
           topDecoratorsId = `${topDecoratorsId}${id},`; // Might be unused
           actualDataObj["resourceType"] = type;
 
-          
           // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
           obj["DOMID"] = `bus${busObj.id}topDecorator`;
           // Also the same DOMID is added to the decorator group element so as to avoid any error.
@@ -107,6 +112,10 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         type: "generator",
         objList: networkObjects.generatorsDataObj.dataObjList,
       },
+      {
+        type: "load",
+        objList: networkObjects.loadsDataObj.dataObjList,
+      },
     ].forEach(({ type, objList }) => {
       for (let j = 0; j < objList.length; j++) {
         const actualDataObj = {};
@@ -115,7 +124,7 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         actualDataObj["id"] = id + generalId;
         obj["id"] = id;
         bottomDecoratorsId = `${bottomDecoratorsId}${id},`; // Might be unused
-        
+
         // Set resource type
         let dataObjResourceType = "storage";
         switch (type) {
@@ -140,6 +149,9 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
                 dataObjResourceType = "generatorSolar";
                 break;
             }
+            break;
+          case "load":
+            dataObjResourceType = "load";
             break;
 
           default:

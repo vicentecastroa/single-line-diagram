@@ -54,7 +54,8 @@ export default {
           breaker: "close",
         },
       ],
-      grids: [{ id: 1, busId: 1, name: "Market 1", breaker: "close" }],
+      loads: [{ id: 1, busId: 1, name: "Demand 1", breaker: "close" }],
+      markets: [{ id: 1, busId: 1, name: "Market 1", breaker: "close" }],
     });
   },
 };
@@ -62,7 +63,6 @@ export default {
 
 This example will generate the following diagram:
 ![image](https://user-images.githubusercontent.com/13738469/144496683-2490a679-4a79-422f-993c-bf01ebe33186.png)
-
 
 ## Change Log
 

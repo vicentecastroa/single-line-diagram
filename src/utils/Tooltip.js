@@ -4,14 +4,20 @@ function getResourceDefaultTitle(d) {
   const prefix = {
     storage: "Storage",
     generator: "Generator",
-    grid: "Grid",
+    market: "Market",
+    load: "Load",
   };
-  return `${prefix} (id: ${d.id})`;
+  return `${prefix[d.resourceType]} (id: ${d.id})`;
 }
 
 function getTooltipHtml(d, rules) {
   let tooltipHtml = "";
-  const title = d.topDecoData.name || getResourceDefaultTitle(d);
+  let title = getResourceDefaultTitle(d);
+  if (d.topDecoData) {
+    title = d.topDecoData.name;
+  } else if (d.bottomDecoData) {
+    title = d.bottomDecoData.name;
+  }
   tooltipHtml = `<div style="text-align: center">${title}</div>
     `;
   /* const table = `<table border="1" style="margin: 0 auto; font-size: 0.74em; border-spacing: 0; width: 100%">
