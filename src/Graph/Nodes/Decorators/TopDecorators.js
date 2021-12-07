@@ -34,6 +34,17 @@ TopDecorators.prototype.decorate = function () {
       .attr("id", () => topDecorators.DOMID);
 
     if (topDecoCount !== 0) {
+      // Adding vertical central connector.
+      topDecoratorGroup
+        .append("line")
+        .attr("class", "connectors")
+        .attr("x1", 0)
+        .attr("x2", 0)
+        .attr("y1", -LL)
+        .attr("y2", () =>
+          topDecoCount > 1 ? -(R + LL) : decoratorY + R + LL * 1.4
+        );
+
       for (let index = 0; index < topDecoCount; index++) {
         const decorator = topDecorators[index];
         const icon = parser.parseFromString(
@@ -132,17 +143,6 @@ TopDecorators.prototype.decorate = function () {
           .attr("y1", -(R + LL))
           .attr("y2", -(R + LL));
       }
-
-      // Adding vertical central connector.
-      topDecoratorGroup
-        .append("line")
-        .attr("class", "connectors")
-        .attr("x1", 0)
-        .attr("x2", 0)
-        .attr("y1", -LL)
-        .attr("y2", () =>
-          topDecoCount > 1 ? -(R + LL) : decoratorY + R + LL * 1.4
-        );
     }
   });
 };
