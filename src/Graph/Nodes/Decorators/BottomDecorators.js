@@ -43,6 +43,15 @@ BottomDecorators.prototype.decorate = function () {
       .attr("id", () => bottomDecorators.DOMID);
 
     if (bottomDecoCount !== 0) {
+      // Adding vertical central connector.
+      bottomDecoratorGroup
+        .append("line")
+        .attr("class", "connectors")
+        .attr("x1", 0)
+        .attr("x2", 0)
+        .attr("y1", LL)
+        .attr("y2", () => (bottomDecoCount > 1 ? R + LL : decoratorY));
+
       for (let index = 0; index < bottomDecoCount; index++) {
         const decorator = bottomDecorators[index];
         if (decorator.resourceType !== "load") {
@@ -217,15 +226,6 @@ BottomDecorators.prototype.decorate = function () {
           .attr("y1", R + LL)
           .attr("y2", R + LL);
       }
-
-      // Adding vertical central connector.
-      bottomDecoratorGroup
-        .append("line")
-        .attr("class", "connectors")
-        .attr("x1", 0)
-        .attr("x2", 0)
-        .attr("y1", LL)
-        .attr("y2", () => (bottomDecoCount > 1 ? R + LL : decoratorY));
     }
   });
 };
