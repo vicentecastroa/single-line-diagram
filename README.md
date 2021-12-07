@@ -69,7 +69,7 @@ This example will generate the following diagram:
 
 
 ## Change Log
-### Version 0.0.1
+### Version 1.0.0-beta
 - Single project support
 - Connect resources (Storages, Loads, Generators, Markets) to Bus.
 - Breakers for each connection
