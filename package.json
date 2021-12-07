@@ -2,9 +2,13 @@
   "name": "acelerex-sld",
   "version": "0.0.1",
   "author": "Vicente Castro",
-  "main": "script/main.js",
+  "main": "src/main.js",
   "dependencies": {
     "d3": "^7.1.1",
+    "jquery": "^3.6.0",
     "webcola": "^3.4.0"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.3.0"
   }
 }
