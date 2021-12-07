@@ -3,11 +3,11 @@
   cursor: move;
 }
 #parentSvgNode {
-  width: calc(99% - 145px);
-  width: -webkit-calc(99% - 145px);
-  width: -moz-calc(99% - 145px);
+  width: calc(100%);
+  width: -webkit-calc(100%);
+  width: -moz-calc(100%);
   overflow: auto;
-  height: 95%;
+  height: 100%;
 }
 
 .node {
@@ -20,6 +20,16 @@
 
 #diagram-div {
   height: 100%;
+}
+
+.loadMarker {
+  stroke: black;
+}
+
+.loadPolygon {
+  stroke-width: 1px;
+  fill: black;
+  stroke: black;
 }
 
 .connectors {
