@@ -1,5 +1,5 @@
 const iconText = `
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 24 24">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-2 0 28 28">
 <defs>
       <style>
         .cls-1-market{fill: black;stroke: #000;stroke-miterlimit: 10;stroke-width: 0px;}

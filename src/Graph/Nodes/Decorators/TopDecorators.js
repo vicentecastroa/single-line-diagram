@@ -109,41 +109,41 @@ TopDecorators.prototype.decorate = function () {
           .attr("height", breakerHeight)
           .attr("style", `fill:${breakerFillColor}`);
       }
-    }
 
-    // Adding horizontal central connector for multiple top decorators.
-    if (topDecoCount > 1) {
+      // Adding horizontal central connector for multiple top decorators.
+      if (topDecoCount > 1) {
+        topDecoratorGroup
+          .append("line")
+          .attr("class", "connectors")
+          .attr(
+            "x1",
+            () =>
+              Number($(`#bus${nodeGroup.id}topDeco0`).attr("x")) +
+              decoratorWidth / 2
+          )
+          .attr(
+            "x2",
+            () =>
+              Number(
+                $(`#bus${nodeGroup.id}topDeco${topDecoCount - 1}`).attr("x")
+              ) +
+              decoratorWidth / 2
+          )
+          .attr("y1", -(R + LL))
+          .attr("y2", -(R + LL));
+      }
+
+      // Adding vertical central connector.
       topDecoratorGroup
         .append("line")
         .attr("class", "connectors")
-        .attr(
-          "x1",
-          () =>
-            Number($(`#bus${nodeGroup.id}topDeco0`).attr("x")) +
-            decoratorWidth / 2
-        )
-        .attr(
-          "x2",
-          () =>
-            Number(
-              $(`#bus${nodeGroup.id}topDeco${topDecoCount - 1}`).attr("x")
-            ) +
-            decoratorWidth / 2
-        )
-        .attr("y1", -(R + LL))
-        .attr("y2", -(R + LL));
+        .attr("x1", 0)
+        .attr("x2", 0)
+        .attr("y1", -LL)
+        .attr("y2", () =>
+          topDecoCount > 1 ? -(R + LL) : decoratorY + R + LL * 1.4
+        );
     }
-
-    // Adding vertical central connector.
-    topDecoratorGroup
-      .append("line")
-      .attr("class", "connectors")
-      .attr("x1", 0)
-      .attr("x2", 0)
-      .attr("y1", -LL)
-      .attr("y2", () =>
-        topDecoCount > 1 ? -(R + LL) : decoratorY + R + LL * 1.4
-      );
   });
 };
 

@@ -10,13 +10,19 @@ function getResourceDefaultTitle(d) {
   return `${prefix[d.resourceType]} (id: ${d.id})`;
 }
 
-function getTooltipHtml(d, rules) {
+function getTooltipHtml(d, $event, rules) {
   let tooltipHtml = "";
-  let title = getResourceDefaultTitle(d);
-  if (d.topDecoData) {
-    title = d.topDecoData.name;
-  } else if (d.bottomDecoData) {
-    title = d.bottomDecoData.name;
+  let title = "";
+  if (d) {
+    title = getResourceDefaultTitle(d);
+    if (d.topDecoData) {
+      title = d.topDecoData.name;
+    } else if (d.bottomDecoData) {
+      title = d.bottomDecoData.name;
+    }
+  } else {
+    // Asume that if not d, is a node
+    title = $event.srcElement.__data__.name || "Bus";
   }
   tooltipHtml = `<div style="text-align: center">${title}</div>
     `;
@@ -30,7 +36,7 @@ function getTooltipHtml(d, rules) {
 }
 
 function showTooltip(d, $event, tooltipRule) {
-  const tooltipHtml = getTooltipHtml(d, tooltipRule);
+  const tooltipHtml = getTooltipHtml(d, $event, tooltipRule);
   d3.select("#tooltip")
     .style("left", $event.pageX + "px")
     .style("top", $event.pageY + "px")
