@@ -64,7 +64,8 @@ export default {
 Finally, take [src/css/baseStyle.css](https://github.com/vicentecastroa/single-line-diagram/blob/master/src/css/baseStyle.css) and paste it in your styles folder.
 
 This example will generate the following diagram:
-![image](https://user-images.githubusercontent.com/13738469/144922477-782fb2c4-9594-4838-bd8a-d5affdb6e034.png)
+![image](https://user-images.githubusercontent.com/13738469/145580231-eddc9381-9078-464e-bcb0-168f984bd934.png)
+
 
 
 
