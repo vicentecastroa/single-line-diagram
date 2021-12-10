@@ -59,7 +59,7 @@ const SharedFunctionality = {
     const cw =
       $("#parentSvgNode").innerWidth() * 0.98 - SharedFunctionality.R * 2;
     const ch =
-      $("#parentSvgNode").innerHeight() * 0.85 + SharedFunctionality.R * 1;
+      $("#parentSvgNode").innerHeight() * 0.80 + SharedFunctionality.R * 1;
     const b = graphBounds(withCola, myCola);
     const w = b.X - b.x;
     const h = b.Y - b.y;
