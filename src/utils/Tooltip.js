@@ -13,26 +13,44 @@ function getResourceDefaultTitle(d) {
 function getTooltipHtml(d, $event, rules) {
   let tooltipHtml = "";
   let title = "";
+  let table = "";
+  const tableRows = [];
   if (d) {
     title = getResourceDefaultTitle(d);
     if (d.topDecoData) {
       title = d.topDecoData.name;
+      if (d.topDecoData.info && d.topDecoData.info.length) {
+        d.topDecoData.info.forEach((row) => {
+          tableRows.push(`
+            <tr>
+              <td>${row.name}</td>
+              <td>${row.value} ${row.unit}</td>
+            </tr>
+          `);
+        });
+      }
     } else if (d.bottomDecoData) {
       title = d.bottomDecoData.name;
+      if (d.bottomDecoData.info && d.bottomDecoData.info.length) {
+        d.bottomDecoData.info.forEach((row) => {
+          tableRows.push(`
+            <tr>
+              <td>${row.name}</td>
+              <td>${row.value} ${row.unit}</td>
+            </tr>
+          `);
+        });
+      }
+    } else {
+      // Asume that if not d, is a node
+      title = $event.srcElement.__data__.name || "Bus";
     }
-  } else {
-    // Asume that if not d, is a node
-    title = $event.srcElement.__data__.name || "Bus";
+    table = `<table border="0" class="sld-tooltip-table">
+              ${tableRows.join("")}
+            </table>`;
+    tooltipHtml = `<div style="text-align: center">${title}</div>`;
   }
-  tooltipHtml = `<div style="text-align: center">${title}</div>
-    `;
-  /* const table = `<table border="1" style="margin: 0 auto; font-size: 0.74em; border-spacing: 0; width: 100%">
-<tr>
-  <td align="left">key</td>
-  <td align="right">value</td>
-</tr>
-</table>`; */
-  return tooltipHtml;
+  return `${tooltipHtml}${table}`;
 }
 
 function showTooltip(d, $event, tooltipRule) {

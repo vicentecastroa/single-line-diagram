@@ -1,9 +1,10 @@
 .background {
   fill: white;
   cursor: move;
+  stroke: none !important;
 }
 #parentSvgNode {
-  width: calc(100%);
+  width: 100%;
   width: -webkit-calc(100%);
   width: -moz-calc(100%);
   overflow: auto;
@@ -69,4 +70,21 @@
   margin: 0;
   font-size: 0.8em;
   line-height: 1.3;
+}
+
+.sld-tooltip-table {
+  font-size: 0.84em;
+  width: 100%;
+  border-spacing: 0;
+}
+.sld-tooltip-table td,
+th {
+  border-bottom: thin solid rgba(0, 0, 0, 0.12);
+  text-align: left;
+  padding: 8px;
+}
+
+.sld-tooltip-table td {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
