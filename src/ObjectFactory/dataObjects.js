@@ -81,6 +81,7 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
           obj["id"] = id;
           topDecoratorsId = `${topDecoratorsId}${id},`; // Might be unused
           actualDataObj["resourceType"] = type;
+          actualDataObj["info"] = obj.info
 
           // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
           obj["DOMID"] = `bus${busObj.id}topDecorator`;
@@ -159,6 +160,7 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         }
 
         actualDataObj["resourceType"] = dataObjResourceType;
+        actualDataObj["info"] = obj.info
         // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
         obj["DOMID"] = `bus${busObj.id}bottomDecorator`;
         // Also the same DOMID is added to the decorator group element so as to avoid any error.

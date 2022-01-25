@@ -24,6 +24,10 @@ function preProcessNetworkUI() {
   }
 }
 
-export { NETWORK_OBJECTS, myCola };
+function updateGraph(event){
+  console.log(event)
+}
+
+export { NETWORK_OBJECTS, myCola, updateGraph };
 
 export default drawGraph;
