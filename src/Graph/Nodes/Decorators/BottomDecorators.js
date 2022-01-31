@@ -185,6 +185,7 @@ BottomDecorators.prototype.decorate = function () {
         bottomDecoratorGroup
           .append("rect")
           .attr("class", "connectors")
+          .attr('id', `bus${nodeGroup.id}bottomDeco${index}Breaker`)
           .attr(
             "x",
             () =>

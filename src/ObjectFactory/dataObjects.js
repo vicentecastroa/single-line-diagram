@@ -78,7 +78,7 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
           const actualDataObj = {};
           const id = j + 1;
           actualDataObj["id"] = id + generalId;
-          obj["id"] = id;
+          // obj["id"] = id;
           topDecoratorsId = `${topDecoratorsId}${id},`; // Might be unused
           actualDataObj["resourceType"] = type;
           actualDataObj["info"] = obj.info
@@ -123,7 +123,7 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         const obj = objList[j];
         const id = j + 1;
         actualDataObj["id"] = id + generalId;
-        obj["id"] = id;
+        // obj["id"] = id;
         bottomDecoratorsId = `${bottomDecoratorsId}${id},`; // Might be unused
 
         // Set resource type
