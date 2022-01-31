@@ -108,6 +108,7 @@ TopDecorators.prototype.decorate = function () {
         topDecoratorGroup
           .append("rect")
           .attr("class", "connectors")
+          .attr('id', `bus${nodeGroup.id}topDeco${index}Breaker`)
           .attr(
             "x",
             () =>
