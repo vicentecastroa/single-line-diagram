@@ -35,6 +35,9 @@ function updateGraph(network) {
 
   d3.selectAll(".node").each((d) => {
     const nodeResources = resources.filter((r) => r.busId === d.id);
+    // Update bus info
+    const busResource = resources.find((r) => r.id === d.id);
+    d.info = busResource.info;
     // Update bottom decorators
     const bottom = nodeResources.filter(
       (resource) => !["markets", "bus"].includes(resource.resourceType)
