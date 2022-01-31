@@ -25,6 +25,13 @@ function Nodes(data, svg, cola) {
   this.labels = this.getNodeLabels(cola);
   this.centerUI = this.getNodeCenterUI(this.nodesGroupTag);
 
+  // Add tooltip
+  d3.selectAll(".busIcon").each((d) => {
+    d3.select(`#${d.DOMID}`).on("mouseover", ($event) => {
+      showTooltip(d, $event, "");
+    });
+  });
+
   // Decorators or bus resources
   this.topDecorators = new TopDecorators(this.nodesGroupTag);
   this.topDecorators.decorate();
@@ -46,9 +53,6 @@ Nodes.prototype.getNodeCenterUI = function (nodesGroupTag) {
       return d.DOMID;
     })
     .attr("r", SharedFunctionality.R * 0.5)
-    .on("mouseover", ($event) => {
-      showTooltip("", $event, "");
-    })
     .on("mouseout", () => hideTooltip());
 };
 
