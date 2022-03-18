@@ -6,6 +6,7 @@ function getResourceDefaultTitle(d) {
     generator: "Generator",
     market: "Market",
     load: "Load",
+    ev: "EV"
   };
   return `${prefix[d.resourceType]} (id: ${d.id})`;
 }
