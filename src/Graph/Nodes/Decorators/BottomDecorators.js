@@ -9,7 +9,7 @@ import generatorSolarIcon from "../../../Icons/generatorSolar";
 import generatorThermalIcon from "../../../Icons/generatorThermal";
 import generatorHydroIcon from "../../../Icons/generatorHydro";
 import generatorWindIcon from "../../../Icons/generatorWind";
-import evIcon from '../../../Icons/ev;'
+import evIcon from '../../../Icons/ev';
 
 const parser = new DOMParser();
 
