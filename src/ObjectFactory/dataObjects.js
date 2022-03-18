@@ -14,6 +14,7 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
   networkConfig["generatorsDataObj"] = { dataObjList: [] };
   networkConfig["loadsDataObj"] = { dataObjList: [] };
   networkConfig["marketsDataObj"] = { dataObjList: [] };
+  networkConfig["evDataObj"] = { dataObjList: [] };
   networkConfig["busLocation"] = { dataObjList: [] };
 
   Object.entries(JSON).forEach(([key, value]) => {
@@ -46,6 +47,11 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
       case "markets":
         const marketsDataObj = { dataObjList: value };
         networkConfig["marketsDataObj"] = marketsDataObj;
+        break;
+
+      case "ev":
+        const evDataObj = { dataObjList: value };
+        networkConfig["evDataObj"] = evDataObj;
         break;
 
       case "busLocation":
@@ -81,7 +87,7 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
           // obj["id"] = id;
           topDecoratorsId = `${topDecoratorsId}${id},`; // Might be unused
           actualDataObj["resourceType"] = type;
-          actualDataObj["info"] = obj.info
+          actualDataObj["info"] = obj.info;
 
           // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
           obj["DOMID"] = `bus${busObj.id}topDecorator`;
@@ -116,6 +122,10 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
       {
         type: "load",
         objList: networkObjects.loadsDataObj.dataObjList,
+      },
+      {
+        type: "ev",
+        objList: networkObjects.evDataObj.dataObjList,
       },
     ].forEach(({ type, objList }) => {
       for (let j = 0; j < objList.length; j++) {
@@ -154,13 +164,16 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
           case "load":
             dataObjResourceType = "load";
             break;
+          case "ev":
+            dataObjResourceType = "ev";
+            break;
 
           default:
             break;
         }
 
         actualDataObj["resourceType"] = dataObjResourceType;
-        actualDataObj["info"] = obj.info
+        actualDataObj["info"] = obj.info;
         // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
         obj["DOMID"] = `bus${busObj.id}bottomDecorator`;
         // Also the same DOMID is added to the decorator group element so as to avoid any error.
