@@ -19,6 +19,18 @@
   cursor: -webkit-grab;
 }
 
+.edge {
+  stroke: black;
+  stroke-width: 1.5px;
+  stroke-opacity: 1;
+}
+
+.edgeConnector {
+  stroke: black;
+  stroke-width: 1.5px;
+  stroke-opacity: 1;
+}
+
 #diagram-div {
   height: 100%;
 }
