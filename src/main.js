@@ -3,6 +3,7 @@ import ObjectFactoryClass from "./ObjectFactory/dataObjects";
 import DisconnectedGraph from "./Graph/disconnectedGraph";
 
 let NETWORK_OBJECTS = null;
+const NETWORK = {}
 let myCola;
 
 function drawGraph(event) {
@@ -13,7 +14,8 @@ function drawGraph(event) {
 
   NETWORK_OBJECTS = ObjectFactory.getNetworkDataObjects();
   /*Logging NETWORK_OBJECTS for reference purpose.*/
-  //console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
+  // console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
+  // console.log('NETWORK', NETWORK);
 
   DisconnectedGraph();
 }
@@ -81,6 +83,6 @@ function updateGraph(network) {
   });
 }
 
-export { NETWORK_OBJECTS, myCola, updateGraph };
+export { NETWORK_OBJECTS, myCola, updateGraph, NETWORK };
 
 export default drawGraph;

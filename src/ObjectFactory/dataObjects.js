@@ -1,7 +1,10 @@
+import { NETWORK } from "../main";
+
 function ObjectFactory(inputJSON) {
   const dataObjects = this.dataObjects(inputJSON);
   this.addTopDecoratorDataToBus(dataObjects);
   this.addBottomDecoratorDataToBus(dataObjects);
+  this.updateEdgesData(dataObjects);
 
   this.getNetworkDataObjects = () => dataObjects;
 }
@@ -25,7 +28,7 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
         break;
 
       case "branch":
-        const branchDataObj = { dataObjList: [] };
+        const branchDataObj = { dataObjList: value };
         networkConfig["branchDataObj"] = branchDataObj;
         break;
 
@@ -179,7 +182,9 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         // Also the same DOMID is added to the decorator group element so as to avoid any error.
         bottomDecorators["DOMID"] = `bus${busObj.id}bottomDecorator`;
         actualDataObj["bottomDecoData"] = obj;
-        bottomDecorators.push(actualDataObj);
+        if (obj.busId === busObj.id) {
+          bottomDecorators.push(actualDataObj);
+        }
       }
       generalId += 1;
     });
@@ -188,6 +193,52 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
     busObj["bottomDecorators"] = bottomDecorators;
     busObj["IdList"] = bottomDecoratorsId.slice(0, -1);
   }
+};
+
+ObjectFactory.prototype.updateEdgesData = (networkObjects) => {
+  const edges = {};
+  const nodeIndexMap = {};
+
+  for (
+    let nodeIndexer = 0;
+    nodeIndexer < networkObjects.busDataObj.dataObjList.length;
+    nodeIndexer++
+  ) {
+    nodeIndexMap[networkObjects.busDataObj.dataObjList[nodeIndexer].id] =
+      nodeIndexer;
+  }
+
+  /* Adding Node Branch Map to the NETWORK -
+   * This has been added to NETWORK because once created it is independent of the Data Object
+   */
+  NETWORK["nodeEdgeMap"] = nodeIndexMap;
+  // Add Lines to branchData
+  for (
+    let lineIndex = 0;
+    lineIndex < networkObjects.branchDataObj.dataObjList.length;
+    lineIndex += 1
+  ) {
+    const edgeDataObj = networkObjects.branchDataObj.dataObjList[lineIndex];
+    const edgeType = "Line";
+    const edgeName = `${edgeDataObj.fromBus}-${edgeDataObj.toBus}-${edgeDataObj.toBus}-${edgeDataObj.fromBus}`;
+
+    const edge = {
+      index: lineIndex + 1,
+      edgeId: `From Bus '${edgeDataObj.fromBus}' to Bus '${edgeDataObj.toBus}'`,
+      source: nodeIndexMap[edgeDataObj.fromBus],
+      target: nodeIndexMap[edgeDataObj.toBus],
+      edgeData: edgeDataObj,
+      edgeType: edgeType,
+      edgeName: edgeName,
+      isMultiLine: false,
+    };
+    edges[edgeName] = edge;
+  }
+  var edgeData = [];
+  Object.keys(edges).forEach(function (key, _index) {
+    edgeData.push(this[key]);
+  }, edges);
+  networkObjects.branchDataObj.dataObjList = edgeData;
 };
 
 export default ObjectFactory;

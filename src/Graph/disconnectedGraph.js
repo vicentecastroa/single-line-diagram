@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import * as cola from "webcola";
 import SharedFunctionality from "../Views/baseView";
 import Nodes from "./Nodes/NodeBase";
+import LineEdges from "./Edges/EdgeBase";
 
 import { NETWORK_OBJECTS, myCola } from "../main";
 
@@ -65,6 +66,16 @@ function drawDisconnectedGraph(myCola) {
 
   const nodesData = NETWORK_OBJECTS.busDataObj.dataObjList;
   const edgesData = NETWORK_OBJECTS.branchDataObj.dataObjList;
+
+  const lineEdgesData = [];
+
+  for (let edgeIndex = 0; edgeIndex < edgesData.length; edgeIndex++) {
+    const crtEdge = edgesData[edgeIndex];
+    if (crtEdge.edgeType === "Line" && !crtEdge.isMultiLine) {
+      lineEdgesData.push(crtEdge);
+    }
+  }
+  const lineEdges = new LineEdges(lineEdgesData, vis);
 
   const nodes = new Nodes(nodesData, vis, myCola);
 
@@ -153,5 +164,7 @@ function drawDisconnectedGraph(myCola) {
       }
     }
     nodes.tick();
+    //Added a check on the count of the edges as in some test cases there are no transformer or lineCharge edges.
+    lineEdges.tick();
   });
 }

@@ -6,7 +6,7 @@ function getResourceDefaultTitle(d) {
     generator: "Generator",
     market: "Market",
     load: "Load",
-    ev: "EV"
+    ev: "EV",
   };
   return `${prefix[d.resourceType]} (id: ${d.id})`;
 }
@@ -45,14 +45,16 @@ function getTooltipHtml(d, $event, rules) {
     } else {
       // Asume that if not d, is a node
       title = $event.srcElement.__data__.name || "Bus";
-      d.info.forEach((row) => {
-        tableRows.push(`
+      if (d.info) {
+        d.info.forEach((row) => {
+          tableRows.push(`
           <tr>
             <td>${row.name}</td>
             <td>${row.value} ${row.unit}</td>
           </tr>
         `);
-      });
+        });
+      }
     }
     table = `<table border="0" class="sld-tooltip-table">
               ${tableRows.join("")}
