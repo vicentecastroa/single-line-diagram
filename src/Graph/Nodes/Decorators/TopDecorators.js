@@ -36,15 +36,15 @@ TopDecorators.prototype.decorate = function () {
 
       if (topDecoCount !== 0) {
         // Adding vertical central connector.
-        topDecoratorGroup
-          .append("line")
-          .attr("class", "connectors")
-          .attr("x1", 0)
-          .attr("x2", 0)
-          .attr("y1", -LL)
-          .attr("y2", () =>
-            topDecoCount > 1 ? -(R + LL) : decoratorY + R + LL * 1.4
-          );
+        if (topDecoCount === 1) {
+          topDecoratorGroup
+            .append("line")
+            .attr("class", "connectors")
+            .attr("x1", 0)
+            .attr("x2", 0)
+            .attr("y1", 0)
+            .attr("y2", decoratorY + R + LL * 1.4);
+        }
 
         for (let index = 0; index < topDecoCount; index++) {
           const decorator = topDecorators[index];
@@ -74,7 +74,7 @@ TopDecorators.prototype.decorate = function () {
 
           // Adding connecting lines (vertical lines) for multiple top decorators.
           var y1 = decoratorY + R + LL * 1.4; // 1.4 is factor for margin
-          var y2 = -(R + LL);
+          var y2 = 0;
           if (topDecoCount > 1) {
             topDecoratorGroup
               .append("line")
@@ -92,7 +92,7 @@ TopDecorators.prototype.decorate = function () {
                   decoratorWidth / 2
               )
               .attr("y1", y1)
-              .attr("y2", y2 + 0.5)
+              .attr("y2", y2)
               .attr(
                 "dx",
                 () => $(`#bus${nodeGroup.id}topDeco${index}`).attr("x") - 4
@@ -117,33 +117,10 @@ TopDecorators.prototype.decorate = function () {
                 decoratorWidth / 2 -
                 breakerWidth / 2
             )
-            .attr("y", y1 + breakerHeight * 0.8)
+            .attr("y", y1 + breakerHeight * 1.5)
             .attr("width", breakerWidth)
             .attr("height", breakerHeight)
             .attr("style", `fill:${breakerFillColor}`);
-        }
-
-        // Adding horizontal central connector for multiple top decorators.
-        if (topDecoCount > 1) {
-          topDecoratorGroup
-            .append("line")
-            .attr("class", "connectors")
-            .attr(
-              "x1",
-              () =>
-                Number($(`#bus${nodeGroup.id}topDeco0`).attr("x")) +
-                decoratorWidth / 2
-            )
-            .attr(
-              "x2",
-              () =>
-                Number(
-                  $(`#bus${nodeGroup.id}topDeco${topDecoCount - 1}`).attr("x")
-                ) +
-                decoratorWidth / 2
-            )
-            .attr("y1", -(R + LL))
-            .attr("y2", -(R + LL));
         }
       }
     });
