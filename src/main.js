@@ -1,14 +1,17 @@
 import * as d3 from "d3";
 import ObjectFactoryClass from "./ObjectFactory/dataObjects";
 import DisconnectedGraph from "./Graph/disconnectedGraph";
+import addToolbar from "./utils/Toolbar";
 
 let NETWORK_OBJECTS = null;
-const NETWORK = {}
+const NETWORK = {};
 let myCola;
+let inputEvent;
 
 function drawGraph(event) {
   myCola = {};
   preProcessNetworkUI();
+  inputEvent = event;
 
   const ObjectFactory = new ObjectFactoryClass(event);
 
@@ -16,6 +19,9 @@ function drawGraph(event) {
   /*Logging NETWORK_OBJECTS for reference purpose.*/
   // console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
   // console.log('NETWORK', NETWORK);
+
+  // Add toolbar
+  addToolbar();
 
   DisconnectedGraph();
 }
@@ -83,6 +89,6 @@ function updateGraph(network) {
   });
 }
 
-export { NETWORK_OBJECTS, myCola, updateGraph, NETWORK };
+export { NETWORK_OBJECTS, myCola, drawGraph, updateGraph, NETWORK, inputEvent };
 
 export default drawGraph;

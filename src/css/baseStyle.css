@@ -100,3 +100,26 @@ th {
   padding-top: 2px;
   padding-bottom: 2px;
 }
+
+.toolbar-container {
+  height: 22;
+  text-align: right;
+  display: none;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+
+#diagram-div:hover > .toolbar-container {
+  display: block;
+}
+
+.toolbar-icon {
+  width: 16px;
+  height: 16px;
+  fill: rgba(68, 68, 68, 0.3);
+}
+
+.toolbar-icon:hover {
+  fill: rgba(68, 68, 68, 0.7);
+}
