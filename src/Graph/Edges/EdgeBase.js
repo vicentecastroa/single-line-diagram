@@ -22,9 +22,19 @@ Edges.prototype.tick = function () {
 Edges.prototype.moveEdges = function () {
   this.edges.each(function (d) {
     d3.select(`#${d.edgeData.DOMID}`)
-      .attr("x1", d.source.x)
+      .attr("x1", (d) => {
+        if (d.source.x >= d.target.x) {
+          return d.source.x - d.source.busWidth / 2;
+        }
+        return d.source.x + d.source.busWidth / 2;
+      })
       .attr("y1", d.source.y)
-      .attr("x2", d.target.x)
+      .attr("x2", (d) => {
+        if (d.target.x >= d.source.x) {
+          return d.target.x - d.target.busWidth / 2;
+        }
+        return d.target.x + d.target.busWidth / 2;
+      })
       .attr("y2", d.target.y);
   });
 

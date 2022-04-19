@@ -48,19 +48,37 @@ Nodes.prototype.getNodeCenterUI = function (nodesGroupTag) {
   nodesGroupTag
     .append("circle")
     .attr("class", "node busIcon")
+    .attr("r", 0)
+    .on("mouseout", () => hideTooltip());
+
+  nodesGroupTag
+    .append("line")
+    .attr("class", "node busLine")
     .attr("id", (d) => {
       d["DOMID"] = `bus${d.id}`;
       return d.DOMID;
     })
-    .attr("r", SharedFunctionality.R * 0.5)
     .on("mouseout", () => hideTooltip());
 };
 
 Nodes.prototype.tick = function () {
   this.nodesGroupTag.selectAll(".node").each((d) => {
+    let busWidth = SharedFunctionality.R * 2.5;
+    let nDecorators = Math.max(
+      d.bottomDecorators.length,
+      d.topDecorators.length
+    );
+    if (nDecorators > 1) {
+      busWidth = busWidth * nDecorators;
+    }
+
+    d.busWidth = busWidth;
+
     d3.select(`#${d.DOMID}`)
-      .attr("cx", d.x)
-      .attr("cy", d.y)
+      .attr("x1", d.x - busWidth / 2)
+      .attr("y1", d.y)
+      .attr("x2", d.x + busWidth / 2)
+      .attr("y2", d.y)
       .attr("zoomPointX", d.x)
       .attr("zoomPointY", d.y);
   });
@@ -74,7 +92,6 @@ Nodes.prototype.tick = function () {
       return d.y + h / 4 + 1;
     }); */
 
-  /*  this.bottomDecorators.tick(); */
   this.topDecorators.tick();
   this.bottomDecorators.tick();
 };
