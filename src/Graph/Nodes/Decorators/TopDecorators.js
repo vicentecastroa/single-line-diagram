@@ -117,7 +117,7 @@ TopDecorators.prototype.decorate = function () {
                 decoratorWidth / 2 -
                 breakerWidth / 2
             )
-            .attr("y", y1 + breakerHeight * 1.5)
+            .attr("y", y1 + breakerHeight * 2.3)
             .attr("width", breakerWidth)
             .attr("height", breakerHeight)
             .attr("style", `fill:${breakerFillColor}`);
