@@ -111,16 +111,20 @@ BottomDecorators.prototype.decorate = function () {
                   //Factor to be added to the bottomDecoCount to adjust the position of the bottom decorators.
                   const x = (bottomDecoCount - 4) / 2 + 0.5;
                   return (-(bottomDecoCount + x) + 3 * index) * R - R;
-                } else
-                  return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
+                } else if (bottomDecoCount === 1) {
+                  return 0;
+                }
+                return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
               })
               .attr("x2", () => {
                 if (bottomDecoCount % 2 === 0) {
                   //Factor to be added to the bottomDecoCount to adjust the position of the bottom decorators.
                   const x = (bottomDecoCount - 4) / 2 + 0.5;
                   return (-(bottomDecoCount + x) + 3 * index) * R - R;
-                } else
-                  return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
+                } else if (bottomDecoCount === 1) {
+                  return 0;
+                }
+                return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
               })
               .attr("y1", decoratorY)
               .attr("y2", decoratorY + R / 2)
@@ -206,7 +210,7 @@ BottomDecorators.prototype.decorate = function () {
                     decoratorWidth / 2) -
                 breakerWidth / 2
             )
-            .attr("y", y1 - breakerHeight * 2.5)
+            .attr("y", y1 - breakerHeight * 3)
             .attr("width", breakerWidth)
             .attr("height", breakerHeight)
             .attr("style", `fill:${breakerFillColor}`);
