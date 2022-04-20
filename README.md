@@ -78,6 +78,10 @@ This example will generate the following diagram:
 
 
 ## Change Log
+###  Version 1.0.0-beta.2
+- Multiple buses support
+- Node circle icon to a bus bar
+- Toolbar with 'reset view' button
 ### Version 1.0.0-beta
 - Single project support
 - Connect resources (Storages, Loads, Generators, Markets) to Bus.
