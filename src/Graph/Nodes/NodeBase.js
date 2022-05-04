@@ -24,8 +24,8 @@ function getDragPos(event, d) {
   let p = getEventPos(event),
     startPos = eventStart[d.DOMID];
   return {
-    x: d.bounds.x + p.x - startPos.x,
-    y: d.bounds.y + p.y - startPos.y,
+    x: d.x + p.x - startPos.x,
+    y: d.y + p.y - startPos.y,
   };
 }
 function drag(event, d) {
