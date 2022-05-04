@@ -4,16 +4,10 @@ import SharedFunctionality from "../Views/baseView";
 import Nodes from "./Nodes/NodeBase";
 import LineEdges from "./Edges/EdgeBase";
 
-import { NETWORK_OBJECTS, myCola } from "../main";
+import { NETWORK_OBJECTS, myCola, zoom } from "../main";
 
-const zoom = d3.zoom();
-
-//METHOD TO DRAW THE DISCONNECTED GRAPH
-export default function DisconnectedGraph() {
-  SharedFunctionality.nodeMouseDown = false;
-  //Calling the graph object.
-  drawDisconnectedGraph(myCola);
-}
+let lineEdges;
+let nodes;
 
 function drawDisconnectedGraph(myCola) {
   let width = 1400;
@@ -52,7 +46,7 @@ function drawDisconnectedGraph(myCola) {
     .attr("height", "100%")
     .style("stroke-width", 4)
     .style("stroke", "grey")
-    .call(d3.zoom().on("zoom", redrawWithDrag));
+    .call(zoom.on("zoom", redrawWithDrag));
 
   const vis = svg.append("g").attr("id", "svgGraph");
 
@@ -75,9 +69,9 @@ function drawDisconnectedGraph(myCola) {
       lineEdgesData.push(crtEdge);
     }
   }
-  const lineEdges = new LineEdges(lineEdgesData, vis);
+  lineEdges = new LineEdges(lineEdgesData, vis);
 
-  const nodes = new Nodes(nodesData, vis, myCola);
+  nodes = new Nodes(nodesData, vis, myCola);
 
   //This variable has been added to check if the graph file being loaded has fixed locations or not.
   //If the graph being loaded has fixed locations then the zoomToFit is called again.
@@ -89,6 +83,7 @@ function drawDisconnectedGraph(myCola) {
 
   //Added the last parameters to solve the initial auto fit issue.
   myCola.nodes(nodesData).links(edgesData).start(10, 10, 10);
+  console.log(myCola);
 
   //Interchange the x and y for the nodes in the graph based on the height and width of the graph.
   // Here the Cola object is used instead of the SVG object.
@@ -167,4 +162,12 @@ function drawDisconnectedGraph(myCola) {
     //Added a check on the count of the edges as in some test cases there are no transformer or lineCharge edges.
     lineEdges.tick();
   });
+}
+
+export { lineEdges, nodes };
+//METHOD TO DRAW THE DISCONNECTED GRAPH
+export default function DisconnectedGraph() {
+  SharedFunctionality.nodeMouseDown = false;
+  //Calling the graph object.
+  drawDisconnectedGraph(myCola);
 }

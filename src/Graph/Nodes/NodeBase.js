@@ -3,6 +3,49 @@ import SharedFunctionality from "../../Views/baseView";
 import TopDecorators from "./Decorators/TopDecorators";
 import BottomDecorators from "./Decorators/BottomDecorators";
 import { showTooltip, hideTooltip } from "../../utils/Tooltip";
+import { lineEdges, nodes } from "../disconnectedGraph";
+
+const eventStart = {};
+
+function getEventPos(event) {
+  let ev = event;
+  let e =
+    typeof TouchEvent !== "undefined" && ev.sourceEvent instanceof TouchEvent
+      ? ev.sourceEvent.changedTouches[0]
+      : ev.sourceEvent;
+  return { x: e.clientX, y: e.clientY };
+}
+
+function dragStart(event, d) {
+  eventStart[d.DOMID] = getEventPos(event);
+}
+
+function getDragPos(event, d) {
+  let p = getEventPos(event),
+    startPos = eventStart[d.DOMID];
+  return {
+    x: d.bounds.x + p.x - startPos.x,
+    y: d.bounds.y + p.y - startPos.y,
+  };
+}
+function drag(event, d) {
+  var p = getDragPos(event, d);
+}
+function dragEnd(event, d) {
+  let dropPos = getDragPos(event, d);
+  delete eventStart[d.DOMID];
+  d.x = dropPos.x;
+  d.y = dropPos.y;
+
+  nodes.tick();
+  lineEdges.tick();
+}
+
+const dragListener = d3
+  .drag()
+  .on("start", dragStart)
+  .on("drag", drag)
+  .on("end", dragEnd);
 
 function Nodes(data, svg, cola) {
   this.data = data;
@@ -13,14 +56,14 @@ function Nodes(data, svg, cola) {
     .enter()
     .append("g")
     .attr("fill", "white")
-    .call(cola.drag)
     .on("mousedown", function () {
       SharedFunctionality.nodeMouseDown = true;
     })
     // recording the mousedown state allows us to differentiate dragging from panning
     .on("mouseup", function () {
       SharedFunctionality.nodeMouseDown = false;
-    });
+    })
+    .call(dragListener);
 
   this.labels = this.getNodeLabels(cola);
   this.centerUI = this.getNodeCenterUI(this.nodesGroupTag);

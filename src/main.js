@@ -7,6 +7,7 @@ let NETWORK_OBJECTS = null;
 const NETWORK = {};
 let myCola;
 let inputEvent;
+const zoom = d3.zoom();
 
 function drawGraph(event) {
   myCola = {};
@@ -89,6 +90,14 @@ function updateGraph(network) {
   });
 }
 
-export { NETWORK_OBJECTS, myCola, drawGraph, updateGraph, NETWORK, inputEvent };
+export {
+  NETWORK_OBJECTS,
+  myCola,
+  drawGraph,
+  updateGraph,
+  NETWORK,
+  inputEvent,
+  zoom,
+};
 
 export default drawGraph;
