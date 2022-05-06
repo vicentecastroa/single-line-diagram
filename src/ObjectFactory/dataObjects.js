@@ -5,6 +5,7 @@ function ObjectFactory(inputJSON) {
   this.addTopDecoratorDataToBus(dataObjects);
   this.addBottomDecoratorDataToBus(dataObjects);
   this.updateEdgesData(dataObjects);
+  this.addDecoratorToBranch(dataObjects);
 
   this.getNetworkDataObjects = () => dataObjects;
 }
@@ -19,6 +20,8 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
   networkConfig["marketsDataObj"] = { dataObjList: [] };
   networkConfig["evDataObj"] = { dataObjList: [] };
   networkConfig["busLocation"] = { dataObjList: [] };
+  networkConfig["switchesDataObj"] = { dataObjList: [] };
+  networkConfig["transformersDataObj"] = { dataObjList: [] };
 
   Object.entries(JSON).forEach(([key, value]) => {
     switch (key) {
@@ -57,6 +60,16 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
         networkConfig["evDataObj"] = evDataObj;
         break;
 
+      case "switches":
+        const switchesDataObj = { dataObjList: value };
+        networkConfig["switchesDataObj"] = switchesDataObj;
+        break;
+
+      case "transformers":
+        const transformersDataObj = { dataObjList: value };
+        networkConfig["transformersDataObj"] = transformersDataObj;
+        break;
+
       case "busLocation":
         const busLocationDataObj = { dataObjList: [] };
         networkConfig["busLocation"] = busLocationDataObj;
@@ -66,7 +79,6 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
         break;
     }
   });
-
   return networkConfig;
 };
 
@@ -239,6 +251,47 @@ ObjectFactory.prototype.updateEdgesData = (networkObjects) => {
     edgeData.push(this[key]);
   }, edges);
   networkObjects.branchDataObj.dataObjList = edgeData;
+};
+
+// This function looks for every resource in network that is assigned to each branch
+ObjectFactory.prototype.addDecoratorToBranch = (networkObjects) => {
+  for (let i = 0; i < networkObjects.branchDataObj.dataObjList.length; i++) {
+    const branchObj = networkObjects.branchDataObj.dataObjList[i];
+    const decorators = [];
+    let decoratorsId = "";
+    let generalId = 0;
+    [
+      { type: "switch", objList: networkObjects.switchesDataObj.dataObjList },
+      {
+        type: "transformer",
+        objList: networkObjects.transformersDataObj.dataObjList,
+      },
+    ].forEach(({ type, objList }) => {
+      for (let j = 0; j < objList.length; j++) {
+        const obj = objList[j];
+        if (obj.branchId === branchObj.index) {
+          const actualDataObj = {};
+          const id = j + 1;
+          actualDataObj["id"] = id + generalId;
+          // obj["id"] = id;
+          decoratorsId = `${decoratorsId}${id},`; // Might be unused
+          actualDataObj["resourceType"] = type;
+          actualDataObj["info"] = obj.info;
+
+          // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
+          obj["DOMID"] = `branch${branchObj.index}Decorator`;
+          // Also the same DOMID is added to the decorator group element so as to avoid any error.
+          decorators["DOMID"] = `branch${branchObj.index}Decorator`;
+          actualDataObj["decoData"] = obj;
+          decorators.push(actualDataObj);
+        }
+        generalId += 1;
+      }
+    });
+    // Set decorators in branch Object
+    branchObj["decorators"] = decorators;
+    branchObj["IdList"] = decoratorsId.slice(0, -1);
+  }
 };
 
 export default ObjectFactory;
