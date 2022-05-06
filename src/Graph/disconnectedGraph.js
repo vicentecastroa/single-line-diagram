@@ -83,7 +83,6 @@ function drawDisconnectedGraph(myCola) {
 
   //Added the last parameters to solve the initial auto fit issue.
   myCola.nodes(nodesData).links(edgesData).start(10, 10, 10);
-  console.log(myCola);
 
   //Interchange the x and y for the nodes in the graph based on the height and width of the graph.
   // Here the Cola object is used instead of the SVG object.
