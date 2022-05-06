@@ -21,6 +21,7 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
   networkConfig["evDataObj"] = { dataObjList: [] };
   networkConfig["busLocation"] = { dataObjList: [] };
   networkConfig["switchesDataObj"] = { dataObjList: [] };
+  networkConfig["transformersDataObj"] = { dataObjList: [] };
 
   Object.entries(JSON).forEach(([key, value]) => {
     switch (key) {
