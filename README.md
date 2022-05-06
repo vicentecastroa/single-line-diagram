@@ -64,6 +64,8 @@ export default {
         ],
         loads: [{ id: 1, busId: 1, name: "Demand 1", breaker: "close" }],
         markets: [{ id: 1, busId: 1, name: "Market 1", breaker: "close" }],
+        transformers: [{ id: 1, branchId: 1 }],
+        switches: [{ id: 1, branchId: 2 }],
       });
   },
 };
@@ -71,14 +73,17 @@ export default {
 Finally, take [src/css/baseStyle.css](https://github.com/vicentecastroa/single-line-diagram/blob/master/src/css/baseStyle.css) and paste it in your styles folder.
 
 This example will generate the following diagram:
-![image](https://user-images.githubusercontent.com/13738469/164274411-ab2684d5-1a05-46ea-ab12-46e4021c84f4.png)
+![image](https://user-images.githubusercontent.com/13738469/167180438-0e031fcb-8544-4050-b7ab-6dd9bafab187.png)
 
 
 
 
 
 ## Change Log
-###  Version 1.0.0-beta.2
+### Version 1.0.0-beta.3
+- Fix nodes drag
+- Add transformers and switches
+### Version 1.0.0-beta.2
 - Multiple buses support
 - Node circle icon to a bus bar
 - Toolbar with 'reset view' button
