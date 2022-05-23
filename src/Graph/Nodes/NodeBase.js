@@ -105,6 +105,8 @@ Nodes.prototype.getNodeCenterUI = function (nodesGroupTag) {
 };
 
 Nodes.prototype.tick = function () {
+  const nodesPositions = [];
+
   this.nodesGroupTag.selectAll(".node").each((d) => {
     let busWidth = SharedFunctionality.R * 2.5;
     let nDecorators = Math.max(
@@ -124,6 +126,8 @@ Nodes.prototype.tick = function () {
       .attr("y2", d.y)
       .attr("zoomPointX", d.x)
       .attr("zoomPointY", d.y);
+
+    nodesPositions.push({ busId: d.id, x: d.x, y: d.y });
   });
 
   /* this.labels
@@ -137,6 +141,10 @@ Nodes.prototype.tick = function () {
 
   this.topDecorators.tick();
   this.bottomDecorators.tick();
+
+  d3.select("#diagram-div").dispatch("update-layout", {
+    detail: { nodesPositions },
+  });
 };
 
 export default Nodes;
