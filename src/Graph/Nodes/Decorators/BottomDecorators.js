@@ -198,7 +198,6 @@ BottomDecorators.prototype.decorate = function () {
           bottomDecoratorGroup
             .append("rect")
             .attr("class", "connectors")
-            .attr("class", "clickable")
             .attr("id", `bus${nodeGroup.id}bottomDeco${index}Breaker`)
             .attr(
               "x",
@@ -219,7 +218,8 @@ BottomDecorators.prototype.decorate = function () {
               d3.select("#diagram-div").dispatch("click-breaker", {
                 detail: {
                   busId: nodeGroup.id,
-                  resourceId: decorator.bottomDecoData.id,
+                  resource: decorator.bottomDecoData,
+                  resourceType: decorator.resourceType,
                   state:
                     decorator.bottomDecoData.breaker === "open"
                       ? "close"
