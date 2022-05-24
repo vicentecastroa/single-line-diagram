@@ -75,11 +75,16 @@ function drawDisconnectedGraph(myCola) {
 
   //This variable has been added to check if the graph file being loaded has fixed locations or not.
   //If the graph being loaded has fixed locations then the zoomToFit is called again.
-  const fixedLocationGraphLoad = false;
-
-  // If no previous node location data
-  SharedFunctionality.hasNodeLocationData = false;
-  SharedFunctionality.autoLayout = true;
+  let fixedLocationGraphLoad = false;
+  if (NETWORK_OBJECTS.busLocation.dataObjList.length) {
+    fixedLocationGraphLoad = true;
+    SharedFunctionality.hasNodeLocationData = true;
+    SharedFunctionality.autoLayout = false;
+  } else {
+    // If no previous node location data
+    SharedFunctionality.hasNodeLocationData = false;
+    SharedFunctionality.autoLayout = true;
+  }
 
   //Added the last parameters to solve the initial auto fit issue.
   myCola.nodes(nodesData).links(edgesData).start(10, 10, 10);
@@ -139,19 +144,18 @@ function drawDisconnectedGraph(myCola) {
         });
       } else if (fixedLocationGraphLoad) {
         if (SharedFunctionality.hasNodeLocationData) {
+          const nodePositions = NETWORK_OBJECTS.busLocation.dataObjList;
           d3.selectAll(".node").each((d) => {
-            const nodePositions = NETWORK_OBJECTS.busLocation.dataObjList;
-            for (let index = 0; index < nodePositions.length; index++) {
-              if (d.bus_i === nodePositions[index].bus_i) {
-                d.px = parseFloat(nodePositions[index].x);
-                d.py = parseFloat(nodePositions[index].y);
-                d.x = parseFloat(nodePositions[index].x);
-                d.y = parseFloat(nodePositions[index].y);
-                d.fixed |= 8;
-              }
+            const position = nodePositions.find((v) => v.busId === d.id);
+            if (position) {
+              d.px = parseFloat(position.x);
+              d.py = parseFloat(position.y);
+              d.x = parseFloat(position.x);
+              d.y = parseFloat(position.y);
+              d.fixed |= 8;
             }
           });
-          // SharedFunctionality.zoomToFit(true, myCola);
+          SharedFunctionality.zoomToFit(true, myCola);
           //Setting the variable as false the the zoomToFit is to be called only once.
           fixedLocationGraphLoad = false;
         }

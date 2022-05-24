@@ -71,7 +71,7 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
         break;
 
       case "busLocation":
-        const busLocationDataObj = { dataObjList: [] };
+        const busLocationDataObj = { dataObjList: value };
         networkConfig["busLocation"] = busLocationDataObj;
         break;
 

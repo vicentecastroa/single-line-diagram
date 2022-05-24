@@ -49,7 +49,8 @@ function updateGraph(network) {
     d.info = busResource.info;
     // Update bottom decorators
     const bottom = nodeResources.filter(
-      (resource) => !["markets", "bus"].includes(resource.resourceType)
+      (resource) =>
+        !["markets", "bus", "busLocation"].includes(resource.resourceType)
     );
     bottom.forEach((r) => {
       const decorator = d.bottomDecorators.find(
