@@ -198,6 +198,7 @@ BottomDecorators.prototype.decorate = function () {
           bottomDecoratorGroup
             .append("rect")
             .attr("class", "connectors")
+            .attr("class", "clickable")
             .attr("id", `bus${nodeGroup.id}bottomDeco${index}Breaker`)
             .attr(
               "x",
@@ -213,7 +214,19 @@ BottomDecorators.prototype.decorate = function () {
             .attr("y", y1 - breakerHeight * 3)
             .attr("width", breakerWidth)
             .attr("height", breakerHeight)
-            .attr("style", `fill:${breakerFillColor}`);
+            .attr("style", `fill:${breakerFillColor}`)
+            .on("click", () => {
+              d3.select("#diagram-div").dispatch("click-breaker", {
+                detail: {
+                  busId: nodeGroup.id,
+                  resourceId: decorator.bottomDecoData.id,
+                  state:
+                    decorator.bottomDecoData.breaker === "open"
+                      ? "close"
+                      : "open",
+                },
+              });
+            });
         }
       }
     });
