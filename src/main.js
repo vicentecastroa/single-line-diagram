@@ -18,7 +18,7 @@ function drawGraph(event) {
 
   NETWORK_OBJECTS = ObjectFactory.getNetworkDataObjects();
   /*Logging NETWORK_OBJECTS for reference purpose.*/
-  // console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
+  console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
   // console.log('NETWORK', NETWORK);
 
   // Add toolbar
@@ -87,6 +87,32 @@ function updateGraph(network) {
         "style",
         `fill:${breakerFillColor}`
       );
+    });
+  });
+
+  // Update switches status
+  d3.selectAll(".edge").each((d) => {
+    const switches = resources.filter(
+      (r) => r.resourceType === "switches" && r.branchId === d.edgeData.id
+    );
+    switches.forEach((switchObj) => {
+      // Modify switch connector line
+      if (
+        d3.select(`#branch${d.index}Deco0`).nodes() &&
+        d3.select(`#branch${d.index}Deco0`).nodes().length
+      ) {
+        if (switchObj.state === "open") {
+          d3.select(`#branch${d.index}Deco0 > .connector`).attr(
+            "transform",
+            `rotate(-30, 8, 15)`
+          );
+        } else {
+          d3.select(`#branch${d.index}Deco0 > .connector`).attr(
+            "transform",
+            `rotate(-10, 8, 15)`
+          );
+        }
+      }
     });
   });
 }

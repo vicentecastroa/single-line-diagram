@@ -277,6 +277,9 @@ ObjectFactory.prototype.addDecoratorToBranch = (networkObjects) => {
           decoratorsId = `${decoratorsId}${id},`; // Might be unused
           actualDataObj["resourceType"] = type;
           actualDataObj["info"] = obj.info;
+          if (type === "switch") {
+            actualDataObj["state"] = obj.state;
+          }
 
           // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
           obj["DOMID"] = `branch${branchObj.index}Decorator`;
