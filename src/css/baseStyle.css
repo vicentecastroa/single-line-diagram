@@ -19,16 +19,38 @@
   cursor: -webkit-grab;
 }
 
-.edge {
+.busLine {
   stroke: black;
-  stroke-width: 1.5px;
+  stroke-width: 3px;
   stroke-opacity: 1;
+  cursor: grab;
+  cursor: -webkit-grab;
+}
+
+.edge {
+  stroke: transparent;
+  background-color: transparent;
+}
+
+.edge-aux {
+  stroke: rgb(30, 30, 30);
+  stroke-width: 1.5px;
+  stroke-opacity: 0.85;
+  background-color: transparent;
+  fill: none;
+}
+
+.edge-aux-background {
+  stroke: white;
+  stroke-width: 4px;
+  fill: none;
+  background-color: transparent;
 }
 
 .edgeConnector {
-  stroke: black;
+  stroke: rgb(30, 30, 30);
   stroke-width: 1.5px;
-  stroke-opacity: 1;
+  stroke-opacity: 0.85;
 }
 
 #diagram-div {
@@ -48,6 +70,10 @@
 .connectors {
   stroke: black;
   stroke-width: 1px;
+}
+
+.clickable { 
+  cursor: pointer;
 }
 
 #tooltip {
@@ -82,23 +108,6 @@
   margin: 0;
   font-size: 0.8em;
   line-height: 1.3;
-}
-
-.sld-tooltip-table {
-  font-size: 0.84em;
-  width: 100%;
-  border-spacing: 0;
-}
-.sld-tooltip-table td,
-th {
-  border-bottom: thin solid rgba(0, 0, 0, 0.12);
-  text-align: left;
-  padding: 8px;
-}
-
-.sld-tooltip-table td {
-  padding-top: 2px;
-  padding-bottom: 2px;
 }
 
 .toolbar-container {

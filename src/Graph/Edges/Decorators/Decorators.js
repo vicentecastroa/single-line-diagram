@@ -80,7 +80,7 @@ Decorators.prototype.tick = function () {
       const y1 = Number($(`#${d.edgeData.DOMID}`).attr("y1"));
       const y2 = Number($(`#${d.edgeData.DOMID}`).attr("y2"));
 
-      const rotationAngle = (Math.atan((y2 - y1) / (x2 - x1)) * 180) / Math.PI;
+      const rotationAngle = 90;
 
       return `translate(${x1 + (x2 - x1) / 2 - this.decoratorWidth / 2},${
         y1 + (y2 - y1) / 2 - this.decoratorWidth / 2
