@@ -97,21 +97,32 @@ function updateGraph(network) {
     );
     switches.forEach((switchObj) => {
       // Modify switch connector line
-      if (
-        d3.select(`#branch${d.index}Deco0`).nodes() &&
-        d3.select(`#branch${d.index}Deco0`).nodes().length
-      ) {
-        if (switchObj.state === "open") {
-          d3.select(`#branch${d.index}Deco0 > .connector`).attr(
-            "transform",
-            `rotate(-30, 8, 15)`
-          );
-        } else {
-          d3.select(`#branch${d.index}Deco0 > .connector`).attr(
-            "transform",
-            `rotate(-10, 8, 15)`
-          );
-        }
+      if (switchObj.state === "open") {
+        d3.select(`#branch${d.index}Deco0 > .connector`).attr(
+          "transform",
+          `rotate(-30, 8, 15)`
+        );
+        d3.select(`#branch${d.index}Deco0`).on("click", () => {
+          d3.select("#diagram-div").dispatch(`click-switch`, {
+            detail: {
+              id: switchObj.id,
+              state: "close",
+            },
+          });
+        });
+      } else {
+        d3.select(`#branch${d.index}Deco0 > .connector`).attr(
+          "transform",
+          `rotate(-10, 8, 15)`
+        );
+        d3.select(`#branch${d.index}Deco0`).on("click", () => {
+          d3.select("#diagram-div").dispatch(`click-switch`, {
+            detail: {
+              id: switchObj.id,
+              state: "open",
+            },
+          });
+        });
       }
     });
   });
