@@ -3,7 +3,8 @@ import $ from "jquery";
 import SharedFunctionality from "../../../Views/baseView";
 
 // Icons
-import switchIcon from "../../../Icons/switch";
+import switchCloseIcon from "../../../Icons/switch";
+import switchOpenIcon from "../../../Icons/switchOpen";
 import transformerIcon from "../../../Icons/transformer";
 
 const parser = new DOMParser();
@@ -13,7 +14,8 @@ function Decorators(edges) {
 
   // Icons
   this.icons = {
-    switch: switchIcon,
+    "switch-close": switchCloseIcon,
+    "switch-open": switchOpenIcon,
     transformer: transformerIcon,
   };
 }
@@ -31,12 +33,15 @@ Decorators.prototype.decorate = function () {
         .append("g")
         .attr("class", "decoratorGroup")
         .attr("id", () => decorators.DOMID);
-
       if (decoCount !== 0) {
         // Only take first decorator
         const decorator = decorators[0];
         const icon = parser.parseFromString(
-          this.icons[decorator.resourceType],
+          this.icons[
+            decorator.resourceType === "switch"
+              ? `${decorator.resourceType}-${decorator.state}`
+              : decorator.resourceType
+          ],
           "image/svg+xml"
         );
 
@@ -49,7 +54,19 @@ Decorators.prototype.decorate = function () {
           .attr("height", this.decoratorWidth)
           .attr("id", () => `branch${edge.index}Deco${0}`)
           .attr("y", 0)
-          .attr("x", 0);
+          .attr("x", 0)
+          .on("click", () => {
+            d3.select("#diagram-div").dispatch(
+              `click-${decorator.resourceType}`,
+              {
+                detail: {
+                  id: decorator.id,
+                  resourceType: decorator.resourceType,
+                  state: decorator.state === "close" ? "open" : "close",
+                },
+              }
+            );
+          });
       }
     });
   });
@@ -63,7 +80,7 @@ Decorators.prototype.tick = function () {
       const y1 = Number($(`#${d.edgeData.DOMID}`).attr("y1"));
       const y2 = Number($(`#${d.edgeData.DOMID}`).attr("y2"));
 
-      const rotationAngle = (Math.atan((y2 - y1) / (x2 - x1)) * 180) / Math.PI;
+      const rotationAngle = 90;
 
       return `translate(${x1 + (x2 - x1) / 2 - this.decoratorWidth / 2},${
         y1 + (y2 - y1) / 2 - this.decoratorWidth / 2

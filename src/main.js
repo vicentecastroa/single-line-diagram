@@ -18,7 +18,7 @@ function drawGraph(event) {
 
   NETWORK_OBJECTS = ObjectFactory.getNetworkDataObjects();
   /*Logging NETWORK_OBJECTS for reference purpose.*/
-  // console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
+  console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
   // console.log('NETWORK', NETWORK);
 
   // Add toolbar
@@ -49,7 +49,8 @@ function updateGraph(network) {
     d.info = busResource.info;
     // Update bottom decorators
     const bottom = nodeResources.filter(
-      (resource) => !["markets", "bus"].includes(resource.resourceType)
+      (resource) =>
+        !["markets", "bus", "busLocation"].includes(resource.resourceType)
     );
     bottom.forEach((r) => {
       const decorator = d.bottomDecorators.find(
@@ -86,6 +87,43 @@ function updateGraph(network) {
         "style",
         `fill:${breakerFillColor}`
       );
+    });
+  });
+
+  // Update switches status
+  d3.selectAll(".edge").each((d) => {
+    const switches = resources.filter(
+      (r) => r.resourceType === "switches" && r.branchId === d.edgeData.id
+    );
+    switches.forEach((switchObj) => {
+      // Modify switch connector line
+      if (switchObj.state === "open") {
+        d3.select(`#branch${d.index}Deco0 > .connector`).attr(
+          "transform",
+          `rotate(-30, 8, 15)`
+        );
+        d3.select(`#branch${d.index}Deco0`).on("click", () => {
+          d3.select("#diagram-div").dispatch(`click-switch`, {
+            detail: {
+              id: switchObj.id,
+              state: "close",
+            },
+          });
+        });
+      } else {
+        d3.select(`#branch${d.index}Deco0 > .connector`).attr(
+          "transform",
+          `rotate(-10, 8, 15)`
+        );
+        d3.select(`#branch${d.index}Deco0`).on("click", () => {
+          d3.select("#diagram-div").dispatch(`click-switch`, {
+            detail: {
+              id: switchObj.id,
+              state: "open",
+            },
+          });
+        });
+      }
     });
   });
 }

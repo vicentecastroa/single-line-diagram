@@ -213,7 +213,20 @@ BottomDecorators.prototype.decorate = function () {
             .attr("y", y1 - breakerHeight * 3)
             .attr("width", breakerWidth)
             .attr("height", breakerHeight)
-            .attr("style", `fill:${breakerFillColor}`);
+            .attr("style", `fill:${breakerFillColor}`)
+            .on("click", () => {
+              d3.select("#diagram-div").dispatch("click-breaker", {
+                detail: {
+                  busId: nodeGroup.id,
+                  resource: decorator.bottomDecoData,
+                  resourceType: decorator.resourceType,
+                  state:
+                    decorator.bottomDecoData.breaker === "open"
+                      ? "close"
+                      : "open",
+                },
+              });
+            });
         }
       }
     });
