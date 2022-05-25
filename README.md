@@ -66,6 +66,7 @@ export default {
         markets: [{ id: 1, busId: 1, name: "Market 1", breaker: "close" }],
         transformers: [{ id: 1, branchId: 1 }],
         switches: [{ id: 1, branchId: 2 }],
+        busLocations: [{busId: 1, x: 200, y: 250}]
       });
   },
 };
@@ -80,6 +81,11 @@ This example will generate the following diagram:
 
 
 ## Change Log
+### Version 1.0.0-beta.4
+- Load from saved layout
+- Switches states (closed-open)
+- Emit click events for switches and breakers
+- Orthogonal edges
 ### Version 1.0.0-beta.3
 - Fix nodes drag
 - Add transformers and switches
