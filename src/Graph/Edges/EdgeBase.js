@@ -17,15 +17,9 @@ const getPath = (source, target, slots) => {
   const h = y2 - y1;
 
   const startOffsetIndex =
-    -1 +
-    (source.x >= target.x
-      ? slots.left.filter((v) => source.id === v).length
-      : slots.right.filter((v) => source.id === v).length);
+    (source.x >= target.x ? slots[source.id].left : slots[source.id].right) - 1;
   const endOffsetIndex =
-    -1 +
-    (target.x >= source.x
-      ? slots.left.filter((v) => target.id === v).length
-      : slots.right.filter((v) => target.id === v).length);
+    (target.x >= source.x ? slots[target.id].left : slots[target.id].right) - 1;
 
   const startOffsetY = (-1) ** startOffsetIndex * 4 * startOffsetIndex;
   const endOffsetY = (-1) ** endOffsetIndex * 4 * endOffsetIndex;
@@ -86,35 +80,65 @@ Edges.prototype.tick = function () {
 };
 
 Edges.prototype.moveEdges = function () {
-  const busSlots = { left: [], right: [] };
+  const busSlots = {};
   this.edgesGroupTag.each((d) => {
     d3.select(`#${d.edgeData.DOMID}`)
       .attr("x1", (d) => {
         if (d.source.x >= d.target.x) {
           // source left
-          busSlots.left.push(d.source.id);
+          if (!busSlots[d.source.id]) {
+            busSlots[d.source.id] = { left: 1 };
+          } else if (!busSlots[d.source.id].left) {
+            busSlots[d.source.id].left = 1;
+          } else {
+            busSlots[d.source.id].left += 1;
+          }
+
           return d.source.x - d.source.busWidth / 2;
         }
         // source right
-        busSlots.right.push(d.source.id);
+        if (!busSlots[d.source.id]) {
+          busSlots[d.source.id] = { right: 1 };
+        } else if (!busSlots[d.source.id].right) {
+          busSlots[d.source.id].right = 1;
+        } else {
+          busSlots[d.source.id].right += 1;
+        }
+
         return d.source.x + d.source.busWidth / 2;
       })
       .attr("y1", d.source.y)
       .attr("x2", (d) => {
         if (d.target.x >= d.source.x) {
           // target left
-          busSlots.left.push(d.target.id);
+          if (!busSlots[d.target.id]) {
+            busSlots[d.target.id] = { left: 1 };
+          } else if (!busSlots[d.target.id].left) {
+            busSlots[d.target.id].left = 1;
+          } else {
+            busSlots[d.target.id].left += 1;
+          }
+
           return d.target.x - d.target.busWidth / 2;
         }
         // target right
-        busSlots.right.push(d.target.id);
+        if (!busSlots[d.target.id]) {
+          busSlots[d.target.id] = { right: 1 };
+        } else if (!busSlots[d.target.id].right) {
+          busSlots[d.target.id].right = 1;
+        } else {
+          busSlots[d.target.id].right += 1;
+        }
+
         return d.target.x + d.target.busWidth / 2;
       })
       .attr("y2", d.target.y);
+
     d3.select(`#${d.edgeData.DOMID}PathBackground`).attr(
       "d",
       getPath(d.source, d.target, busSlots)
     );
+
     d3.select(`#${d.edgeData.DOMID}Path`).attr(
       "d",
       getPath(d.source, d.target, busSlots)
