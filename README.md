@@ -66,6 +66,7 @@ export default {
         markets: [{ id: 1, busId: 1, name: "Market 1", breaker: "close" }],
         transformers: [{ id: 1, branchId: 1 }],
         switches: [{ id: 1, branchId: 2 }],
+        busLocations: [{busId: 1, x: 200, y: 250}]
       });
   },
 };
@@ -73,13 +74,19 @@ export default {
 Finally, take [src/css/baseStyle.css](https://github.com/vicentecastroa/single-line-diagram/blob/master/src/css/baseStyle.css) and paste it in your styles folder.
 
 This example will generate the following diagram:
-![image](https://user-images.githubusercontent.com/13738469/167180438-0e031fcb-8544-4050-b7ab-6dd9bafab187.png)
+![image](https://user-images.githubusercontent.com/13738469/170295920-5cbdc7bc-2af7-4a19-8d4f-22d1060e8e46.png)
+
 
 
 
 
 
 ## Change Log
+### Version 1.0.0-beta.4
+- Load from saved layout
+- Switches states (closed-open)
+- Emit click events for switches and breakers
+- Orthogonal edges
 ### Version 1.0.0-beta.3
 - Fix nodes drag
 - Add transformers and switches
