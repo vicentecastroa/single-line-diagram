@@ -4,6 +4,7 @@ import TopDecorators from "./Decorators/TopDecorators";
 import BottomDecorators from "./Decorators/BottomDecorators";
 import { showTooltip, hideTooltip } from "../../utils/Tooltip";
 import { lineEdges, nodes } from "../disconnectedGraph";
+import { NETWORK_OBJECTS } from "../../main";
 
 const eventStart = {};
 
@@ -106,6 +107,22 @@ Nodes.prototype.getNodeCenterUI = function (nodesGroupTag) {
 
 Nodes.prototype.tick = function () {
   const nodesPositions = [];
+  const nodesTotalBranches = {};
+
+  // Compute node total connected branches
+  NETWORK_OBJECTS.branchDataObj.dataObjList.forEach((element) => {
+    const { fromBus, toBus } = element.edgeData;
+    if (!nodesTotalBranches[fromBus]) {
+      nodesTotalBranches[fromBus] = 1;
+    } else {
+      nodesTotalBranches[fromBus] += 1;
+    }
+    if (!nodesTotalBranches[toBus]) {
+      nodesTotalBranches[toBus] = 1;
+    } else {
+      nodesTotalBranches[toBus] += 1;
+    }
+  });
 
   this.nodesGroupTag.selectAll(".node").each((d) => {
     let busWidth = SharedFunctionality.R * 2.5;
@@ -116,6 +133,8 @@ Nodes.prototype.tick = function () {
     if (nDecorators > 1) {
       busWidth = busWidth * nDecorators;
     }
+
+    busWidth += nodesTotalBranches[d.id] * SharedFunctionality.R;
 
     d.busWidth = busWidth;
 
