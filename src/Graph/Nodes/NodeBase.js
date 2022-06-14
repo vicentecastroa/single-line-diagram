@@ -134,7 +134,9 @@ Nodes.prototype.tick = function () {
       busWidth = busWidth * nDecorators;
     }
 
-    busWidth += nodesTotalBranches[d.id] * SharedFunctionality.R;
+    if (nodesTotalBranches[d.id]){
+      busWidth += nodesTotalBranches[d.id] * SharedFunctionality.R;
+    }
 
     d.busWidth = busWidth;
 

@@ -70,7 +70,6 @@ const SharedFunctionality = {
 
     selZoom.transition().call(zoom.on("zoom", handleZoom).scaleBy, s);
     selZoom.transition().call(zoom.on("zoom", handleZoom).translateBy, tx, ty);
-    redraw(true);
   },
 };
 
