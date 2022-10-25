@@ -16,6 +16,7 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
   networkConfig["branchDataObj"] = { dataObjList: [] };
   networkConfig["storagesDataObj"] = { dataObjList: [] };
   networkConfig["generatorsDataObj"] = { dataObjList: [] };
+  networkConfig["invertersDataObj"] = { dataObjList: [] };
   networkConfig["loadsDataObj"] = { dataObjList: [] };
   networkConfig["marketsDataObj"] = { dataObjList: [] };
   networkConfig["evDataObj"] = { dataObjList: [] };
@@ -43,6 +44,11 @@ ObjectFactory.prototype.dataObjects = (JSON) => {
       case "generators":
         const generatorsDataObj = { dataObjList: value };
         networkConfig["generatorsDataObj"] = generatorsDataObj;
+        break;
+
+      case "inverters":
+        const invertersDataObj = { dataObjList: value };
+        networkConfig["invertersDataObj"] = invertersDataObj;
         break;
 
       case "loads":
@@ -135,6 +141,10 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         objList: networkObjects.generatorsDataObj.dataObjList,
       },
       {
+        type: "inverters",
+        objList: networkObjects.invertersDataObj.dataObjList,
+      },
+      {
         type: "load",
         objList: networkObjects.loadsDataObj.dataObjList,
       },
@@ -178,6 +188,9 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
                 dataObjResourceType = "generatorSolar";
                 break;
             }
+            break;
+          case "inverter":
+            dataObjResourceType = "inverter";
             break;
           case "load":
             dataObjResourceType = "load";

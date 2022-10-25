@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as d3 from "d3";
 import ObjectFactoryClass from "./ObjectFactory/dataObjects";
 import DisconnectedGraph from "./Graph/disconnectedGraph";
@@ -10,6 +11,7 @@ let inputEvent;
 const zoom = d3.zoom();
 
 function drawGraph(event) {
+  console.log("drawGaph");
   myCola = {};
   preProcessNetworkUI();
   inputEvent = event;
@@ -18,8 +20,8 @@ function drawGraph(event) {
 
   NETWORK_OBJECTS = ObjectFactory.getNetworkDataObjects();
   /*Logging NETWORK_OBJECTS for reference purpose.*/
-  // console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
-  // console.log('NETWORK', NETWORK);
+  console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
+  console.log("NETWORK", NETWORK);
 
   // Add toolbar
   addToolbar();
