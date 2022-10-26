@@ -126,15 +126,17 @@ Nodes.prototype.tick = function () {
 
   this.nodesGroupTag.selectAll(".node").each((d) => {
     let busWidth = SharedFunctionality.R * 2.5;
-    let nDecorators = Math.max(
-      d.bottomDecorators.length,
-      d.topDecorators.length
-    );
+    const bottomDecoratorsLength =
+      d.bottomDecorators.length +
+      d.bottomDecorators
+        .flatMap((v) => (v.bottomDecorators ? v.bottomDecorators.length : 0))
+        .reduce((acc, v) => acc + v * 0.5, 0);
+    let nDecorators = Math.max(bottomDecoratorsLength, d.topDecorators.length);
     if (nDecorators > 1) {
       busWidth = busWidth * nDecorators;
     }
 
-    if (nodesTotalBranches[d.id]){
+    if (nodesTotalBranches[d.id]) {
       busWidth += nodesTotalBranches[d.id] * SharedFunctionality.R;
     }
 
