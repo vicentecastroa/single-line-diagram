@@ -11,6 +11,7 @@ import generatorHydroIcon from "../../../Icons/generatorHydro";
 import generatorWindIcon from "../../../Icons/generatorWind";
 import generatorGeothermalIcon from "../../../Icons/generatorGeothermal";
 import evIcon from "../../../Icons/ev";
+import inverterIcon from "../../../Icons/inverter";
 
 const parser = new DOMParser();
 
@@ -26,6 +27,7 @@ function BottomDecorators(nodesGroupTag) {
     generatorWind: generatorWindIcon,
     generatorGeothermal: generatorGeothermalIcon,
     ev: evIcon,
+    inverter: inverterIcon,
   };
 }
 
@@ -61,33 +63,180 @@ BottomDecorators.prototype.decorate = function () {
 
         for (let index = 0; index < bottomDecoCount; index++) {
           const decorator = bottomDecorators[index];
+          const decoratorId = `bus${nodeGroup.id}bottomDeco${index}`;
+
+          const baseDecoratorX = () => {
+            if (bottomDecoCount % 2 === 0) {
+              //Factor to be added to the bottomDecoCount to adjust the position of the bottom decorators.
+              const x = (bottomDecoCount - 4) / 2 + 0.5;
+              return (-(bottomDecoCount + x) + 3 * index) * R - R;
+            } else
+              return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
+          };
+
+          // Calculate an offset depending on number of subDecorators (e.g. batteries connected to inverter)
+          const previousX =
+            Number($(`#bus${nodeGroup.id}bottomDeco${index - 1}`).attr("x")) ||
+            0;
+          const previousDecorator = bottomDecorators[index - 1];
+          let offsetPreviousDecorator = 0;
+          let offsetInverterDecorator = 0;
+          if (
+            previousDecorator &&
+            previousDecorator.resourceType === "inverter"
+          ) {
+            offsetPreviousDecorator =
+              (previousDecorator.bottomDecorators.length * decoratorWidth) / 2;
+          }
+          if (decorator.resourceType === "inverter") {
+            offsetInverterDecorator =
+              ((decorator.bottomDecorators.length % 2 !== 0
+                ? decorator.bottomDecorators.length - 1 / 2
+                : decorator.bottomDecorators.length / 2) *
+                decoratorWidth) /
+              2;
+          }
+          const offset = offsetPreviousDecorator + offsetInverterDecorator;
+          const decoratorX =
+            index === 0
+              ? baseDecoratorX()
+              : previousX + offset + decoratorWidth * 1.1;
+
           if (decorator.resourceType !== "load") {
             const icon = parser.parseFromString(
               this.icons[decorator.resourceType],
               "image/svg+xml"
             );
 
-            const decoratorHTML = bottomDecoratorGroup
-              .node()
-              .appendChild(icon.documentElement);
+            if (decorator.resourceType !== "inverter") {
+              const decoratorHTML = bottomDecoratorGroup
+                .node()
+                .appendChild(icon.documentElement);
 
-            d3.select(decoratorHTML)
-              .attr("width", decoratorWidth)
-              .attr("height", decoratorWidth)
-              .attr("id", () => `bus${nodeGroup.id}bottomDeco${index}`)
-              .attr("y", decoratorY)
-              .attr("x", () => {
-                if (bottomDecoCount % 2 === 0) {
-                  //Factor to be added to the bottomDecoCount to adjust the position of the bottom decorators.
-                  const x = (bottomDecoCount - 4) / 2 + 0.5;
-                  return (-(bottomDecoCount + x) + 3 * index) * R - R;
-                } else
-                  return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
-              })
-              .on("mouseover", ($event) => {
-                showTooltip(decorator, $event, "");
-              })
-              .on("mouseout", () => hideTooltip());
+              d3.select(decoratorHTML)
+                .attr("width", decoratorWidth)
+                .attr("height", decoratorWidth)
+                .attr("id", decoratorId)
+                .attr("y", decoratorY)
+                .attr("x", decoratorX)
+                .on("mouseover", ($event) => {
+                  showTooltip(decorator, $event, "");
+                })
+                .on("mouseout", () => hideTooltip());
+            } else {
+              // INVERTERS
+              const inverterGroup = bottomDecoratorGroup
+                .append("g")
+                .attr("class", "inverterDecoratorGroup");
+
+              const inverterHTML = inverterGroup
+                .node()
+                .appendChild(icon.documentElement);
+              const inverterId = decoratorId;
+              d3.select(inverterHTML)
+                .attr("id", inverterId)
+                .attr("width", decoratorWidth)
+                .attr("y", -decoratorY * 1.2)
+                .attr("x", decoratorX);
+
+              // Add elements connected to the inverter
+              const inverterDecorators = decorator.bottomDecorators;
+              const inverterDecoCount = inverterDecorators.length;
+              for (let index = 0; index < inverterDecoCount; index++) {
+                const decorator = inverterDecorators[index];
+                const icon = parser.parseFromString(
+                  this.icons[decorator.resourceType],
+                  "image/svg+xml"
+                );
+
+                const subDecoratorHTML = inverterGroup
+                  .node()
+                  .appendChild(icon.documentElement);
+                const inverterX = Number($(`#${inverterId}`).attr("x"));
+
+                d3.select(subDecoratorHTML)
+                  .attr("width", decoratorWidth)
+                  .attr("y", R)
+                  .attr("x", () => {
+                    if (inverterDecoCount % 2 === 0) {
+                      //Factor to be added to the inverterDecoCount to adjust the position of the bottom decorators.
+                      const x = (inverterDecoCount - 4) / 2 + 0.5;
+                      return (
+                        (-(inverterDecoCount + x) + 3 * index) * R + inverterX
+                      );
+                    } else
+                      return (
+                        (-(3 * (inverterDecoCount - 1)) / 2 + 3 * index) * R +
+                        inverterX
+                      );
+                  });
+
+                // Add connecting lines (vertical lines)
+
+                // TODO: Factor in Y axis so horizontal lines don't overlap
+                const horizontalY = decoratorY * 2 + R;
+
+                // First line segment
+                const x1 = () => {
+                  if (inverterDecoCount % 2 === 0) {
+                    //Factor to be added to the inverterDecoCount to adjust the position of the bottom decorators.
+                    const x = (inverterDecoCount - 4) / 2 + 0.5;
+                    return (
+                      (-(inverterDecoCount + x) + 3 * index) * R + inverterX + R
+                    );
+                  } else
+                    return (
+                      (-(3 * (inverterDecoCount - 1)) / 2 + 3 * index) * R +
+                      inverterX +
+                      R
+                    );
+                };
+                inverterGroup
+                  .append("line")
+                  .attr("class", "connectors")
+                  .attr("y1", horizontalY)
+                  .attr("y2", decoratorY * 2 + 2 * R)
+                  .attr("x1", x1())
+                  .attr("x2", x1());
+
+                // Second line segment
+                const x2 = () => {
+                  if (inverterDecoCount === 1) {
+                    return inverterX + R;
+                  }
+                  if (inverterDecoCount % 2 === 0) {
+                    //Factor to be added to the inverterDecoCount to adjust the position of the bottom decorators.
+                    const x = (inverterDecoCount - 4) / 2 + 0.5;
+                    return (
+                      (-(inverterDecoCount + x) + 0.2 * index) * R +
+                      inverterX +
+                      2.3 * R
+                    );
+                  } else
+                    return (
+                      (-(3 * (inverterDecoCount - 1)) / 2 + 0.2 * index) * R +
+                      inverterX +
+                      (inverterDecoCount / 2 + 2.3) * R
+                    );
+                };
+                inverterGroup
+                  .append("line")
+                  .attr("class", "connectors")
+                  .attr("y1", decoratorY * 1.45 + R)
+                  .attr("y2", horizontalY)
+                  .attr("x1", x2())
+                  .attr("x2", x2());
+
+                // Horizontal segment
+                inverterGroup
+                  .append("line")
+                  .attr("class", "connectors")
+                  .attr("y1", horizontalY)
+                  .attr("y2", horizontalY)
+                  .attr("x1", x1())
+                  .attr("x2", x2());
+              }
+            }
           } else {
             bottomDecoratorGroup
               .append("svg:defs")
@@ -106,28 +255,10 @@ BottomDecorators.prototype.decorate = function () {
 
             bottomDecoratorGroup
               .append("line")
-              .attr("id", () => `bus${nodeGroup.id}bottomDeco${index}`)
+              .attr("id", decoratorId)
               .attr("class", "connectors")
-              .attr("x1", () => {
-                if (bottomDecoCount % 2 === 0) {
-                  //Factor to be added to the bottomDecoCount to adjust the position of the bottom decorators.
-                  const x = (bottomDecoCount - 4) / 2 + 0.5;
-                  return (-(bottomDecoCount + x) + 3 * index) * R - R;
-                } else if (bottomDecoCount === 1) {
-                  return 0;
-                }
-                return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
-              })
-              .attr("x2", () => {
-                if (bottomDecoCount % 2 === 0) {
-                  //Factor to be added to the bottomDecoCount to adjust the position of the bottom decorators.
-                  const x = (bottomDecoCount - 4) / 2 + 0.5;
-                  return (-(bottomDecoCount + x) + 3 * index) * R - R;
-                } else if (bottomDecoCount === 1) {
-                  return 0;
-                }
-                return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
-              })
+              .attr("x1", decoratorX)
+              .attr("x2", decoratorX)
               .attr("y1", decoratorY)
               .attr("y2", decoratorY + R / 2)
               .attr("marker-end", `url(#Arrowhead${nodeGroup.id})`);
@@ -168,26 +299,17 @@ BottomDecorators.prototype.decorate = function () {
               .attr("class", "connectors")
               .attr("x1", () =>
                 decorator.resourceType === "load"
-                  ? $(`#bus${nodeGroup.id}bottomDeco${index}`).attr("x1")
-                  : Number(
-                      $(`#bus${nodeGroup.id}bottomDeco${index}`).attr("x")
-                    ) +
-                    decoratorWidth / 2
+                  ? $(`#${decoratorId}`).attr("x1")
+                  : Number($(`#${decoratorId}`).attr("x")) + decoratorWidth / 2
               )
               .attr("x2", () =>
                 decorator.resourceType === "load"
-                  ? $(`#bus${nodeGroup.id}bottomDeco${index}`).attr("x1")
-                  : Number(
-                      $(`#bus${nodeGroup.id}bottomDeco${index}`).attr("x")
-                    ) +
-                    decoratorWidth / 2
+                  ? $(`#${decoratorId}`).attr("x1")
+                  : Number($(`#${decoratorId}`).attr("x")) + decoratorWidth / 2
               )
               .attr("y1", y1)
               .attr("y2", y2)
-              .attr(
-                "dx",
-                () => $(`#bus${nodeGroup.id}bottomDeco${index}`).attr("x") - 4
-              );
+              .attr("dx", () => $(`#${decoratorId}`).attr("x") - 4);
           }
 
           // Adding breaker to vertical lines
@@ -200,15 +322,13 @@ BottomDecorators.prototype.decorate = function () {
           bottomDecoratorGroup
             .append("rect")
             .attr("class", "connectors")
-            .attr("id", `bus${nodeGroup.id}bottomDeco${index}Breaker`)
+            .attr("id", `${decoratorId}Breaker`)
             .attr(
               "x",
               () =>
                 (decorator.resourceType === "load"
-                  ? $(`#bus${nodeGroup.id}bottomDeco${index}`).attr("x1")
-                  : Number(
-                      $(`#bus${nodeGroup.id}bottomDeco${index}`).attr("x")
-                    ) +
+                  ? $(`#${decoratorId}`).attr("x1")
+                  : Number($(`#${decoratorId}`).attr("x")) +
                     decoratorWidth / 2) -
                 breakerWidth / 2
             )

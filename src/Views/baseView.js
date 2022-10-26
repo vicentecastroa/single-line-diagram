@@ -8,12 +8,22 @@ function handleZoom(e) {
 
 const zoomIdentity = d3.zoomIdentity;
 
+const hasInverters = (nodeObj) => {
+  if (
+    nodeObj.bottomDecorators.length &&
+    nodeObj.bottomDecorators.some((v) => v.resourceType === "inverter")
+  ) {
+    return true;
+  }
+  return false;
+};
+
 const graphBounds = (withCola, myCola) => {
   let x = Number.POSITIVE_INFINITY;
   let X = Number.NEGATIVE_INFINITY;
   let y = Number.POSITIVE_INFINITY;
   let Y = Number.NEGATIVE_INFINITY;
-  //Check the visibility of the graph and then Select the graph for which the layout is to be exported.
+  // Check the visibility of the graph and then Select the graph for which the layout is to be exported.
   let selCola;
   if ($("#parentSvgNode").is(":visible")) {
     selCola = myCola;
@@ -23,7 +33,7 @@ const graphBounds = (withCola, myCola) => {
       x = Math.min(x, v.x - SharedFunctionality.R * 2);
       X = Math.max(X, v.x);
       y = Math.min(y, v.y - SharedFunctionality.R * 4);
-      Y = Math.max(Y, v.y + SharedFunctionality.R * 5);
+      Y = Math.max(Y, v.y + SharedFunctionality.R * (hasInverters(v) ? 7 : 5));
     });
   } else {
     d3.selectAll(".node").each((v) => {

@@ -127,6 +127,33 @@ ObjectFactory.prototype.addTopDecoratorDataToBus = (networkObjects) => {
 };
 
 // This function looks for every resource in network that is assigned to each bus
+const addBottomDecoratorToObj = (networkObjects, partentObj, domPrefix) => {
+  const bottomDecorators = [];
+  [
+    { type: "storage", objList: networkObjects.storagesDataObj.dataObjList },
+  ].forEach(({ type, objList }) => {
+    for (let j = 0; j < objList.length; j++) {
+      const actualDataObj = {};
+      const obj = objList[j];
+      const id = j + 1;
+      actualDataObj["resourceType"] = "storage";
+      actualDataObj["info"] = obj.info;
+
+      // Set DOMID
+      obj["DOMID"] = `${domPrefix}-${partentObj.id}-bottomDecorator`;
+      bottomDecorators[
+        "DOMID"
+      ] = `${domPrefix}-${partentObj.id}-bottomDecorator`;
+      actualDataObj["bottomDecoData"] = obj;
+      // Add obj to relevant obj
+      if (obj.busId === partentObj.id) {
+        bottomDecorators.push(actualDataObj);
+      }
+    }
+  });
+  return bottomDecorators;
+};
+
 ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
   for (let i = 0; i < networkObjects.busDataObj.dataObjList.length; i++) {
     const busObj = networkObjects.busDataObj.dataObjList[i];
@@ -141,7 +168,7 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         objList: networkObjects.generatorsDataObj.dataObjList,
       },
       {
-        type: "inverters",
+        type: "inverter",
         objList: networkObjects.invertersDataObj.dataObjList,
       },
       {
@@ -157,7 +184,7 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         const actualDataObj = {};
         const obj = objList[j];
         const id = j + 1;
-        actualDataObj["id"] = id + generalId;
+        actualDataObj["id"] = obj.id || id + generalId;
         // obj["id"] = id;
         bottomDecoratorsId = `${bottomDecoratorsId}${id},`; // Might be unused
 
@@ -205,13 +232,22 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
 
         actualDataObj["resourceType"] = dataObjResourceType;
         actualDataObj["info"] = obj.info;
-        // Adding the DOMID to the top decorators. - This is the id of the top decorator group.
-        obj["DOMID"] = `bus${busObj.id}bottomDecorator`;
+        // Adding the DOMID to the bottom decorators. - This is the id of the bottom decorator group.
+        obj["DOMID"] = `bus-${busObj.id}-bottomDecorator`;
         // Also the same DOMID is added to the decorator group element so as to avoid any error.
         bottomDecorators["DOMID"] = `bus${busObj.id}bottomDecorator`;
         actualDataObj["bottomDecoData"] = obj;
+        // Add obj to relevant bus
         if (obj.busId === busObj.id) {
           bottomDecorators.push(actualDataObj);
+        }
+        if (actualDataObj.resourceType === "inverter") {
+          const inverterDecorators = addBottomDecoratorToObj(
+            networkObjects,
+            actualDataObj,
+            "inverter"
+          );
+          actualDataObj["bottomDecorators"] = inverterDecorators;
         }
       }
       generalId += 1;
