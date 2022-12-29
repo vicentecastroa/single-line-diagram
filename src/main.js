@@ -9,19 +9,25 @@ const NETWORK = {};
 let myCola;
 let inputEvent;
 const zoom = d3.zoom();
+let config = {
+  allowDrag: true,
+};
 
-function drawGraph(event) {
-  console.log("drawGaph");
+function drawGraph(event, { allowDrag = true } = {}) {
+  // console.log("drawGaph");
   myCola = {};
   preProcessNetworkUI();
   inputEvent = event;
 
   const ObjectFactory = new ObjectFactoryClass(event);
+  config = {
+    allowDrag,
+  };
 
   NETWORK_OBJECTS = ObjectFactory.getNetworkDataObjects();
   /*Logging NETWORK_OBJECTS for reference purpose.*/
-  console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
-  console.log("NETWORK", NETWORK);
+  /*  console.log("NETWORK OBJECTS", NETWORK_OBJECTS);
+  console.log("NETWORK", NETWORK); */
 
   // Add toolbar
   addToolbar();
@@ -132,6 +138,7 @@ function updateGraph(network) {
 
 export {
   NETWORK_OBJECTS,
+  config,
   myCola,
   drawGraph,
   updateGraph,

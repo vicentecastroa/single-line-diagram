@@ -4,7 +4,7 @@ import TopDecorators from "./Decorators/TopDecorators";
 import BottomDecorators from "./Decorators/BottomDecorators";
 import { showTooltip, hideTooltip } from "../../utils/Tooltip";
 import { lineEdges, nodes } from "../disconnectedGraph";
-import { NETWORK_OBJECTS } from "../../main";
+import { NETWORK_OBJECTS, config } from "../../main";
 
 const eventStart = {};
 
@@ -49,6 +49,7 @@ const dragListener = d3
   .on("end", dragEnd);
 
 function Nodes(data, svg, cola) {
+  const { allowDrag } = config;
   this.data = data;
   this.svg = svg;
   this.nodesGroupTag = this.svg
@@ -63,8 +64,11 @@ function Nodes(data, svg, cola) {
     // recording the mousedown state allows us to differentiate dragging from panning
     .on("mouseup", function () {
       SharedFunctionality.nodeMouseDown = false;
-    })
-    .call(dragListener);
+    });
+
+  if (allowDrag) {
+    this.nodesGroupTag.call(dragListener);
+  }
 
   this.labels = this.getNodeLabels(cola);
   this.centerUI = this.getNodeCenterUI(this.nodesGroupTag);
