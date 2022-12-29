@@ -82,6 +82,8 @@ This example will generate the following diagram:
 
 
 ## Change Log
+### Version 1.0.0-beta.5
+- Add `config` option for `drawGraph()`
 ### Version 1.0.0-beta.4
 - Load from saved layout
 - Switches states (closed-open)
