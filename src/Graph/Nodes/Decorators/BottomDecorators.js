@@ -133,6 +133,7 @@ BottomDecorators.prototype.decorate = function () {
                 .node()
                 .appendChild(icon.documentElement);
               const inverterId = decoratorId;
+              const inverterY = - decoratorY * 1.8
               d3.select(inverterHTML)
                 .attr("id", inverterId)
                 .attr("width", decoratorWidth)
@@ -156,7 +157,7 @@ BottomDecorators.prototype.decorate = function () {
 
                 d3.select(subDecoratorHTML)
                   .attr("width", decoratorWidth)
-                  .attr("y", R)
+                  .attr("y", inverterY + 5*R)
                   .attr("x", () => {
                     if (inverterDecoCount % 2 === 0) {
                       //Factor to be added to the inverterDecoCount to adjust the position of the bottom decorators.
