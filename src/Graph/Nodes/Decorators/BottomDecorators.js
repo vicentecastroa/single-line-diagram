@@ -137,7 +137,7 @@ BottomDecorators.prototype.decorate = function () {
               d3.select(inverterHTML)
                 .attr("id", inverterId)
                 .attr("width", decoratorWidth)
-                .attr("y", -decoratorY * 1.2)
+                .attr("y", inverterY)
                 .attr("x", decoratorX);
 
               // Add elements connected to the inverter
