@@ -3,15 +3,30 @@ import SharedFunctionality from "../../Views/baseView";
 import Decorators from "./Decorators/Decorators";
 
 const getPath = (source, target, slots) => {
-  const x1 =
-    source.x >= target.x
-      ? source.x - source.busWidth / 2
-      : source.x + source.busWidth / 2;
+  const sourceEnd = source.x + source.busWidth / 2;
+  const sourceStart = source.x - source.busWidth / 2;
+  const targetStart = target.x - target.busWidth / 2;
+  const targetEnd = target.x + target.busWidth / 2;
+  let x1 = 0;
+  let x2 = 0;
+  if (target.x >= source.x) {
+    if (sourceEnd >= targetStart) {
+      x1 = targetStart + (sourceEnd - targetStart) / 2;
+      x2 = x1;
+    } else {
+      x1 = sourceEnd;
+      x2 = targetStart;
+    }
+  } else {
+    if (targetEnd >= sourceStart) {
+      x1 = sourceStart + (targetEnd - sourceStart) / 2;
+      x2 = x1;
+    } else {
+      x2 = targetEnd;
+      x1 = sourceStart;
+    }
+  }
   const y1 = source.y;
-  const x2 =
-    target.x >= source.x
-      ? target.x - target.busWidth / 2
-      : target.x + target.busWidth / 2;
   const y2 = target.y;
   const w = x2 - x1;
   const h = y2 - y1;
@@ -21,9 +36,13 @@ const getPath = (source, target, slots) => {
   const endOffsetIndex =
     (target.x >= source.x ? slots[target.id].left : slots[target.id].right) - 1;
 
-  const startOffsetY = (-1) ** startOffsetIndex * 4 * startOffsetIndex;
-  const endOffsetY = (-1) ** endOffsetIndex * 4 * endOffsetIndex;
+  const startOffsetY = Math.pow(-1, startOffsetIndex) * 4 * startOffsetIndex;
+  const endOffsetY = Math.pow(-1, endOffsetIndex) * 4 * endOffsetIndex;
 
+  if (x1 === x2) {
+    const path = `M ${x1} ${y1} v ${h}`;
+    return path;
+  }
   const path = `M ${x1} ${y1} v ${startOffsetY} h ${w / 2} v ${
     h + endOffsetY
   } h ${w / 2} v ${-(startOffsetY + endOffsetY)}`;
@@ -82,54 +101,58 @@ Edges.prototype.tick = function () {
 Edges.prototype.moveEdges = function () {
   const busSlots = {};
   this.edgesGroupTag.each((d) => {
+    busSlots[d.source.id] = { left: 0, right: 0, top: 0, bottom: 0 };
+    busSlots[d.target.id] = { left: 0, right: 0, top: 0, bottom: 0 };
+  });
+  this.edgesGroupTag.each((d) => {
     d3.select(`#${d.edgeData.DOMID}`)
       .attr("x1", (d) => {
+        const sourceEnd = d.source.x + d.source.busWidth / 2;
+        const sourceStart = d.source.x - d.source.busWidth / 2;
+        const targetStart = d.target.x - d.target.busWidth / 2;
+        const targetEnd = d.target.x + d.target.busWidth / 2;
         if (d.source.x >= d.target.x) {
-          // source left
-          if (!busSlots[d.source.id]) {
-            busSlots[d.source.id] = { left: 1 };
-          } else if (!busSlots[d.source.id].left) {
-            busSlots[d.source.id].left = 1;
+          if (sourceStart <= targetEnd) {
+            busSlots[d.source.id].bottom += 1;
+            busSlots[d.source.id].top += 1;
           } else {
+            // source left
             busSlots[d.source.id].left += 1;
           }
-
           return d.source.x - d.source.busWidth / 2;
         }
         // source right
-        if (!busSlots[d.source.id]) {
-          busSlots[d.source.id] = { right: 1 };
-        } else if (!busSlots[d.source.id].right) {
-          busSlots[d.source.id].right = 1;
+        if (sourceEnd >= targetStart) {
+          busSlots[d.source.id].bottom += 1;
+          busSlots[d.source.id].top += 1;
         } else {
           busSlots[d.source.id].right += 1;
         }
-
         return d.source.x + d.source.busWidth / 2;
       })
       .attr("y1", d.source.y)
       .attr("x2", (d) => {
+        const sourceEnd = d.source.x + d.source.busWidth / 2;
+        const sourceStart = d.source.x - d.source.busWidth / 2;
+        const targetStart = d.target.x - d.target.busWidth / 2;
+        const targetEnd = d.target.x + d.target.busWidth / 2;
         if (d.target.x >= d.source.x) {
-          // target left
-          if (!busSlots[d.target.id]) {
-            busSlots[d.target.id] = { left: 1 };
-          } else if (!busSlots[d.target.id].left) {
-            busSlots[d.target.id].left = 1;
+          if (sourceEnd >= targetStart) {
+            busSlots[d.target.id].bottom += 1;
+            busSlots[d.target.id].top += 1;
           } else {
+            // target left
             busSlots[d.target.id].left += 1;
           }
-
           return d.target.x - d.target.busWidth / 2;
         }
         // target right
-        if (!busSlots[d.target.id]) {
-          busSlots[d.target.id] = { right: 1 };
-        } else if (!busSlots[d.target.id].right) {
-          busSlots[d.target.id].right = 1;
+        if (targetEnd >= sourceStart) {
+          busSlots[d.target.id].bottom += 1;
+          busSlots[d.target.id].top += 1;
         } else {
           busSlots[d.target.id].right += 1;
         }
-
         return d.target.x + d.target.busWidth / 2;
       })
       .attr("y2", d.target.y);
