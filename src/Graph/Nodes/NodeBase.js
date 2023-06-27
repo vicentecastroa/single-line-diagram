@@ -35,8 +35,8 @@ function drag(event, d) {
 function dragEnd(event, d) {
   let dropPos = getDragPos(event, d);
   delete eventStart[d.DOMID];
-  d.x = dropPos.x;
-  d.y = dropPos.y;
+  d.x = Math.round(dropPos.x);
+  d.y = Math.round(dropPos.y);
 
   nodes.tick();
   lineEdges.tick();
@@ -144,12 +144,12 @@ Nodes.prototype.tick = function () {
       busWidth += nodesTotalBranches[d.id] * SharedFunctionality.R;
     }
 
-    d.busWidth = busWidth;
+    d.busWidth = Math.round(busWidth);
 
     d3.select(`#${d.DOMID}`)
-      .attr("x1", d.x - busWidth / 2)
+      .attr("x1", d.x - Math.round(busWidth / 2))
       .attr("y1", d.y)
-      .attr("x2", d.x + busWidth / 2)
+      .attr("x2", d.x + Math.round(busWidth / 2))
       .attr("y2", d.y)
       .attr("zoomPointX", d.x)
       .attr("zoomPointY", d.y);
