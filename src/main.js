@@ -11,9 +11,10 @@ let inputEvent;
 const zoom = d3.zoom();
 let config = {
   allowDrag: true,
+  showLabels: true,
 };
 
-function drawGraph(event, { allowDrag = true } = {}) {
+function drawGraph(event, { allowDrag = true, showLabels = true } = {}) {
   // console.log("drawGaph");
   myCola = {};
   preProcessNetworkUI();
@@ -22,6 +23,7 @@ function drawGraph(event, { allowDrag = true } = {}) {
   const ObjectFactory = new ObjectFactoryClass(event);
   config = {
     allowDrag,
+    showLabels,
   };
 
   NETWORK_OBJECTS = ObjectFactory.getNetworkDataObjects();
@@ -41,13 +43,13 @@ function preProcessNetworkUI() {
   }
 }
 
-function updateGraph(network) {
+function updateGraph(network, options) {
   const resources = Object.entries(network).flatMap(
     ([resourceType, resourceGroup]) =>
-      resourceGroup.flatMap((resource) => ({
-        ...resource,
-        resourceType: resourceType,
-      }))
+      resourceGroup.flatMap((resource) => {
+        resource.resourceType = resourceType;
+        return resource;
+      })
   );
 
   d3.selectAll(".node").each((d) => {
@@ -134,6 +136,12 @@ function updateGraph(network) {
       }
     });
   });
+
+  // Toggle labels visibility
+  if (options && options.showLabels != undefined) {
+    const labels = d3.selectAll(".label");
+    labels.classed("hidden", !options.showLabels);
+  }
 }
 
 export {

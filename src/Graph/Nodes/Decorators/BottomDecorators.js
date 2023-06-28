@@ -1,7 +1,8 @@
 import * as d3 from "d3";
 import $ from "jquery";
 import SharedFunctionality from "../../../Views/baseView";
-import { showTooltip, hideTooltip } from "../../../utils/Tooltip";
+// import { showTooltip, hideTooltip } from "../../../utils/Tooltip";
+import htmlInfoTable from "../../../utils/InfoTable";
 
 // Icons
 import storageIcon from "../../../Icons/storageIcon";
@@ -41,7 +42,7 @@ BottomDecorators.prototype.decorate = function () {
       const LL = R / 2;
       const decoratorY = 3 * R;
       const decoratorWidth = 2 * R;
-      const loadWidth = decoratorWidth * 0.6;
+      const loadWidth = decoratorWidth;
 
       const bottomDecoratorGroup = d3
         .select(d)
@@ -65,22 +66,21 @@ BottomDecorators.prototype.decorate = function () {
           const decorator = bottomDecorators[index];
           const decoratorId = `bus${nodeGroup.id}bottomDeco${index}`;
 
-          const baseDecoratorX = () => {
+          const baseDecoratorX = (resourceType) => {
+            const offset = resourceType === "load" ? 0 : decoratorWidth / 2;
+            const totalLength = bottomDecoCount * 4 * R;
+            const x0 = -totalLength / 2;
+            const step = totalLength / (bottomDecoCount - 1);
             if (bottomDecoCount === 1) {
-              return 0;
+              return -offset;
             }
-            if (bottomDecoCount % 2 === 0) {
-              //Factor to be added to the bottomDecoCount to adjust the position of the bottom decorators.
-              const x = (bottomDecoCount - 4) / 2 + 0.5;
-              return (-(bottomDecoCount + x) + 3 * index) * R - R;
-            } else
-              return (-(3 * (bottomDecoCount - 1)) / 2 + 3 * index) * R - R;
+            return x0 + index * step - offset;
           };
 
           // Calculate an offset depending on number of subDecorators (e.g. batteries connected to inverter)
-          const previousX =
+          /* const previousX =
             Number($(`#bus${nodeGroup.id}bottomDeco${index - 1}`).attr("x")) ||
-            0;
+            0; */
           const previousDecorator = bottomDecorators[index - 1];
           let offsetPreviousDecorator = 0;
           let offsetInverterDecorator = 0;
@@ -99,11 +99,11 @@ BottomDecorators.prototype.decorate = function () {
                 decoratorWidth) /
               2;
           }
-          const offset = offsetPreviousDecorator + offsetInverterDecorator;
-          const decoratorX =
-            index === 0
-              ? baseDecoratorX()
-              : previousX + offset + decoratorWidth * 1.1;
+          // const offset = offsetPreviousDecorator + offsetInverterDecorator;
+          const decoratorX = baseDecoratorX(decorator.resourceType);
+          /* index === 0
+              ? baseDecoratorX(decorator.resourceType)
+              : previousX + offset + decoratorWidth * 3; */
 
           if (decorator.resourceType !== "load") {
             const icon = parser.parseFromString(
@@ -121,11 +121,11 @@ BottomDecorators.prototype.decorate = function () {
                 .attr("height", decoratorWidth)
                 .attr("id", decoratorId)
                 .attr("y", decoratorY)
-                .attr("x", decoratorX)
-                .on("mouseover", ($event) => {
+                .attr("x", decoratorX);
+              /* .on("mouseover", ($event) => {
                   showTooltip(decorator, $event, "");
                 })
-                .on("mouseout", () => hideTooltip());
+                .on("mouseout", () => hideTooltip()); */
             } else {
               // INVERTERS
               const inverterGroup = bottomDecoratorGroup
@@ -268,7 +268,7 @@ BottomDecorators.prototype.decorate = function () {
               .attr("marker-end", `url(#Arrowhead${nodeGroup.id})`);
 
             // Transparent rectangle to handle hover tooltip
-            bottomDecoratorGroup
+            /*  bottomDecoratorGroup
               .append("rect")
               .attr("width", loadWidth)
               .attr("height", loadWidth * 1.2)
@@ -291,7 +291,7 @@ BottomDecorators.prototype.decorate = function () {
               .on("mouseover", ($event) => {
                 showTooltip(decorator, $event, "");
               })
-              .on("mouseout", () => hideTooltip());
+              .on("mouseout", () => hideTooltip()); */
           }
 
           // Adding connecting lines (vertical lines) for multiple top decorators.
@@ -314,6 +314,38 @@ BottomDecorators.prototype.decorate = function () {
               .attr("y1", y1)
               .attr("y2", y2)
               .attr("dx", () => $(`#${decoratorId}`).attr("x") - 4);
+          }
+
+          // Add label and info table
+          bottomDecoratorGroup
+            .append("text")
+            .text(() => decorator.bottomDecoData.name)
+            .attr("class", "label")
+            .attr("y", decoratorY + R / 2)
+            .attr("x", () =>
+              decorator.resourceType === "load"
+                ? decoratorX + R / 2 + 4
+                : decoratorX + (4 * R) / 2
+            )
+            .style("stroke-width", "0px")
+            .style(
+              "fill",
+              () => decorator.bottomDecoData.color || "rgba(0, 0, 0, 0.87)"
+            )
+            .style("font-size", "0.7rem");
+          if (decorator.info) {
+            bottomDecoratorGroup
+              .append("foreignObject")
+              .attr("class", "label")
+              .attr("y", decoratorY + R / 2)
+              .attr("x", () =>
+                decorator.resourceType === "load"
+                  ? decoratorX + R / 2 + 4
+                  : decoratorX + (4 * R) / 2
+              )
+              .attr("width", 2 * decoratorWidth)
+              .attr("height", 4 * decoratorWidth)
+              .html(() => htmlInfoTable(decorator));
           }
 
           // Adding breaker to vertical lines

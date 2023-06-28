@@ -98,6 +98,10 @@
   display: none;
 }
 
+.hidden {
+  display: none;
+}
+
 #tooltip span {
   margin: 0;
   font-size: 0.8em;

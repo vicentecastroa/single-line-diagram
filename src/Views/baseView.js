@@ -59,7 +59,7 @@ const redraw = (transition) => {
 };
 
 const SharedFunctionality = {
-  R: 15,
+  R: 16,
   autoLayout: true,
   nodeMouseDown: false,
   hasNodeLocationData: false,

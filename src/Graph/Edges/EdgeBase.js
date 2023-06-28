@@ -68,7 +68,7 @@ const getPath = (source, target, slots, hasDecorators) => {
     endOffsetX = -8 /* + (endOffsetIndex + 1) * 4 */;
 
   if (!hasDecorators) {
-    const minV = 10;
+    const minV = 16;
     const level1 = y1 + minV * Math.sign(h);
     const level2 = y2 + minV * Math.sign(h);
     const hy = h > 0 ? Math.max(level1, level2) : Math.min(level1, level2);
@@ -82,7 +82,7 @@ const getPath = (source, target, slots, hasDecorators) => {
   }
 
   // Has decorators
-  const minVConnector = 15;
+  const minVConnector = 18;
   const minMiddleVertical = 44;
   const minHeight = minMiddleVertical + 2 * minVConnector;
 

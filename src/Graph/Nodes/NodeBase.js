@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import SharedFunctionality from "../../Views/baseView";
 import TopDecorators from "./Decorators/TopDecorators";
 import BottomDecorators from "./Decorators/BottomDecorators";
-import { showTooltip, hideTooltip } from "../../utils/Tooltip";
+// import { showTooltip, hideTooltip } from "../../utils/Tooltip";
 import { lineEdges, nodes } from "../disconnectedGraph";
 import { NETWORK_OBJECTS, config } from "../../main";
 
@@ -70,15 +70,15 @@ function Nodes(data, svg, cola) {
     this.nodesGroupTag.call(dragListener);
   }
 
-  this.labels = this.getNodeLabels(cola);
+  this.labels = this.getNodeLabels(this.nodesGroupTag);
   this.centerUI = this.getNodeCenterUI(this.nodesGroupTag);
 
   // Add tooltip
-  d3.selectAll(".busIcon").each((d) => {
+  /* d3.selectAll(".busIcon").each((d) => {
     d3.select(`#${d.DOMID}`).on("mouseover", ($event) => {
       showTooltip(d, $event, "");
     });
-  });
+  }); */
 
   // Decorators or bus resources
   this.topDecorators = new TopDecorators(this.nodesGroupTag);
@@ -88,16 +88,23 @@ function Nodes(data, svg, cola) {
   this.bottomDecorators.decorate();
 }
 
-Nodes.prototype.getNodeLabels = function (cola) {
-  return null;
+Nodes.prototype.getNodeLabels = function (nodesGroupTag) {
+  nodesGroupTag
+    .append("text")
+    .text((d) => d.name)
+    .attr("class", "node busLabel label")
+    .attr("id", (d) => {
+      return `busLabel${d.id}`;
+    })
+    .style("stroke-width", "0px")
+    .style("fill", "rgba(0, 0, 0, 0.87)")
+    .style("font-size", "0.75rem");
+  return this.svg.selectAll(".busLabel");
 };
 
 Nodes.prototype.getNodeCenterUI = function (nodesGroupTag) {
-  nodesGroupTag
-    .append("circle")
-    .attr("class", "node busIcon")
-    .attr("r", 0)
-    .on("mouseout", () => hideTooltip());
+  nodesGroupTag.append("circle").attr("class", "node busIcon").attr("r", 0);
+  /* .on("mouseout", () => hideTooltip()); */
 
   nodesGroupTag
     .append("line")
@@ -105,8 +112,8 @@ Nodes.prototype.getNodeCenterUI = function (nodesGroupTag) {
     .attr("id", (d) => {
       d["DOMID"] = `bus${d.id}`;
       return d.DOMID;
-    })
-    .on("mouseout", () => hideTooltip());
+    });
+  /* .on("mouseout", () => hideTooltip()); */
 };
 
 Nodes.prototype.tick = function () {
@@ -136,12 +143,17 @@ Nodes.prototype.tick = function () {
         .flatMap((v) => (v.bottomDecorators ? v.bottomDecorators.length : 0))
         .reduce((acc, v) => acc + v * 0.5, 0);
     let nDecorators = Math.max(bottomDecoratorsLength, d.topDecorators.length);
-    if (nDecorators > 1) {
-      busWidth = busWidth * nDecorators;
-    }
+    /* if (nDecorators > 1) {
+      busWidth += nDecorators * 3 * SharedFunctionality.R;
+      busWidth += SharedFunctionality.R;
+    } */
+    busWidth = Math.max(
+      SharedFunctionality.R * 3,
+      nDecorators * 4 * SharedFunctionality.R
+    );
 
     if (nodesTotalBranches[d.id]) {
-      busWidth += nodesTotalBranches[d.id] * SharedFunctionality.R;
+      busWidth += 2 * SharedFunctionality.R;
     }
 
     d.busWidth = Math.round(busWidth);
@@ -155,16 +167,11 @@ Nodes.prototype.tick = function () {
       .attr("zoomPointY", d.y);
 
     nodesPositions.push({ busId: d.id, x: d.x, y: d.y });
+    this.svg
+      .select(`#busLabel${d.id}`)
+      .attr("x", d.x - Math.round(busWidth / 2) - SharedFunctionality.R / 2)
+      .attr("y", d.y - SharedFunctionality.R / 4);
   });
-
-  /* this.labels
-    .attr("x", function (d) {
-      return d.x;
-    })
-    .attr("y", function (d) {
-      var h = this.getBBox().height;
-      return d.y + h / 4 + 1;
-    }); */
 
   this.topDecorators.tick();
   this.bottomDecorators.tick();

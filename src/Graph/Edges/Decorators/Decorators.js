@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import $ from "jquery";
 import SharedFunctionality from "../../../Views/baseView";
+import htmlInfoTable from "../../../utils/InfoTable";
 
 // Icons
 import switchCloseIcon from "../../../Icons/switch";
@@ -67,6 +68,41 @@ Decorators.prototype.decorate = function () {
               }
             );
           });
+
+        // Add label and info table
+        decoratorGroup
+          .append("text")
+          .text(() => decorator.decoData.name)
+          .attr("y", this.decoratorWidth / 3)
+          .attr("x", this.decoratorWidth + 4)
+          .attr("class", "label")
+          .attr("transform", (d) => {
+            return `rotate(${-90}, ${this.decoratorWidth / 2}, ${
+              this.decoratorWidth / 2
+            })`;
+          })
+          .style("stroke-width", "0px")
+          .style(
+            "fill",
+            () => decorator.decoData.color || "rgba(0, 0, 0, 0.87)"
+          )
+          .style("font-size", "0.7rem");
+
+        if (decorator.info) {
+          decoratorGroup
+            .append("foreignObject")
+            .attr("y", SharedFunctionality.R)
+            .attr("x", () => this.decoratorWidth + 4)
+            .attr("class", "label")
+            .attr("transform", (d) => {
+              return `rotate(${-90}, ${this.decoratorWidth / 2}, ${
+                this.decoratorWidth / 2
+              })`;
+            })
+            .attr("width", 2 * this.decoratorWidth)
+            .attr("height", 4 * this.decoratorWidth)
+            .html(() => htmlInfoTable(decorator));
+        }
       }
     });
   });
