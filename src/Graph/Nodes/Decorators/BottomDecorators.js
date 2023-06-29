@@ -68,7 +68,7 @@ BottomDecorators.prototype.decorate = function () {
 
           const baseDecoratorX = (resourceType) => {
             const offset = resourceType === "load" ? 0 : decoratorWidth / 2;
-            const totalLength = bottomDecoCount * 4 * R;
+            const totalLength = bottomDecoCount * 5 * R;
             const x0 = -totalLength / 2;
             const step = totalLength / (bottomDecoCount - 1);
             if (bottomDecoCount === 1) {
@@ -336,6 +336,7 @@ BottomDecorators.prototype.decorate = function () {
           if (decorator.info) {
             bottomDecoratorGroup
               .append("foreignObject")
+              .attr("id", `${decoratorId}Info`)
               .attr("class", "label")
               .attr("y", decoratorY + R / 2)
               .attr("x", () =>

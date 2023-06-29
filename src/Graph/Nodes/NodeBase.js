@@ -149,7 +149,7 @@ Nodes.prototype.tick = function () {
     } */
     busWidth = Math.max(
       SharedFunctionality.R * 3,
-      nDecorators * 4 * SharedFunctionality.R
+      nDecorators * 5 * SharedFunctionality.R + SharedFunctionality.R
     );
 
     if (nodesTotalBranches[d.id]) {

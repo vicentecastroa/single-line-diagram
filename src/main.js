@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import ObjectFactoryClass from "./ObjectFactory/dataObjects";
 import DisconnectedGraph from "./Graph/disconnectedGraph";
 import addToolbar from "./utils/Toolbar";
+import htmlInfoTable from "./utils/InfoTable";
 
 let NETWORK_OBJECTS = null;
 const NETWORK = {};
@@ -71,6 +72,11 @@ function updateGraph(network, options) {
       );
       // Update info
       decorator.bottomDecoData.info = r.info;
+      decorator.info = r.info;
+      d3.select(`#bus${d.id}bottomDeco${decoratorIndex}Info`).html(() =>
+        htmlInfoTable(decorator)
+      );
+
       // Update breaker
       const breakerFillColor = r.breaker === "open" ? "white" : "black";
       d3.select(`#bus${d.id}bottomDeco${decoratorIndex}Breaker`).attr(

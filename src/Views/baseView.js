@@ -4,6 +4,9 @@ import { zoom } from "../main";
 
 function handleZoom(e) {
   d3.select("#parentSvgNode").select("g").attr("transform", e.transform);
+  d3.select("#parentSvgNode")
+    .select("#centerCircle")
+    .attr("transform", e.transform);
 }
 
 const zoomIdentity = d3.zoomIdentity;
@@ -29,18 +32,19 @@ const graphBounds = (withCola, myCola) => {
     selCola = myCola;
   }
   if (withCola) {
+    const { R } = SharedFunctionality;
     selCola.nodes().forEach((v) => {
-      x = Math.min(x, v.x - SharedFunctionality.R * 2);
-      X = Math.max(X, v.x);
-      y = Math.min(y, v.y - SharedFunctionality.R * 4);
-      Y = Math.max(Y, v.y + SharedFunctionality.R * (hasInverters(v) ? 7 : 5));
+      x = Math.min(x, v.x - (v.busWidth + 3 * R || R * 2) / 2);
+      X = Math.max(X, v.x + (v.busWidth + 7 * R || R * 2) / 2);
+      y = Math.min(y, v.y - R * 4);
+      Y = Math.max(Y, v.y + R * (hasInverters(v) ? 10 : 8));
     });
   } else {
     d3.selectAll(".node").each((v) => {
-      x = Math.min(x, v.x - SharedFunctionality.R * 2);
-      X = Math.max(X, v.x);
-      y = Math.min(y, v.y - SharedFunctionality.R * 4);
-      Y = Math.max(Y, v.y + SharedFunctionality.R * 5);
+      x = Math.min(x, v.x - (v.busWidth + 3 * R || R * 2) / 2);
+      X = Math.max(X, v.x + (v.busWidth + 3 * R || R * 2) / 2);
+      y = Math.min(y, v.y - R * 4);
+      Y = Math.max(Y, v.y + R * 5);
     });
   }
   return { x: x, X: X, y: y, Y: Y };
@@ -66,20 +70,19 @@ const SharedFunctionality = {
   goToInitialStateTriggered: false,
 
   zoomToFit: (withCola, myCola) => {
-    const cw =
-      $("#parentSvgNode").innerWidth() * 0.98 - SharedFunctionality.R * 2;
-    const ch =
-      $("#parentSvgNode").innerHeight() * 0.8 + SharedFunctionality.R * 1;
+    const cw = $("#parentSvgNode").innerWidth() * 0.98;
+    const ch = $("#parentSvgNode").innerHeight() * 0.9;
     const b = graphBounds(withCola, myCola);
     const w = b.X - b.x;
     const h = b.Y - b.y;
-    const s = Math.min(cw / w, ch / h);
-    const tx = -b.x + ((cw / s - w) * s) / 2; /* + ((cw / s - w) * s) / 2 */
-    const ty = -b.y + ((ch - h) * s) / 2;
+    let s = Math.min(cw / w, ch / h) * 0.8;
+    s = 1;
+    const tx = -(b.x + (w - cw) / 2);
+    const ty = -(b.y + (h - ch) / 2);
     const selZoom = d3.select("#parentSvgNode");
 
-    selZoom.transition().call(zoom.on("zoom", handleZoom).scaleBy, s);
     selZoom.transition().call(zoom.on("zoom", handleZoom).translateBy, tx, ty);
+    // selZoom.transition().call(zoom.on("zoom", handleZoom).scaleBy, s);
   },
 };
 
