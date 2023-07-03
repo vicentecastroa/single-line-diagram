@@ -330,9 +330,9 @@ BottomDecorators.prototype.decorate = function () {
             .style("width", "64px")
             .style("height", "128px")
             .html(
-              `${htmlInfoTable(decorator)} <p style="margin-bottom: 0px">${
+              `<p style="margin-bottom: 0px">${
                 decorator.bottomDecoData.name
-              }</p>`
+              }</p>${htmlInfoTable(decorator)}`
             )
             .style(
               "color",
