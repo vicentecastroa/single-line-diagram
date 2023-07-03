@@ -1,4 +1,5 @@
 function htmlInfoTable(decorator) {
+  if (!decorator.info) return "";
   const { bottomDecoData, decoData } = decorator;
   let color = "rgba(0, 0, 0, 0.87)";
   if (bottomDecoData) {

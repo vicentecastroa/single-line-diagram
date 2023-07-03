@@ -162,7 +162,6 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
     let generalId = 0; // Might be unnecesary
 
     [
-      { type: "storage", objList: networkObjects.storagesDataObj.dataObjList },
       {
         type: "generator",
         objList: networkObjects.generatorsDataObj.dataObjList,
@@ -171,13 +170,14 @@ ObjectFactory.prototype.addBottomDecoratorDataToBus = (networkObjects) => {
         type: "inverter",
         objList: networkObjects.invertersDataObj.dataObjList,
       },
-      {
-        type: "load",
-        objList: networkObjects.loadsDataObj.dataObjList,
-      },
+      { type: "storage", objList: networkObjects.storagesDataObj.dataObjList },
       {
         type: "ev",
         objList: networkObjects.evDataObj.dataObjList,
+      },
+      {
+        type: "load",
+        objList: networkObjects.loadsDataObj.dataObjList,
       },
     ].forEach(({ type, objList }) => {
       for (let j = 0; j < objList.length; j++) {

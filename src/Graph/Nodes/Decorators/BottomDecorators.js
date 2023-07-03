@@ -318,36 +318,27 @@ BottomDecorators.prototype.decorate = function () {
 
           // Add label and info table
           bottomDecoratorGroup
-            .append("text")
-            .text(() => decorator.bottomDecoData.name)
+            .append("foreignObject")
+            .attr("id", `${decoratorId}Html`)
             .attr("class", "label")
-            .attr("y", decoratorY + R / 2)
+            .attr("y", decoratorY - R / 2)
             .attr("x", () =>
               decorator.resourceType === "load"
                 ? decoratorX + R / 2 + 4
                 : decoratorX + (4 * R) / 2
             )
-            .style("stroke-width", "0px")
+            .style("width", "64px")
+            .style("height", "128px")
+            .html(
+              `${htmlInfoTable(decorator)} <p style="margin-bottom: 0px">${
+                decorator.bottomDecoData.name
+              }</p>`
+            )
             .style(
-              "fill",
+              "color",
               () => decorator.bottomDecoData.color || "rgba(0, 0, 0, 0.87)"
             )
             .style("font-size", "0.7rem");
-          if (decorator.info) {
-            bottomDecoratorGroup
-              .append("foreignObject")
-              .attr("id", `${decoratorId}Info`)
-              .attr("class", "label")
-              .attr("y", decoratorY + R / 2)
-              .attr("x", () =>
-                decorator.resourceType === "load"
-                  ? decoratorX + R / 2 + 4
-                  : decoratorX + (4 * R) / 2
-              )
-              .attr("width", 2 * decoratorWidth)
-              .attr("height", 4 * decoratorWidth)
-              .html(() => htmlInfoTable(decorator));
-          }
 
           // Adding breaker to vertical lines
           const breakerWidth = 8;

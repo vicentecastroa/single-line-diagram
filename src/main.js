@@ -73,8 +73,10 @@ function updateGraph(network, options) {
       // Update info
       decorator.bottomDecoData.info = r.info;
       decorator.info = r.info;
-      d3.select(`#bus${d.id}bottomDeco${decoratorIndex}Info`).html(() =>
-        htmlInfoTable(decorator)
+      d3.select(`#bus${d.id}bottomDeco${decoratorIndex}Html`).html(
+        `${htmlInfoTable(decorator)} <p style="margin-bottom: 0px">${
+          decorator.bottomDecoData.name
+        }</p>`
       );
 
       // Update breaker
