@@ -4,6 +4,7 @@ import ObjectFactoryClass from "./ObjectFactory/dataObjects";
 import DisconnectedGraph from "./Graph/disconnectedGraph";
 import addToolbar from "./utils/Toolbar";
 import htmlInfoTable from "./utils/InfoTable";
+import SharedFunctionality from "./Views/baseView";
 
 let NETWORK_OBJECTS = null;
 const NETWORK = {};
@@ -14,6 +15,7 @@ let config = {
   allowDrag: true,
   showLabels: true,
 };
+const { R } = SharedFunctionality;
 
 function drawGraph(event, { allowDrag = true, showLabels = true } = {}) {
   // console.log("drawGaph");
@@ -74,9 +76,12 @@ function updateGraph(network, options) {
       decorator.bottomDecoData.info = r.info;
       decorator.info = r.info;
       d3.select(`#bus${d.id}bottomDeco${decoratorIndex}Html`).html(
-        `<p style="margin-bottom: 0px">${
+        `${htmlInfoTable(decorator)}
+        <p style="margin-bottom: 0px; top: ${
+          2 * R + R / 2
+        }px; position: absolute; text-align: center; width: 80px">${
           decorator.bottomDecoData.name
-        }</p>${htmlInfoTable(decorator)} `
+        }</p>`
       );
 
       // Update breaker
@@ -99,6 +104,12 @@ function updateGraph(network, options) {
       );
       // Update info
       decorator.topDecoData.info = r.info;
+      decorator.info = r.info;
+      d3.select(`#bus${d.id}topDeco${decoratorIndex}Html`).html(
+        `<p style="margin-bottom: 0px; text-align: center; width: 80px">${
+          decorator.topDecoData.name
+        }</p>${htmlInfoTable(decorator)} `
+      );
       // Update breaker
       const breakerFillColor = r.breaker === "open" ? "white" : "black";
       d3.select(`#bus${d.id}topDeco${decoratorIndex}Breaker`).attr(

@@ -324,15 +324,18 @@ BottomDecorators.prototype.decorate = function () {
             .attr("y", decoratorY - R / 2)
             .attr("x", () =>
               decorator.resourceType === "load"
-                ? decoratorX + R / 2 + 4
-                : decoratorX + (4 * R) / 2
+                ? decoratorX - (5 / 2) * R
+                : decoratorX - (3 / 2) * R
             )
-            .style("width", "64px")
+            .style("width", "128px")
             .style("height", "128px")
             .html(
-              `<p style="margin-bottom: 0px">${
+              `${htmlInfoTable(decorator)}
+              <p style="margin-bottom: 0px; top: ${
+                2 * R + R / 2
+              }px; position: absolute; text-align: center; width: 80px">${
                 decorator.bottomDecoData.name
-              }</p>${htmlInfoTable(decorator)}`
+              }</p>`
             )
             .style(
               "color",

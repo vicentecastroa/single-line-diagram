@@ -1,9 +1,12 @@
 function htmlInfoTable(decorator) {
   if (!decorator.info) return "";
-  const { bottomDecoData, decoData } = decorator;
+  const { bottomDecoData, decoData, topDecoData } = decorator;
   let color = "rgba(0, 0, 0, 0.87)";
   if (bottomDecoData) {
     color = bottomDecoData.color;
+  }
+  if (topDecoData) {
+    color = topDecoData.color;
   }
   if (decoData) {
     color = decoData.color;
@@ -23,8 +26,9 @@ function htmlInfoTable(decorator) {
         .join("")}
     </tr>`;
   });
+  const marginLeft = decorator.resourceType === "load" ? 48 : 56;
   const table = `<table border="0" 
-    style="font-size: 12px;
+    style="font-size: 12px; margin-left: ${marginLeft}px;
     color: ${color}
       ">
         ${tableRows.join("")}

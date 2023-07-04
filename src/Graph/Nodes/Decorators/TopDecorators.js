@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import $ from "jquery";
 import SharedFunctionality from "../../../Views/baseView";
-import { showTooltip, hideTooltip } from "../../../utils/Tooltip";
+import htmlInfoTable from "../../../utils/InfoTable";
 
 // Icons
 import marketIcon from "../../../Icons/market";
@@ -52,6 +52,7 @@ TopDecorators.prototype.decorate = function () {
             this.icons[decorator.resourceType],
             "image/svg+xml"
           );
+          const decoratorId = `bus${nodeGroup.id}topDeco${index}`;
           const decoratorHTML = topDecoratorGroup
             .node()
             .appendChild(icon.documentElement);
@@ -66,11 +67,7 @@ TopDecorators.prototype.decorate = function () {
                 const x = (topDecoCount - 4) / 2 + 0.5;
                 return (-(topDecoCount + x) + 3 * index) * R - R;
               } else return (-(3 * (topDecoCount - 1)) / 2 + 3 * index) * R - R;
-            })
-            .on("mouseover", ($event) => {
-              showTooltip(decorator, $event, "");
-            })
-            .on("mouseout", () => hideTooltip());
+            });
 
           // Adding connecting lines (vertical lines) for multiple top decorators.
           var y1 = decoratorY + R + LL * 1.4; // 1.4 is factor for margin
@@ -81,23 +78,36 @@ TopDecorators.prototype.decorate = function () {
               .attr("class", "connectors")
               .attr(
                 "x1",
-                () =>
-                  Number($(`#bus${nodeGroup.id}topDeco${index}`).attr("x")) +
-                  decoratorWidth / 2
+                () => Number($(`${decoratorId}`).attr("x")) + decoratorWidth / 2
               )
               .attr(
                 "x2",
-                () =>
-                  Number($(`#bus${nodeGroup.id}topDeco${index}`).attr("x")) +
-                  decoratorWidth / 2
+                () => Number($(`${decoratorId}`).attr("x")) + decoratorWidth / 2
               )
               .attr("y1", y1)
               .attr("y2", y2)
-              .attr(
-                "dx",
-                () => $(`#bus${nodeGroup.id}topDeco${index}`).attr("x") - 4
-              );
+              .attr("dx", () => $(`${decoratorId}`).attr("x") - 4);
           }
+
+          // Add label and info table
+          topDecoratorGroup
+            .append("foreignObject")
+            .attr("id", `${decoratorId}Html`)
+            .attr("class", "label")
+            .attr("y", decoratorY - R)
+            .attr("x", -(5 / 2) * R)
+            .style("width", "128px")
+            .style("height", "128px")
+            .html(
+              `<p style="margin-bottom: 0px; text-align: center; width: 80px">${
+                decorator.topDecoData.name
+              }</p> ${htmlInfoTable(decorator)}`
+            )
+            .style(
+              "color",
+              () => decorator.topDecoData.color || "rgba(0, 0, 0, 0.87)"
+            )
+            .style("font-size", "0.7rem");
 
           // Adding breaker to vertical lines
           const breakerWidth = 8;
