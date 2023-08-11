@@ -288,6 +288,7 @@ ObjectFactory.prototype.updateEdgesData = (networkObjects) => {
 
     const edge = {
       index: lineIndex + 1,
+      id: edgeDataObj.id,
       edgeId: `From Bus '${edgeDataObj.fromBus}' to Bus '${edgeDataObj.toBus}'`,
       source: nodeIndexMap[edgeDataObj.fromBus],
       target: nodeIndexMap[edgeDataObj.toBus],

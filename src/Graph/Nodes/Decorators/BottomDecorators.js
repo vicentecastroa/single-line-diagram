@@ -136,7 +136,7 @@ BottomDecorators.prototype.decorate = function () {
                 .node()
                 .appendChild(icon.documentElement);
               const inverterId = decoratorId;
-              const inverterY = -decoratorY * 1.8;
+              const inverterY = (-27 / 2) * R;
               d3.select(inverterHTML)
                 .attr("id", inverterId)
                 .attr("width", decoratorWidth)
