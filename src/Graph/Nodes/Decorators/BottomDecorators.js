@@ -136,7 +136,7 @@ BottomDecorators.prototype.decorate = function () {
                 .node()
                 .appendChild(icon.documentElement);
               const inverterId = decoratorId;
-              const inverterY = (-27 / 2) * R;
+              const inverterY = decoratorY;
               d3.select(inverterHTML)
                 .attr("id", inverterId)
                 .attr("width", decoratorWidth)
@@ -197,7 +197,7 @@ BottomDecorators.prototype.decorate = function () {
                 };
                 inverterGroup
                   .append("line")
-                  .attr("class", "connectors")
+                  .attr("class", "connectors inverters-connectors")
                   .attr("y1", horizontalY)
                   .attr("y2", decoratorY * 2 + 2 * R)
                   .attr("x1", x1())
@@ -225,7 +225,7 @@ BottomDecorators.prototype.decorate = function () {
                 };
                 inverterGroup
                   .append("line")
-                  .attr("class", "connectors")
+                  .attr("class", "connectors inverters-connectors")
                   .attr("y1", decoratorY * 1.45 + R)
                   .attr("y2", horizontalY)
                   .attr("x1", x2())
@@ -234,7 +234,7 @@ BottomDecorators.prototype.decorate = function () {
                 // Horizontal segment
                 inverterGroup
                   .append("line")
-                  .attr("class", "connectors")
+                  .attr("class", "connectors inverters-connectors")
                   .attr("y1", horizontalY)
                   .attr("y2", horizontalY)
                   .attr("x1", x1())
@@ -391,6 +391,14 @@ BottomDecorators.prototype.tick = function () {
     .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
     .attr("zoomPointX", (d) => d.x)
     .attr("zoomPointY", (d) => d.y);
+  d3.selectAll(".inverterDecoratorGroup").attr(
+    "transform",
+    (d) => "translate(" + 0 + "," + -d.y + ")"
+  );
+  d3.selectAll(".inverters-connectors").attr(
+    "transform",
+    (d) => "translate(" + 0 + "," + d.y + ")"
+  );
 };
 
 export default BottomDecorators;
