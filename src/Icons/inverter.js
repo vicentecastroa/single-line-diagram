@@ -27,7 +27,7 @@ const iconText = `
           }
         </style>
     </defs>
-    <g id="Inverter">
+    <g>
         <rect
         class="cls-1-inv stroke"
         width="188"

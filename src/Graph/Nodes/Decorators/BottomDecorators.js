@@ -138,9 +138,10 @@ BottomDecorators.prototype.decorate = function () {
               const inverterId = decoratorId;
               const inverterY = decoratorY;
               d3.select(inverterHTML)
-                .attr("id", inverterId)
                 .attr("width", decoratorWidth)
-                .attr("y", inverterY)
+                .attr("height", decoratorWidth)
+                .attr("id", inverterId)
+                .attr("y", decoratorY)
                 .attr("x", decoratorX);
 
               // Add elements connected to the inverter
@@ -160,7 +161,8 @@ BottomDecorators.prototype.decorate = function () {
 
                 d3.select(subDecoratorHTML)
                   .attr("width", decoratorWidth)
-                  .attr("y", inverterY + 5 * R)
+                  .attr("height", decoratorWidth)
+                  .attr("y", decoratorY + 5 * R)
                   .attr("x", () => {
                     if (inverterDecoCount % 2 === 0) {
                       //Factor to be added to the inverterDecoCount to adjust the position of the bottom decorators.
@@ -391,14 +393,6 @@ BottomDecorators.prototype.tick = function () {
     .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
     .attr("zoomPointX", (d) => d.x)
     .attr("zoomPointY", (d) => d.y);
-  d3.selectAll(".inverterDecoratorGroup").attr(
-    "transform",
-    (d) => "translate(" + 0 + "," + -d.y + ")"
-  );
-  d3.selectAll(".inverters-connectors").attr(
-    "transform",
-    (d) => "translate(" + 0 + "," + d.y + ")"
-  );
 };
 
 export default BottomDecorators;
