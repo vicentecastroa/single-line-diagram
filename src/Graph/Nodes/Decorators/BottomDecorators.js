@@ -159,10 +159,11 @@ BottomDecorators.prototype.decorate = function () {
                   .appendChild(icon.documentElement);
                 const inverterX = Number($(`#${inverterId}`).attr("x"));
 
+                const subDecoratorY = decoratorY + 5 * R;
                 d3.select(subDecoratorHTML)
                   .attr("width", decoratorWidth)
                   .attr("height", decoratorWidth)
-                  .attr("y", decoratorY + 5 * R)
+                  .attr("y", subDecoratorY)
                   .attr("x", () => {
                     if (inverterDecoCount % 2 === 0) {
                       //Factor to be added to the inverterDecoCount to adjust the position of the bottom decorators.
@@ -176,6 +177,32 @@ BottomDecorators.prototype.decorate = function () {
                         inverterX
                       );
                   });
+                bottomDecoratorGroup
+                  .append("foreignObject")
+                  .attr("id", `${inverterId}-${index}-Html`)
+                  .attr("class", "label")
+                  .attr("y", subDecoratorY - R / 2)
+                  .attr("x", () =>
+                    decorator.resourceType === "load"
+                      ? decoratorX - (5 / 2) * R
+                      : decoratorX - (3 / 2) * R
+                  )
+                  .style("width", "128px")
+                  .style("height", "128px")
+                  .html(
+                    `${htmlInfoTable(decorator)}
+                    <p style="margin-bottom: 0px; top: ${
+                      2 * R + R / 2
+                    }px; position: absolute; text-align: center; width: 80px">${
+                      decorator.bottomDecoData.name
+                    }</p>`
+                  )
+                  .style(
+                    "color",
+                    () =>
+                      decorator.bottomDecoData.color || "rgba(0, 0, 0, 0.87)"
+                  )
+                  .style("font-size", "0.7rem");
 
                 // Add connecting lines (vertical lines)
 
