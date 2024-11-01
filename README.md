@@ -7,10 +7,6 @@ Largely based on the source code of [stac](https://github.com/aayushGaur/stac)
 
 Visit [www.acelerex.com](www.acelerex.com)
 
-## Resources
-
-- [Wiki](https://www.notion.so/acelerex/Acelerex-Single-Line-Diagram-Wiki-2a8d2940f5fb4bdca356fbb7747eb09d)
-
 ## Installation
 
 Add package with repository url to your `package.json` file:
